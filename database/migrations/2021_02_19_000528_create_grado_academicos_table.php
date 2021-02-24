@@ -15,6 +15,11 @@ class CreateGradoAcademicosTable extends Migration
     {
         Schema::create('grado_academicos', function (Blueprint $table) {
             $table->id();
+            $table->enum('grado', ['estudiante','tecnico superior','licenciado','ingeniero','magister','doctor']);
+            $table->string('profesion')->nullable();
+            $table->string('universidad');
+            $table->string('carrera');
+            $table->foreignId('estudiante_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -15,6 +15,10 @@ class CreateHorariosTable extends Migration
     {
         Schema::create('horarios', function (Blueprint $table) {
             $table->id();
+            $table->string('dias',20);
+            $table->time('hora_inicio',0);
+            $table->time('hora_fin',0);
+            $table->enum('turno',['mañana','tarde','noche']);
             $table->timestamps();
         });
     }

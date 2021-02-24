@@ -15,6 +15,13 @@ class CreateCarrerasTable extends Migration
     {
         Schema::create('carreras', function (Blueprint $table) {
             $table->id();
+            $table->string('titulo',100);
+            $table->text('descripcion')->nullable();
+            $table->string('requisitos',100);
+            $table->integer('cargaHoraria')->length(3);
+            $table->string('portada');
+            $table->foreignId('docente_id')->constrained();
+            $table->foreignId('categoria_id')->constrained();
             $table->timestamps();
         });
     }

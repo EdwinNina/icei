@@ -15,6 +15,12 @@ class CreateModulosTable extends Migration
     {
         Schema::create('modulos', function (Blueprint $table) {
             $table->id();
+            $table->string('version');
+            $table->string('titulo');
+            $table->longText('temario');
+            $table->integer('cargaHoraria')->length(3);
+            $table->string('portada');
+            $table->foreignId('carrera_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

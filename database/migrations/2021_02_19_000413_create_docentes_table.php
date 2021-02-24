@@ -15,7 +15,14 @@ class CreateDocentesTable extends Migration
     {
         Schema::create('docentes', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->integer('carnet')->length(15);
+            $table->string('expedido', 2);
+            $table->string('nombre',50);
+            $table->string('paterno',50);
+            $table->string('materno',50);
+            $table->string('email',30);
+            $table->integer('celular')->length(8);
+           $table->timestamps();
         });
     }
 

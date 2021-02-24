@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Horario extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['dias', 'hora_inicio', 'hora_fin', 'turno'];
+
+    protected $table = 'horarios';
 }

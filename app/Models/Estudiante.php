@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Estudiante extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['carnet','nombre','paterno','materno','email','celular','codigo','expedido'];
+
+    protected $table = 'estudiantes';
+
+    public function grado()
+    {
+        return $this->hasOne(GradoAcademico::class);
+    }
 }

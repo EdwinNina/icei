@@ -15,6 +15,12 @@ class CreatePerfilDocentesTable extends Migration
     {
         Schema::create('perfil_docentes', function (Blueprint $table) {
             $table->id();
+            $table->string('profesion')->nullable();
+            $table->text('biografia')->nullable();
+            $table->string('website')->nullable();
+            $table->string('foto')->nullable();
+            $table->string('curriculum')->nullable();
+            $table->foreignId('docente_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
