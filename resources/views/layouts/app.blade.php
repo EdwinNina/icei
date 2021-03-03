@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
+        @trixassets
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -16,9 +17,8 @@
         <link rel="stylesheet" href="{{ asset('css/plantilla.css') }}" />
         <link rel="stylesheet" href="{{ mix('css/app.css') }}" />
 
-        @livewireStyles
-        @trixassets
         @yield('styles')
+        @livewireStyles
         <script src="{{ mix('js/app.js')}}" defer></script>
     </head>
     <body>
@@ -89,8 +89,12 @@
                 <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 h-full w-full z-10"></div>
 
                 <div x-show="dropdownOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10">
-                    <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Profile</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Products</a>
+                    <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">
+                    Configuraciones</a>
+                    @can('docente.perfil.edit')
+                        <a href="{{ route('docente.perfil.edit', Auth::user()->id ) }}"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Mi Perfil</a>
+                    @endcan
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();"
@@ -134,6 +138,9 @@
                     });
                 break;
             }
+        });
+        window.livewire.on('customMessage', message => {
+            toastr.success('Correcto', message);
         });
 
         window.livewire.on('deleteItem', () => {

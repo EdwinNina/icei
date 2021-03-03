@@ -2,7 +2,7 @@
     <x-slot name="title">
         Importar datos desde excel
         <p class="text-sm text-blue-500"> * El formato del archivo excel debe estar en el siguiente formato</p>
-        <ul class="text-xs font-bold text-gray-700 flex">
+        <ul class="text-xs font-bold text-gray-700 flex list-none px-0">
             <li class="p-1 border border-gray-700">Cedula</li>
             <li class="p-1 border border-gray-500">Expedido</li>
             <li class="p-1 border border-gray-500">Paterno</li>
@@ -29,7 +29,7 @@
     </x-slot>
 
     <x-slot name="footer">
-        <a href="{{ route('estudiante.index') }}" class="btn btn-dark mr-2 mb-2">Volver</a>
+        <x-jet-secondary-button wire:click="$set('modalFormVisible', false)" class="mr-2">Volver</x-jet-secondary-button>
         <x-jet-danger-button wire:click="import()" class="flex justify-center items-center">
             {{$nombreBotonCarga}}
         </x-jet-danger-button>

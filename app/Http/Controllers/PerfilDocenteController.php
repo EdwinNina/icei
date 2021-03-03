@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PerfilDocente;
+use App\Models\User;
+use App\Models\Docente;
 use Illuminate\Http\Request;
+use App\Models\PerfilDocente;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class PerfilDocenteController extends Controller
 {
@@ -13,11 +17,9 @@ class PerfilDocenteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(PerfilDocente $perfil)
     {
-        $perfil = PerfilDocente::where('docente_id',$id)->first();
-
-        return view('ui.docentes.profile', [ 'perfil' => $perfil ]);
+        return view('admin.docentes.profile', [ 'perfil' => $perfil ]);
     }
 
     /**
@@ -26,9 +28,14 @@ class PerfilDocenteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(PerfilDocente $perfil)
+    public function edit(User $user)
     {
-        return view('ui.docentes.edit', [ 'perfil' => $perfil ]);
+        if($user->id === Auth::user()->id){
+            $docente = Docente::where('email', $user->email)->first();
+            $perfil = $docente->perfil;
+            return view('admin.docentes.edit', [ 'perfil' => $perfil ]);
+        }
+        abort(403, 'Usted no tiene permiso para acceder a esta pagina');
     }
 
     /**
@@ -40,32 +47,36 @@ class PerfilDocenteController extends Controller
      */
     public function update(Request $request, PerfilDocente $perfil)
     {
-        if($request->profesion == ''){
-            $request->validate([
-                'profesion' => 'required',
-                'biografia' => 'required',
-                'foto' => 'required|image|mimes:png,jpg,jpeg,gif|max:2048',
-                'curriculum' => 'required|mimes:pdf|max:5000'
-            ]);
+
+        if($request->hasFile('foto') || $request->hasFile('curriculum')){
+
             $perfil->profesion = $request->profesion;
             $perfil->biografia = $request->biografia;
             $perfil->website = $request->website;
 
-            if($request->hasFile('foto')){
+            if($request->file('foto')){
+                if($request->oldImagen){
+                    $pathOld = public_path() . '/storage/docentesAvatar/' . $request->oldImagen;
+                    File::delete($pathOld);
+                }
                 $path = 'storage/docentesAvatar';
                 $photo = $request->file('foto');
                 $namePhoto = time() . '.' . $photo->extension();
                 $photo->move(public_path($path), $namePhoto);
+                $perfil->foto = $namePhoto;
             }
-            $perfil->foto = $namePhoto;
-
-            if($request->hasFile('curriculum')){
+            if($request->file('curriculum')){
+                if($request->oldCurriculum){
+                    $pathOld = public_path() . '/storage/docentesCurriculum/' . $request->oldCurriculum;
+                    File::delete($pathOld);
+                }
                 $path = 'storage/docentesCurriculum';
                 $file = $request->file('curriculum');
                 $nameFile = time() . '.' . $file->extension();
                 $file->move(public_path($path), $nameFile);
+                $perfil->curriculum = $nameFile;
             }
-            $perfil->curriculum = $nameFile;
+
             $perfil->save();
         }else{
             $perfil->profesion = $request->profesion;
@@ -74,7 +85,6 @@ class PerfilDocenteController extends Controller
             $perfil->save();
         }
 
-
-        return redirect()->route('docentes.profile.show', 4);
+        return redirect()->route('docente.perfil.show', $perfil->id)->with('message', 'Perfil Actualizado');
     }
 }

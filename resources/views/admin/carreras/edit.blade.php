@@ -14,16 +14,11 @@
                 <div class="mt-4">
                     <x-jet-label for="titulo" value="{{ __('Descripción') }}" />
                     <div class="rounded-md shadow-sm">
-                        <div class="mt-1 bg-white">
-                            <div class="body-content" wire:ignore>
-                                <trix-editor
-                                    class="trix-content"
-                                    x-ref="trix"
-                                    input="descripcion"
-                                ></trix-editor>
-                                <input type="hidden" name="descripcion" id="descripcion" value="{{$carrera->descripcion}}">
-                            </div>
-                        </div>
+                        <input type="hidden" name="descripcion" id="descripcion" value="{{$carrera->descripcion}}">
+                        <trix-editor
+                            class="trix-content trix"
+                            input="descripcion"
+                        ></trix-editor>
                     </div>
                     <x-jet-input-error for="descripcion" class="mt-2" />
                 </div>

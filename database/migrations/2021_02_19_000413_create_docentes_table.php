@@ -15,7 +15,7 @@ class CreateDocentesTable extends Migration
     {
         Schema::create('docentes', function (Blueprint $table) {
             $table->id();
-            $table->integer('carnet')->length(15);
+            $table->integer('carnet')->length(15)->unique();
             $table->string('expedido', 2);
             $table->string('nombre',50);
             $table->string('paterno',50);

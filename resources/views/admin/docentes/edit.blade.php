@@ -1,11 +1,10 @@
 <x-app-layout>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-5">
+        <div class="w-full">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6">
                     <h1 class="text-2xl text-center uppercase font-bold">Actualizar perfil</h1>
-                    <form action="{{ route('teacher.profile.update', $perfil) }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('docente.perfil.update', $perfil) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mt-4">
@@ -40,9 +39,12 @@
                         <div class="mt-4">
                             <div class="flex flex-col sm:flex-row">
                                 <figure class="flex-none mx-auto sm:-mx-0 mb-5 sm:mr-10">
-                                    <img src="{{ $perfil->foto == '' ? asset('images/profile-picture.png') : Storage::url('teachersAvatar/'. $perfil->foto)}}" alt="{{$perfil->docente->nombre}}"
+                                    <img src="{{ $perfil->foto == '' ? asset('images/profile-picture.png') : Storage::url('docentesAvatar/'. $perfil->foto)}}" alt="{{$perfil->docente->nombre}}"
                                         class="rounded-full w-40 h-40 shadow-md ring-2 ring-gray-400" id="image">
                                 </figure>
+                                @if ($perfil->foto != '')
+                                    <input type="hidden" name="oldImagen" value="{{$perfil->foto}}">
+                                @endif
                                 <div class="flex-grow">
                                     <x-jet-label for="foto" value="{{ __('Foto') }}" />
                                     <x-jet-input type="file" name="foto" class="mt-1 block w-full" id="foto" accept="image/*" />
@@ -61,6 +63,7 @@
                                             <img src="{{ asset('images/pdf-icon.png') }}" alt="" class="h-20 w-30 ml-7">
                                         </a>
                                         <p class="text-center ml-2 font-bold">Curriculum actual</p>
+                                        <input type="hidden" name="oldCurriculum" value="{{$perfil->curriculum}}">
                                     </div>
                                 @endif
                                 <div class="flex-grow">

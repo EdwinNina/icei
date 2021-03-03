@@ -11,6 +11,8 @@ use Livewire\WithPagination;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\User;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class EstudianteComponent extends Component
 {
@@ -20,11 +22,14 @@ class EstudianteComponent extends Component
     public $modalFormVisible = false;
     public $showModalDelete = false;
     public $modalShowVisible = false;
+    public $modalFormUserVisible = false;
     public $search;
     public $opcion = 'listado';
     public $carnet, $expedido, $nombre, $paterno, $materno, $email, $celular, $estudianteId, $codigo, $excel;
     public $grado, $profesion, $carrera, $universidad;
+    public $userEmail, $userPassword, $userName;
     public $nombreBotonCarga = 'Subir';
+    public $password = true;
     public $expedidos = ['CH' => 'CH', 'LP' => 'LP', 'CB' => 'CB', 'OR' => 'OR', 'PT' => 'PT',
     'TJ' => 'TJ', 'SC' => 'SC', 'BN' => 'BN', 'PD' => 'PD'];
     public $grados = ['estudiante' => 'Estudiante', 'tecnico superior' => 'Técnico superior', 'licenciado' => 'Licenciado',
@@ -189,17 +194,57 @@ class EstudianteComponent extends Component
         $this->materno = '';
         $this->celular = '';
         $this->email = '';
+        $this->userName = '';
+        $this->userPassword = '';
+        $this->userEmail = '';
     }
 
     public function import(){
+
+        try {
+            $this->validate([
+                'excel' => 'required|file|mimes:xlsx,xlsm,xlsb,xltx'
+            ]);
+            $this->nombreBotonCarga = 'Subiendo...';
+            Excel::import(new EstudiantesImport, $this->excel);
+            $this->closeModal();
+            $this->nombreBotonCarga = 'Subir';
+            $this->emit('messageSuccess');
+        } catch (ValidationException $e) {
+            $failures = $e->failures();
+            session()->flash('failures', $failures);
+            return redirect()->route('admin.estudiante.index');
+        }
+    }
+
+    public function openModalUser(Estudiante $estudiante){
+        $this->resetInputs();
+        $this->nombre = $estudiante->nombre;
+        $this->paterno = $estudiante->paterno;
+        $this->materno = $estudiante->materno;
+        $this->userName = ucwords(mb_strtolower($estudiante->nombre));
+        $this->userPassword = $estudiante->codigo;
+        $this->userEmail = $estudiante->email;
+        $this->modalFormUserVisible = true;
+    }
+    protected $validationAttributes = [
+        'userEmail' => 'correo electrónico'
+    ];
+    protected $messages = [
+        'userEmail.unique' => 'Ya existe el usuario con este correo electrónico',
+    ];
+    public function addUser(){
         $this->validate([
-            'excel' => 'required|file|mimes:xlsx,xlsm,xlsb,xltx'
+            'userEmail' => Rule::unique('users','email'),
         ]);
-        $this->nombreBotonCarga = 'Subiendo...';
-        Excel::import(new EstudiantesImport, $this->excel);
-        $this->closeModal();
-        $this->nombreBotonCarga = 'Subir';
-        $this->emit('messageSuccess');
-        return redirect()->route('estudiante.index');
+
+        User::create([
+            'name' => $this->userName,
+            'email' => $this->userEmail,
+            'password' => bcrypt($this->userPassword)
+        ])->assignRole('Estudiante');
+        $this->resetInputs();
+        $this->modalFormUserVisible = false;
+        $this->emit('customMessage', 'Usuario creado satisfactoriamente');
     }
 }

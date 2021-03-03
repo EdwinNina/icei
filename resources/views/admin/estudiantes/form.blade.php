@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <div class="mt-4 flex justify-end">
-                    <x-back-button href="{{ route('estudiante.index') }}" class="mr-2">Volver</x-back-button>
+                    <x-back-button href="{{ route('admin.estudiante.index') }}" class="mr-2">Volver</x-back-button>
                     @if ($estudianteId)
                         <x-jet-button type="button" wire:click="update()">Guardar</x-jet-button>
                     @else

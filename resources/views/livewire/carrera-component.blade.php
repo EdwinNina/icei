@@ -30,7 +30,7 @@
                                         <div class="text-sm text-gray-900">{{ $item->titulo }}</div>
                                     </td>
                                     <td class="table-td">
-                                        <div class="text-sm text-gray-900">{{ $item->cargaHoraria }} horas academicas</div>
+                                        <div class="text-sm text-gray-900">{{ $item->cargaHoraria }} horas</div>
                                     </td>
                                     <td class="table-td">
                                         <a href="{{ Storage::url('carreraPortadas/' . $item->portada) }}" data-lightbox="image-1">

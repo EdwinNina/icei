@@ -32762,6 +32762,26 @@ select {
   display: none !important;
 }
 
+.trix ul {
+  list-style-type: disc;
+  padding-left: 2.5rem;
+}
+
+.trix ol {
+  list-style-type: decimal;
+  padding-left: 2.5rem;
+}
+
+ul{
+  list-style-type: disc;
+  padding-left: 2.5rem;
+}
+
+ol {
+  list-style-type: decimal;
+  padding-left: 2.5rem;
+}
+
 .btn{
   border-color: transparent;
   border-radius: 0.375rem;

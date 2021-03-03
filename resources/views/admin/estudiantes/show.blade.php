@@ -9,6 +9,7 @@
         <p>Cédula de identidad: {{$carnet}} {{$expedido}}</p>
         <p>Correo electrónico: {{$email}}</p>
         <p>Celular: {{$celular}}</p>
+        <p>Codigo de estudiante: {{$codigo}}</p>
         <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200 my-3">Datos Académicos</h2>
         <p>Grado: {{$grado}}</p>
         <p>Profesión: {{$profesion}}</p>
@@ -17,6 +18,6 @@
     </x-slot>
 
     <x-slot name="footer">
-        <a href="{{ route('estudiante.index') }}" class="btn btn-dark mr-2 mb-2">Volver</a>
+        <x-jet-secondary-button wire:click="$set('modalShowVisible',false)" >Volver</x-jet-secondary-button>
     </x-slot>
 </x-jet-dialog-modal>

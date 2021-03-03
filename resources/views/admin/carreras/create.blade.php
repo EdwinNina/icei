@@ -10,18 +10,13 @@
                     <x-jet-input-error for="titulo" class="mt-2" value="{{ old('titulo') }}"/>
                 </div>
                 <div class="mt-4">
-                    <x-required-label for="descripcion" value="Desccripción" />
+                    <x-required-label for="descripcion" value="Descripción" />
                     <div class="rounded-md shadow-sm">
-                        <div class="mt-1 bg-white">
-                            <div class="body-content" wire:ignore>
-                                <trix-editor
-                                    class="trix-content"
-                                    x-ref="trix"
-                                    input="descripcion"
-                                    ></trix-editor>
-                                <input type="hidden" name="descripcion" id="descripcion" value="{{ old('descripcion') }}">
-                            </div>
-                        </div>
+                        <input type="hidden" name="descripcion" id="descripcion">
+                        <trix-editor
+                            class="trix-content trix"
+                            input="descripcion"
+                        ></trix-editor>
                     </div>
                     <x-jet-input-error for="descripcion" class="mt-2" />
                 </div>
@@ -50,8 +45,8 @@
                 <div class="mt-4">
                     <div class="flex flex-col sm:flex-row">
                         <figure class="flex-none mx-auto sm:-mx-0 mb-5 sm:mr-10">
-                            <img src="http://www.dentalmayorga.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.png"
-                                    class="rounded w-56 h-32 shadow-md border-indigo-300 border" id="image">
+                            <img src="{{asset('images/placeholder.png')}}"
+                                    class="rounded w-56 h-32 shadow-md border-gray-300 border" id="image">
                         </figure>
                         <div class="flex-grow">
                             <x-jet-label for="portada" value="{{ __('Portada del curso') }}" />
@@ -71,22 +66,22 @@
                     <x-jet-input-error for="docente_id" class="mt-2" />
                 </div>
                 <div class="flex justify-end mt-4">
-                    <x-back-button href="{{ route('estudiante.index') }}" class="mr-2">Volver</x-back-button>
+                    <x-back-button href="{{ route('admin.carreras.index') }}" class="mr-2">Volver</x-back-button>
                     <x-jet-danger-button type="submit">Registrar</x-jet-danger-button>
                 </div>
             </form>
         </div>
     </div>
-<script>
-    const inputFile = document.getElementById('portada');
+    <script>
+        const inputFile = document.getElementById('portada');
 
-    inputFile.addEventListener('change', e => {
-        let file = e.target.files[0];
-        let reader = new FileReader();
-        reader.onload = event => {
-            document.getElementById('image').setAttribute('src', event.target.result);
-        }
-        reader.readAsDataURL(file);
-    });
-</script>
+        inputFile.addEventListener('change', e => {
+            let file = e.target.files[0];
+            let reader = new FileReader();
+            reader.onload = event => {
+                document.getElementById('image').setAttribute('src', event.target.result);
+            }
+            reader.readAsDataURL(file);
+        });
+    </script>
 </x-app-layout>

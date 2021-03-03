@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\User;
 use App\Models\Docente;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use Illuminate\Validation\Rule;
 
@@ -15,9 +17,11 @@ class DocenteComponent extends Component
     public $showModalDelete = false;
     public $search;
     public $carnet, $nombre, $paterno, $materno, $email, $celular, $expedido, $docenteId;
+    public $modalFormUserVisible = false;
     public $expedidos = ['CH' => 'CH', 'LP' => 'LP', 'CB' => 'CB', 'OR' => 'OR', 'PT' => 'PT',
     'TJ' => 'TJ', 'SC' => 'SC', 'BN' => 'BN', 'PD' => 'PD'];
-
+    public $userEmail, $userPassword, $userName;
+    public $password = true;
 
     public function mount() {
         $this->resetPage();
@@ -33,6 +37,7 @@ class DocenteComponent extends Component
 
         return view('livewire.docente-component', ['docentes' => $docentes]);
     }
+
 
     public function create(){
         $this->resetInputs();
@@ -124,6 +129,50 @@ class DocenteComponent extends Component
         $this->materno = '';
         $this->celular = '';
         $this->email = '';
+        $this->userName = '';
+        $this->userPassword = '';
+        $this->userEmail = '';
     }
 
+    function createCode($paterno, $materno, $nombre, $carnet){
+        $codigo = Str::substr($paterno, 0, 1) . '' . Str::substr($materno, 0, 1) . '' . Str::substr($nombre, 0, 1) . '' . $carnet;
+        return $codigo;
+    }
+
+    public function openModalUser(Docente $docente){
+        $this->resetInputs();
+        $this->resetValidation();
+        $codigo = Str::substr($docente->paterno, 0, 1).''.Str::substr($docente->materno, 0, 1).''.Str::substr($docente->nombre, 0, 1) . '' . $docente->carnet;
+        $this->nombre = $docente->nombre;
+        $this->paterno = $docente->paterno;
+        $this->materno = $docente->materno;
+        $this->userName = ucwords(mb_strtolower($docente->nombre));
+        $this->userPassword = $codigo;
+        $this->userEmail = $docente->email;
+        $this->modalFormUserVisible = true;
+    }
+
+    protected $validationAttributes = [
+        'userEmail' => 'correo electrónico'
+    ];
+
+    protected $messages = [
+        'userEmail.unique' => 'Ya existe el usuario con este correo electrónico',
+    ];
+
+    public function addUser(){
+        $this->validate([
+            'userEmail' => Rule::unique('users','email'),
+        ]);
+
+        User::create([
+            'name' => $this->userName,
+            'email' => $this->userEmail,
+            'password' => bcrypt($this->userPassword)
+        ])->assignRole('Docente');
+
+        $this->resetInputs();
+        $this->emit('customMessage', 'Usuario creado satisfactoriamente');
+        $this->modalFormUserVisible = false;
+    }
 }

@@ -57,7 +57,7 @@
                 <div class="flex flex-col sm:flex-row">
                     <figure class="flex-none mx-auto sm:-mx-0 mb-5 sm:mr-10">
                         <img src="{{ asset('images/placeholder.png')}}"
-                            class="rounded w-56 h-32 shadow-md border-indigo-300 border" id="image">
+                            class="rounded w-56 h-32 shadow-md border-gray-300 border" id="image">
                     </figure>
                     <div class="flex-grow">
                         <x-required-label for="portada" value="Portada del curso" />

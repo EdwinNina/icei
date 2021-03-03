@@ -1,13 +1,18 @@
 <x-app-layout>
-    @section('breads')
-        <div class="-intro-x breadcrumb mr-auto hidden sm:flex">
-            <a href="">Modulo</a> <i data-feather="chevron-right" class="breadcrumb__icon"></i>
-            <a href="" class="breadcrumb--active">Estudiantes</a>
-        </div>
-    @endsection
+    @if (session('failures'))
+    <div class="bg-red-500 border-l-4 px-5 py-2 rounded mb-3 border-red-600">
+        <ul class="list-none">
+            @foreach (session('failures') as $failure)
+                @foreach ($failure->errors() as $error)
+                    <li class="text-white text-center">{{ $error }}</li>
+                @endforeach
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <div class="w-full">
-        <div class="bg-white overflow-hidden shadow-lg sm:rounded-lg">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             @livewire('estudiante-component')
         </div>
     </div>

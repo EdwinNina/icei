@@ -20,14 +20,11 @@
                 <x-jet-label for="temario" value="{{ __('Temario') }}" />
                 <div class="rounded-md shadow-sm">
                     <div class="mt-1 bg-white">
-                        <div class="body-content" wire:ignore>
-                            <trix-editor
-                                class="trix-content"
-                                x-ref="trix"
-                                input="temario"
-                            ></trix-editor>
-                            <input type="hidden" name="temario" id="temario" value="{{$modulo->temario}}">
-                        </div>
+                        <input type="hidden" name="temario" id="temario" value="{{$modulo->temario}}">
+                        <trix-editor
+                            class="trix-content trix"
+                            input="temario"
+                        ></trix-editor>
                     </div>
                 </div>
                 <x-jet-input-error for="temario" class="mt-2" />

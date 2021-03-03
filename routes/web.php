@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InicioController;
+use App\Http\Controllers\PerfilDocenteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [InicioController::class, 'index'])->name('inicio');
+Route::get('/cursos', [InicioController::class, 'cursos'])->name('cursos');
+Route::get('/cursos/{curso}', [InicioController::class, 'detalleCurso'])->name('detalleCurso');
+
+Route::get('/perfil/{perfil}', [PerfilDocenteController::class,'show'])->name('docente.perfil.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

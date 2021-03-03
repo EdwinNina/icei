@@ -7,7 +7,7 @@
     </div>
 
     @include('admin.docentes.form')
-
+    @include('components.form-user')
     @include('components.delete-modal')
 
     <div class="flex flex-col my-4 px-4 sm:px-6">
@@ -52,6 +52,10 @@
 
                                         <a href="#" wire:click.prevent="edit({{$item->id}})">
                                             @include('components.edit-icon')
+                                        </a>
+
+                                        <a href="" wire:click.prevent="openModalUser({{$item}})">
+                                            @include('components.user-icon')
                                         </a>
                                         <a href="#" wire:click.prevent="openDelete({{$item->id}})">
                                             @include('components.delete-icon')

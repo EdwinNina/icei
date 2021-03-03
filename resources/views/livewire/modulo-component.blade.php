@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="{{ asset('css/lightbox.min.css') }}">
 @endsection
 
-<div class="p-6">
+<div class="p-2">
     <div class="flex items-center justify-between px-4 py-3 sm:px-6">
         @include('components.search')
         <a href="{{ route('admin.modulo.create') }}" class="btn focus:shadow-outline-gray bg-gray-800 focus:border-gray-900 hover:bg-gray-700 active:bg-gray-900">{{ __('Crear') }}</a>
@@ -22,7 +22,6 @@
                             <th scope="col" class="table-th">Titulo</th>
                             <th scope="col" class="table-th">Carga Horaria</th>
                             <th scope="col" class="table-th">Curso</th>
-                            <th scope="col" class="table-th">Portada</th>
                             <th scope="col" class="table-thr">Actions</th>
                         </tr>
                         </thead>
@@ -40,13 +39,6 @@
                                     </td>
                                     <td class="table-td w-48">
                                         <div class="text-sm text-gray-900">{{ $item->carrera->titulo }}</div>
-                                    </td>
-                                    <td class="table-td w-16 text-center">
-                                        <a href="{{ Storage::url('moduloPortadas/' . $item->portada) }}" data-lightbox="image-1">
-                                            <img src="{{ Storage::url('moduloPortadas/' . $item->portada) }}"
-                                                class="h-10 w-10 rounded-full ring-2 ring-gray-400 object-cover object-center">
-
-                                        </a>
                                     </td>
                                     <td class="table-td text-right text-sm font-medium w-24">
                                         <div class="flex items-center justify-center">

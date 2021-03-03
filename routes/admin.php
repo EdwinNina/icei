@@ -18,19 +18,19 @@ use App\Http\Controllers\PerfilDocenteController;
 
 Route::get('categorias', function(){
     return view('admin.categorias.index');
-})->name('categoria.index');
+})->name('admin.categoria.index');
 
 Route::get('horarios', function(){
     return view('admin.horarios.index');
-})->name('horario.index');
+})->name('admin.horario.index');
 
 Route::get('estudiantes', function(){
     return view('admin.estudiantes.index');
-})->name('estudiante.index');
+})->name('admin.estudiante.index');
 
 Route::get('docentes', function(){
     return view('admin.docentes.index');
-})->name('docente.index');
+})->name('admin.docente.index');
 
 Route::get('carreras', function(){
     return view('admin.carreras.index');
@@ -40,15 +40,21 @@ Route::get('modulos', function(){
     return view('admin.modulos.index');
 })->name('admin.modulo.index');
 
-Route::get('/perfil/{docente}', [PerfilDocenteController::class,'show'])->name('docente.perfil.show');
-Route::get('/perfil/{perfil}/edit', [PerfilDocenteController::class,'edit'])->name('docente.perfil.edit');
+Route::get('tipo-pagos', function(){
+    return view('admin.tipoPagos.index');
+})->name('admin.tipoPagos.index');
+
+Route::get('usuarios', function(){
+    return view('admin.usuarios.index');
+})->name('admin.usuarios.index');
+
+Route::get('/perfil/{user}/edit', [PerfilDocenteController::class,'edit'])->name('docente.perfil.edit');
 Route::put('/perfil/{perfil}',[PerfilDocenteController::class,'update'])->name('docente.perfil.update');
 
 Route::get('/carreras/create', [CarreraController::class,'create'])->name('admin.carrera.create');
 Route::post('/carreras', [CarreraController::class,'store'])->name('admin.carrera.store');
 Route::get('/carreras/{carrera}/edit', [CarreraController::class,'edit'])->name('admin.carrera.edit');
 Route::put('/carreras/{carrera}', [CarreraController::class,'update'])->name('admin.carrera.update');
-Route::get('/carreras/{carrera}', [CarreraController::class,'show'])->name('admin.carrera.show');
 
 Route::get('/modulo/create', [ModuloController::class,'create'])->name('admin.modulo.create');
 Route::post('/modulo', [ModuloController::class,'store'])->name('admin.modulo.store');
