@@ -27,4 +27,10 @@ class Carrera extends Model
     {
         return $this->hasMany(Modulo::class);
     }
+
+
+    public function planificacion()
+    {
+        return $this->hasOne(Planificaciones::class);
+    }
 }

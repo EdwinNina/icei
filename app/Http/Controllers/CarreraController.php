@@ -58,12 +58,7 @@ class CarreraController extends Controller
         $subject->portada = $namePhoto;
         $subject->save();
 
-        $notification = array(
-            'message' => 'Post created successfully!',
-            'alert-type' => 'success'
-        );
-
-        return redirect()->route('admin.carrera.index')->with($notification);
+        return redirect()->route('admin.carreras.index');
     }
 
     /**

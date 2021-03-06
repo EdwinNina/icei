@@ -2,7 +2,7 @@
     <div class="py-2">
         <div class="w-full bg-white shadow-md rounded-md py-5 px-8">
             <h1 class="text-gray-500 uppercase text-2xl mt-5 text-center">Registrar Carrera</h1>
-            <form action="{{ route('admin.carrera.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('admin.carreras.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="mt-4">
                     <x-required-label for="titulo" value="Titulo" />

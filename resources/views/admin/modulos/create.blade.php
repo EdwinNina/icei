@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="w-full bg-white shadow-md rounded-md py-5 px-8">
         <h1 class="text-gray-500 uppercase text-2xl mt-5 text-center">Registrar Modulo de Carrera</h1>
-        <form action="{{ route('admin.modulo.store') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('admin.modulos.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="mt-4">
                 <x-required-label for="version" value="Version" />

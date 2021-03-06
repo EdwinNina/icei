@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\CarreraController;
+use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\PerfilDocenteController;
 
 /*
@@ -34,7 +35,7 @@ Route::get('docentes', function(){
 
 Route::get('carreras', function(){
     return view('admin.carreras.index');
-})->name('admin.carrera.index');
+})->name('admin.carreras.index');
 
 Route::get('modulos', function(){
     return view('admin.modulos.index');
@@ -48,15 +49,28 @@ Route::get('usuarios', function(){
     return view('admin.usuarios.index');
 })->name('admin.usuarios.index');
 
+Route::get('planificaciones', function(){
+    return view('admin.planificacionCarrera.index');
+})->name('admin.planificacionCarrera.index');
+
+Route::get('inscripciones', function(){
+    return view('admin.inscripciones.index');
+})->name('admin.inscripciones.index');
+
 Route::get('/perfil/{user}/edit', [PerfilDocenteController::class,'edit'])->name('docente.perfil.edit');
 Route::put('/perfil/{perfil}',[PerfilDocenteController::class,'update'])->name('docente.perfil.update');
 
-Route::get('/carreras/create', [CarreraController::class,'create'])->name('admin.carrera.create');
-Route::post('/carreras', [CarreraController::class,'store'])->name('admin.carrera.store');
-Route::get('/carreras/{carrera}/edit', [CarreraController::class,'edit'])->name('admin.carrera.edit');
-Route::put('/carreras/{carrera}', [CarreraController::class,'update'])->name('admin.carrera.update');
+Route::get('/carreras/create', [CarreraController::class,'create'])->name('admin.carreras.create');
+Route::post('/carreras', [CarreraController::class,'store'])->name('admin.carreras.store');
+Route::get('/carreras/{carrera}/edit', [CarreraController::class,'edit'])->name('admin.carreras.edit');
+Route::put('/carreras/{carrera}', [CarreraController::class,'update'])->name('admin.carreras.update');
 
-Route::get('/modulo/create', [ModuloController::class,'create'])->name('admin.modulo.create');
-Route::post('/modulo', [ModuloController::class,'store'])->name('admin.modulo.store');
-Route::get('/modulo/{modulo}/edit', [ModuloController::class,'edit'])->name('admin.modulo.edit');
-Route::put('/modulo/{modulo}', [ModuloController::class,'update'])->name('admin.modulo.update');
+Route::get('/modulo/create', [ModuloController::class,'create'])->name('admin.modulos.create');
+Route::post('/modulo', [ModuloController::class,'store'])->name('admin.modulos.store');
+Route::get('/modulo/{modulo}/edit', [ModuloController::class,'edit'])->name('admin.modulos.edit');
+Route::put('/modulo/{modulo}', [ModuloController::class,'update'])->name('admin.modulos.update');
+
+Route::get('/inscripciones/estudiante/{estudiante}', [InscripcionController::class,'create'])->name('admin.inscripciones.create');
+Route::post('/inscripciones', [InscripcionController::class,'store'])->name('admin.inscripciones.store');
+Route::get('/inscripciones/{inscripcion}/edit', [InscripcionController::class,'edit'])->name('admin.inscripciones.edit');
+Route::put('/inscripciones/{inscripcion}', [InscripcionController::class,'update'])->name('admin.inscripciones.update');

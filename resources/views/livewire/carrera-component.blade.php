@@ -4,7 +4,7 @@
 <div class="p-6">
     <div class="flex items-center justify-between px-4 py-3 sm:px-6">
         @include('components.search')
-        <a href="{{ route('admin.carrera.create') }}" class="btn bg-gray-800 focus:border-gray-900 hover:bg-gray-700">Nuevo</a>
+        <a href="{{ route('admin.carreras.create') }}" class="btn bg-gray-800 focus:border-gray-900 hover:bg-gray-700">Nuevo</a>
     </div>
         @include('admin.carreras.show')
         @include('components.delete-modal')
@@ -43,7 +43,7 @@
                                     </td>
                                     <td class="table-td text-right text-sm font-medium">
                                         <div class="flex items-center justify-center">
-                                            <a href="{{ route('admin.carrera.edit', $item) }}">
+                                            <a href="{{ route('admin.carreras.edit', $item) }}">
                                                 @include('components.edit-icon')
                                             </a>
                                             <a href="#" wire:click.prevent="openModalShow({{$item}})">
