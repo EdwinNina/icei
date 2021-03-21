@@ -14,6 +14,7 @@ class HorarioComponent extends Component
     public $modalFormVisible = false;
     public $showModalDelete = false;
     public $search;
+    public $estadoRegistro = 0,  $titulo, $mensaje;
     public $dias, $hora_inicio, $hora_fin, $turno, $horarioId;
 
     public function mount() {
@@ -88,6 +89,8 @@ class HorarioComponent extends Component
     public function openDelete($id){
         $this->horarioId = $id;
         $this->showModalDelete = true;
+        $this->titulo = 'Eliminar';
+        $this->mensaje = '¿Desea eliminar este registro?';
     }
 
     public function delete(){

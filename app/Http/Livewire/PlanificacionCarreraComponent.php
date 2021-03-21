@@ -2,10 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Carrera;
-use App\Models\Planificaciones;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\PlanificacionCarrera;
+use App\Models\PlanificacionModulo;
 
 class PlanificacionCarreraComponent extends Component
 {
@@ -14,8 +14,8 @@ class PlanificacionCarreraComponent extends Component
     public $modalFormVisible = false;
     public $showModalDelete = false;
     public $search;
-    public $codigo, $modalidad, $costo_carrera, $costo_modulo, $gestion, $fecha_inicio, $fecha_fin, $carrera_id, $planificacionId;
-    public $modalidades = ['presencial' => 'Presencial','semi-presencial' => 'Semi presencial','virtual' =>'Virtual'];
+    public $estadoRegistro = 0, $titulo, $mensaje;
+    public $planificacionId;
 
     public function mount() {
         $this->resetPage();
@@ -23,113 +23,44 @@ class PlanificacionCarreraComponent extends Component
 
     public function render()
     {
-        $carreras = Carrera::select('titulo','id')->get();
-        $planificaciones = Planificaciones::where('modalidad','like', '%' . $this->search . '%')
-                        ->where('gestion','like', '%' . $this->search . '%')
-                        ->paginate(10);
-        return view('livewire.planificacion-carrera-component',['planificaciones' => $planificaciones, 'carreras' => $carreras]);
+        $planificaciones = PlanificacionCarrera::simplePaginate();
+
+        return view('livewire.planificacion-carrera-component',['planificaciones' => $planificaciones]);
     }
 
-    public function create(){
-        $this->resetInputs();
-        $this->resetValidation();
-        $this->gestion = date('Y');
-        $this->codigo = 'PLANC-'.$this->gestion;
-        $this->modalFormVisible = true;
-    }
 
-    public function closeModal(){
-        $this->modalFormVisible = false;
-    }
-
-    public function rules(){
-        return [
-            'codigo' => 'required',
-            'modalidad' => 'required',
-            'costo_carrera' => 'required',
-            'costo_modulo' => 'required',
-            'gestion' => 'required',
-            'fecha_inicio' => 'required',
-            'fecha_fin' => 'required',
-            'carrera_id' => 'required'
-        ];
-    }
-
-    public function save(){
-        $this->validate();
-        $planificacion = Planificaciones::create([
-            'codigo' => $this->codigo,
-            'modalidad' => $this->modalidad,
-            'costo_carrera' => $this->costo_carrera,
-            'costo_modulo' => $this->costo_modulo,
-            'gestion' => $this->gestion,
-            'fecha_inicio' => $this->fecha_inicio,
-            'fecha_fin' => $this->fecha_fin,
-            'carrera_id' => $this->carrera_id
-        ]);
-        $this->resetInputs();
-        $this->closeModal();
-        if($planificacion){
-            $this->emit('messageSuccess','create');
-        }else{
-            $this->emit('messageFailed');
-        }
-    }
-
-    public function edit(Planificaciones $planificacion){
-        $this->resetInputs();
-        $this->resetValidation();
-        $this->planificacionId = $planificacion->id;
-        $this->modalidad = $planificacion->modalidad;
-        $this->codigo = $planificacion->codigo;
-        $this->costo_carrera = $planificacion->costo_carrera;
-        $this->costo_modulo = $planificacion->costo_modulo;
-        $this->gestion = $planificacion->gestion;
-        $this->fecha_inicio = $planificacion->fecha_inicio;
-        $this->fecha_fin = $planificacion->fecha_fin;
-        $this->carrera_id = $planificacion->carrera_id;
-        $this->modalFormVisible = true;
-    }
-
-    public function update(){
-        $this->validate();
-        Planificaciones::where('id', $this->planificacionId)->update([
-            'codigo' => $this->codigo,
-            'modalidad' => $this->modalidad,
-            'costo_carrera' => $this->costo_carrera,
-            'costo_modulo' => $this->costo_modulo,
-            'gestion' => $this->gestion,
-            'fecha_inicio' => $this->fecha_inicio,
-            'fecha_fin' => $this->fecha_fin,
-            'carrera_id' => $this->carrera_id,
-        ]);
-        $this->emit('messageSuccess','update');
-        $this->resetInputs();
-        $this->closeModal();
+    public function enableItem($id){
+        $this->planificacionId = $id;
+        $this->showModalDelete = true;
+        $this->estadoRegistro = 1;
+        $this->titulo = 'Habilitación del registro';
+        $this->mensaje = '¿Desea habilitar nuevamente el registro?';
     }
 
     public function openDelete($id){
         $this->planificacionId = $id;
         $this->showModalDelete = true;
+        $this->estadoRegistro = 0;
+        $this->titulo = 'Deshabilitar';
+        $existe = PlanificacionModulo::where('planificacion_carrera_id', $this->planificacionId)->first();
+        if ($existe) {
+            $this->mensaje = 'Estas seguro de volver inactivo esta planificacion porque ya contiene planificaciones de los módulos';
+        }else{
+            $this->mensaje = 'Estas seguro de volver inactivo esta planificacion? Aún no cuenta con planificaciones de los módulos';
+        }
     }
 
     public function delete(){
-        Planificaciones::where('id', $this->planificacionId)->delete();
+        PlanificacionCarrera::where('id', $this->planificacionId)->update(['estado' => 0]);
         $this->showModalDelete = false;
         $this->resetPage();
         $this->emit('deleteItem');
     }
 
-    public function resetInputs(){
-        $this->planificacionId = '';
-        $this->codigo = '';
-        $this->modalidad = '';
-        $this->costo_carrera = '';
-        $this->costo_modulo = '';
-        $this->gestion = '';
-        $this->fecha_inicio = '';
-        $this->fecha_fin = '';
-        $this->carrera_id = '';
+    public function enable(){
+        PlanificacionCarrera::where('id', $this->planificacionId)->update(['estado' => 1]);
+        $this->showModalDelete = false;
+        $this->resetPage();
+        $this->emit('deleteItem');
     }
 }
-

@@ -27,7 +27,6 @@ class Docente extends Model
 
     public function carreras()
     {
-        return $this->hasMany(Carrera::class);
+        return $this->belongsToMany(Carrera::class);
     }
-
 }

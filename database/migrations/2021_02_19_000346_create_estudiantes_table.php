@@ -17,6 +17,7 @@ class CreateEstudiantesTable extends Migration
             $table->id();
             $table->integer('carnet')->length(15)->unique();
             $table->string('expedido', 2);
+            $table->string('complemento',20)->nullable();
             $table->string('nombre',50);
             $table->string('paterno',50);
             $table->string('materno',50);

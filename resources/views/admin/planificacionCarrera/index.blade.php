@@ -1,7 +1,20 @@
-<x-app-layout>
-    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
-        <div class="bg-white w-full overflow-x-auto">
-            @livewire('planificacion-carrera-component')
+@extends('adminlte::page')
+
+@section('title', 'Planificacion de Carrera')
+
+@section('content')
+    <div>
+        <div class="w-full">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                @livewire('planificacion-carrera-component')
+            </div>
         </div>
     </div>
-</x-app-layout>
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="{{mix('css/app.css')}}">
+@stop
+@section('js')
+    <script src="{{ mix('js/app.js') }}"></script>
+@stop

@@ -13,8 +13,19 @@ class Estudiante extends Model
 
     protected $table = 'estudiantes';
 
+
     public function grado()
     {
         return $this->hasOne(GradoAcademico::class);
+    }
+
+    public function familiares()
+    {
+        return $this->hasOne(Familiar::class);
+    }
+
+    public function modulos()
+    {
+        return $this->belongsToMany(Modulo::class);
     }
 }

@@ -15,6 +15,7 @@ class CategoriaComponent extends Component
     public $modalFormVisible = false;
     public $showModalDelete = false;
     public $search;
+    public $estadoRegistro = 0;
     public $nombre, $slug, $categoriaId;
 
     public function mount() {
@@ -60,7 +61,7 @@ class CategoriaComponent extends Component
         $this->resetInputs();
         $this->closeModal();
         if($category){
-            $this->emit('messageSuccess');
+            $this->emit('messageSuccess','create');
         }else{
             $this->emit('messageFailed');
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use App\Models\Carrera;
 use App\Models\Docente;
 use Livewire\Component;
 use Illuminate\Support\Str;
@@ -16,12 +17,14 @@ class DocenteComponent extends Component
     public $modalFormVisible = false;
     public $showModalDelete = false;
     public $search;
+    public $estadoRegistro = 0, $titulo, $mensaje;
     public $carnet, $nombre, $paterno, $materno, $email, $celular, $expedido, $docenteId;
     public $modalFormUserVisible = false;
     public $expedidos = ['CH' => 'CH', 'LP' => 'LP', 'CB' => 'CB', 'OR' => 'OR', 'PT' => 'PT',
     'TJ' => 'TJ', 'SC' => 'SC', 'BN' => 'BN', 'PD' => 'PD'];
     public $userEmail, $userPassword, $userName;
     public $password = true;
+    public $docenteCarreras;
 
     public function mount() {
         $this->resetPage();
@@ -34,8 +37,8 @@ class DocenteComponent extends Component
                 ->orWhere('nombre','like', '%' . $this->search . '%')
                 ->orderBy('paterno','ASC')
                 ->paginate(5);
-
-        return view('livewire.docente-component', ['docentes' => $docentes]);
+        $carreras = Carrera::select('id','titulo')->get();
+        return view('livewire.docente-component', ['docentes' => $docentes, 'carreras' => $carreras]);
     }
 
 
@@ -112,6 +115,9 @@ class DocenteComponent extends Component
     public function openDelete($id){
         $this->docenteId = $id;
         $this->showModalDelete = true;
+        $this->titulo = 'Eliminar';
+        $this->showModalDelete = 'Esta seguro de eliminar';
+
     }
 
     public function delete(){
@@ -153,7 +159,7 @@ class DocenteComponent extends Component
     }
 
     protected $validationAttributes = [
-        'userEmail' => 'correo electrónico'
+        'userEmail' => 'correo electrónico',
     ];
 
     protected $messages = [

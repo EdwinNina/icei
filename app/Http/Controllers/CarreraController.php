@@ -19,9 +19,8 @@ class CarreraController extends Controller
     public function create()
     {
         $categorias = Categoria::select('nombre','id')->get();
-        $docentes = Docente::select('nombre','paterno','materno','id')->get();
 
-        return view('admin.carreras.create', compact('categorias','docentes'));
+        return view('admin.carreras.create', compact('categorias'));
     }
 
     /**
@@ -38,7 +37,6 @@ class CarreraController extends Controller
             'cargaHoraria' => 'required',
             'portada' => 'required|image|mimes:png,jpg,jpeg,gif|max:2048',
             'categoria_id' => 'required',
-            'docente_id' => 'required',
         ]);
 
         $subject = new Carrera();
@@ -47,7 +45,6 @@ class CarreraController extends Controller
         $subject->requisitos = $request->requisitos;
         $subject->cargaHoraria = $request->cargaHoraria;
         $subject->categoria_id = $request->categoria_id;
-        $subject->docente_id = $request->docente_id;
 
         if($request->hasFile('portada')){
             $path = 'storage/carreraPortadas';
@@ -81,9 +78,8 @@ class CarreraController extends Controller
     public function edit(Carrera $carrera)
     {
         $categorias = Categoria::select('nombre','id')->get();
-        $docentes = Docente::select('nombre','id')->get();
 
-        return view('admin.carreras.edit', compact('categorias','docentes', 'carrera'));
+        return view('admin.carreras.edit', compact('categorias','carrera'));
     }
 
     /**
@@ -103,7 +99,6 @@ class CarreraController extends Controller
                 'cargaHoraria' => 'required',
                 'portada' => 'required|image|mimes:png,jpg,jpeg,gif|max:2048',
                 'categoria_id' => 'required',
-                'docente_id' => 'required',
             ]);
 
             $path = public_path() . '/storage/carreraPortadas/' . $request->oldCover;
@@ -114,7 +109,6 @@ class CarreraController extends Controller
             $carrera->descripcion = $request->descripcion;
             $carrera->cargaHoraria = $request->cargaHoraria;
             $carrera->categoria_id = $request->categoria_id;
-            $carrera->docente_id = $request->docente_id;
 
             $path = 'storage/carreraPortadas';
             $photo = $request->file('portada');
@@ -128,9 +122,8 @@ class CarreraController extends Controller
             $carrera->descripcion = $request->descripcion;
             $carrera->cargaHoraria = $request->cargaHoraria;
             $carrera->categoria_id = $request->categoria_id;
-            $carrera->docente_id = $request->docente_id;
             $carrera->save();
         }
-        return redirect()->route('admin.carrera.index');
+        return redirect()->route('admin.carreras.index');
     }
 }

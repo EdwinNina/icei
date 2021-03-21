@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v5.12.1/css/pro.min.css">
         <link rel="stylesheet" href="{{ asset('css/plantilla.css') }}" />
         <link rel="stylesheet" href="{{ mix('css/app.css') }}" />
-
+        <link href="{{asset('css/select2.min.css')}}" rel="stylesheet" />
         @yield('styles')
         @livewireStyles
         <script src="{{ mix('js/app.js')}}" defer></script>
@@ -122,6 +122,8 @@
             </div>
     @stack('modals')
     @livewireScripts
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/select2.min.js')}}"></script>
     <script src="{{ asset('js/plantilla.js') }}"></script>
     <script>
         window.livewire.on('messageSuccess', value => {
@@ -146,9 +148,12 @@
         window.livewire.on('deleteItem', () => {
             toastr.success('Correcto', 'Registro eliminado correctamente');
         });
-
+        window.livewire.on('selectEstudiante', () => {
+            $('#estudiantes').select2({
+                placeholder: "Hola"
+            });
+        });
     </script>
     @yield('scripts')
-
   </body>
 </html>

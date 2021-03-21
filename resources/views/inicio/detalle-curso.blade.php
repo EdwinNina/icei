@@ -39,7 +39,7 @@
                                 <div class="bg-white shadow-xl rounded-lg overflow-hidden">
                                     <div class="bg-cover bg-center h-56 p-4" style="background-image: url({{Storage::url('moduloPortadas/' . $modulo->portada)}})">
                                     </div>
-                                    <div class="p-4 h-20">
+                                    <div class="p-4 h-28">
                                         <p class="uppercase text-xs tracking-wide font-bold text-gray-700">{{ $modulo->titulo }}</p>
                                         <p class="text-sm text-gray-900">Version: {{$modulo->version}}</p>
                                     </div>
@@ -50,18 +50,20 @@
                 </section>
                 <section class="col-span-3">
                     <div class="bg-white rounded shadow-md p-4">
-                        @if ($carrera->docente->perfil->profesion)
-                            <div class="flex items-center ">
-                                <img src="{{Storage::url('docentesAvatar/'. $carrera->docente->perfil->foto)}}" alt="{{$carrera->docente->nombre}}"
-                                class="h-14 w-14 ring-2 ring-gray-400 object-cover object-center rounded-full shadow-md">
-                                <div>
-                                    <p class="ml-3 font-bold text-gray-700">Docente: </p>
-                                    <p class="ml-3 font-bold text-gray-600">{{$carrera->docente->nombre}} {{$carrera->docente->paterno}} {{$carrera->docente->materno}}</p>
+                        @if ($carrera->docentes)
+                            @foreach ($carrera->docentes as $docente)
+                                <div class="flex items-center ">
+                                    <img src="{{Storage::url('docentesAvatar/'. $docente->perfil->foto)}}" alt="{{$docente->nombre}}"
+                                    class="h-14 w-14 ring-2 ring-gray-400 object-cover object-center rounded-full shadow-md">
+                                    <div>
+                                        <p class="ml-3 font-bold text-gray-700">Docente: </p>
+                                        <p class="ml-3 font-bold text-gray-600">{{$docente->nombre}} {{$docente->paterno}} {{$docente->materno}}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <a href="{{ route('docente.perfil.show', $carrera->docente->perfil->id) }}" class="btn mt-2 flex justify-center w-full bg-red-500 focus:border-red-600 hover:bg-red-600">
-                                Ver perfil
-                            </a>
+                                <a href="{{ route('docente.perfil.show', $docente->perfil->id) }}" class="btn mt-2 flex justify-center w-full bg-red-500 focus:border-red-600 hover:bg-red-600">
+                                    Ver perfil
+                                </a>
+                            @endforeach
                         @else
                             <p class="text-gray-400">El docente aún no registro su perfil </p>
                         @endif

@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="content">
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-2 gap-4 -mb-px">
             <section>
                 <img src="{{ Storage::url('moduloPortadas/'. $portada) }}" alt="{{$titulo}}"
                     class="w-full h-1/2 rounded shadow-sm mb-2">
@@ -12,7 +12,7 @@
                 <p class="mt-4"><span class="font-bold">Carga Horaria: </span> <span class="text-gray-700">{{$cargaHoraria}} horas academicas</span></p>
                 <p><span class="font-bold">Carrera: </span> <span class="text-gray-700">{{$carrera}}</span></p>
             </section>
-            <section class="overscroll-auto overflow-y-scroll max-h-96">
+            <section class="overscroll-auto overflow-y-scroll max-h-80">
                 <p><span class="font-bold">Temario: </span>
                     <span class="text-gray-700 text-xs list-disc">{!!$temario!!}</span>
                 </p>

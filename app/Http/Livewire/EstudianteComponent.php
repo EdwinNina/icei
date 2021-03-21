@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Imports\EstudiantesImport;
 use App\Models\Estudiante;
+use App\Models\Familiar;
 use App\Models\GradoAcademico;
 use Livewire\Component;
 use Illuminate\Support\Str;
@@ -24,10 +25,12 @@ class EstudianteComponent extends Component
     public $modalShowVisible = false;
     public $modalFormUserVisible = false;
     public $search;
+    public $estadoRegistro = 0, $titulo, $mensaje;
     public $opcion = 'listado';
-    public $carnet, $expedido, $nombre, $paterno, $materno, $email, $celular, $estudianteId, $codigo, $excel;
+    public $carnet, $expedido, $nombre, $paterno, $materno, $email, $celular, $estudianteId, $codigo, $excel, $complemento;
     public $grado, $profesion, $carrera, $universidad;
     public $userEmail, $userPassword, $userName;
+    public $nombreFamiliar,$paternoFamiliar,$maternoFamiliar,$celularFamiliar;
     public $nombreBotonCarga = 'Subir';
     public $password = true;
     public $expedidos = ['CH' => 'CH', 'LP' => 'LP', 'CB' => 'CB', 'OR' => 'OR', 'PT' => 'PT',
@@ -52,7 +55,10 @@ class EstudianteComponent extends Component
     }
 
     public function createCode(){
-        $iniciales = Str::substr($this->paterno, 0, 1) . '' . Str::substr($this->materno, 0, 1) . '' . Str::substr($this->nombre, 0, 1);
+        $paterno = trim($this->paterno);
+        $materno = trim($this->materno);
+        $nombre = trim($this->nombre);
+        $iniciales = Str::substr($paterno, 0, 1) . '' . Str::substr($materno, 0, 1) . '' . Str::substr($nombre, 0, 1);
         $this->codigo = $iniciales . '' . $this->carnet;
     }
 
@@ -98,27 +104,39 @@ class EstudianteComponent extends Component
             'grado' => 'required',
             'carrera' => 'required',
             'universidad' => 'required',
+            'nombreFamiliar' => 'required',
+            'paternoFamiliar' => 'required',
+            'maternoFamiliar' => 'required',
+            'celularFamiliar' => 'required',
         ];
     }
 
     public function save(){
         $this->validate();
         $estudiante = Estudiante::create([
-            'codigo' => $this->codigo,
-            'carnet' => $this->carnet,
-            'expedido' => $this->expedido,
-            'nombre' => $this->nombre,
-            'paterno' => $this->paterno,
-            'materno' => $this->materno,
-            'celular' => $this->celular,
-            'email' => $this->email,
+            'codigo' => trim($this->codigo),
+            'carnet' => trim($this->carnet),
+            'expedido' => trim($this->expedido),
+            'complemento' => trim($this->complemento),
+            'nombre' => trim($this->nombre),
+            'paterno' => trim($this->paterno),
+            'materno' => trim($this->materno),
+            'celular' => trim($this->celular),
+            'email' => trim( $this->email)
         ]);
         GradoAcademico::create([
             'estudiante_id' => $estudiante->id,
-            'grado' => $this->grado,
-            'carrera' => $this->carrera,
-            'profesion' => $this->profesion,
-            'universidad' => $this->universidad
+            'grado' => trim($this->grado),
+            'carrera' => trim($this->carrera),
+            'profesion' => trim($this->profesion),
+            'universidad' => trim($this->universidad)
+        ]);
+        Familiar::create([
+            'estudiante_id' => $estudiante->id,
+            'nombre' => trim($this->nombreFamiliar),
+            'paterno' => trim($this->paternoFamiliar),
+            'materno' => trim($this->maternoFamiliar),
+            'celular' => trim($this->celularFamiliar)
         ]);
 
         $this->resetInputs();
@@ -138,6 +156,7 @@ class EstudianteComponent extends Component
         $this->carnet = $estudiante->carnet;
         $this->expedido = $estudiante->expedido;
         $this->codigo = $estudiante->codigo;
+        $this->complemento = $estudiante->complemento;
         $this->nombre = $estudiante->nombre;
         $this->paterno = $estudiante->paterno;
         $this->materno = $estudiante->materno;
@@ -147,6 +166,10 @@ class EstudianteComponent extends Component
         $this->profesion = $estudiante->grado->profesion;
         $this->carrera = $estudiante->grado->carrera;
         $this->universidad = $estudiante->grado->universidad;
+        $this->paternoFamiliar = $estudiante->familiares->paterno;
+        $this->maternoFamiliar = $estudiante->familiares->materno;
+        $this->nombreFamiliar = $estudiante->familiares->nombre;
+        $this->celularFamiliar = $estudiante->familiares->celular;
     }
 
     public function update(){
@@ -154,6 +177,7 @@ class EstudianteComponent extends Component
         Estudiante::where('id', $this->estudianteId)->update([
             'codigo' => $this->codigo,
             'carnet' => $this->carnet,
+            'complemento' => $this->complemento,
             'expedido' => $this->expedido,
             'nombre' => $this->nombre,
             'paterno' => $this->paterno,
@@ -177,6 +201,8 @@ class EstudianteComponent extends Component
     public function openDelete($id){
         $this->estudianteId = $id;
         $this->showModalDelete = true;
+        $this->titulo = 'Eliminar';
+        $this->titulo = '¿Desea eliminar este registro?';
     }
 
     public function delete(){
@@ -213,7 +239,7 @@ class EstudianteComponent extends Component
         } catch (ValidationException $e) {
             $failures = $e->failures();
             session()->flash('failures', $failures);
-            return redirect()->route('admin.estudiante.index');
+            return redirect()->route('admin.estudiantes.index');
         }
     }
 

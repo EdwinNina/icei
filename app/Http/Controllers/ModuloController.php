@@ -54,7 +54,7 @@ class ModuloController extends Controller
         $modulo->portada = $namePhoto;
         $modulo->save();
 
-        return redirect()->route('admin.modulo.index');
+        return redirect()->route('admin.modulos.index');
 
     }
 

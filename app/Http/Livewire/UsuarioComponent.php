@@ -15,6 +15,7 @@ class UsuarioComponent extends Component
     public $modalRoleVisible = false;
     public $showModalDelete = false;
     public $search;
+    public $estadoRegistro = 0;
     public $name, $email, $password, $usuarioId;
     public $roles = [];
     public $allRoles;

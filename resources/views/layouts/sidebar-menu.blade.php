@@ -1,4 +1,4 @@
-<nav class="mt-10">
+{{-- <nav class="mt-10">
     <a class="flex items-center mt-4 py-2 px-6 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 {{ request()->routeIs('dashboard') ? 'bg-gray-700 text-gray-100' : 'text-gray-500' }}" href="index.htm">
         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
@@ -111,4 +111,4 @@
             <span class="mx-3">Usuarios</span>
         </a>
     @endcan
-</nav>
+</nav> --}}

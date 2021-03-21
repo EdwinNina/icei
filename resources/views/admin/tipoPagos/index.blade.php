@@ -1,8 +1,27 @@
-<x-app-layout>
-    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
-        <div class="bg-white w-full overflow-x-auto">
-            @livewire('tipo-pago-component')
+@extends('adminlte::page')
+
+@section('title', 'Tipo de Pagos')
+
+@section('content_header')
+@stop
+
+@section('content')
+    <div class="py-2">
+        <div class="w-full">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                @livewire('tipo-pago-component')
+            </div>
         </div>
     </div>
+@stop
 
-</x-app-layout>
+@section('css')
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    @trixassets
+
+@stop
+
+@section('js')
+    <script src="{{ asset('js/app.js') }}"></script>
+    @stack('modals')
+@stop

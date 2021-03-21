@@ -15,10 +15,13 @@ class CreateInscripcionsTable extends Migration
     {
         Schema::create('inscripcions', function (Blueprint $table) {
             $table->id();
-            $table->string('estado');
-            $table->foreignId('planificaciones_id')->constrained();
             $table->foreignId('estudiante_id')->constrained();
+            $table->foreignId('modulo_id')->constrained();
+            $table->foreignId('planificacion_carrera_id')->constrained();
             $table->foreignId('tipo_pago_id')->constrained();
+            $table->foreignId('tipo_plan_pago_id')->constrained();
+            $table->enum('actividad',['escuela','colegio','universidad','empresa','independiente']);
+            $table->string('estado', 2)->default(1);
             $table->timestamps();
         });
     }

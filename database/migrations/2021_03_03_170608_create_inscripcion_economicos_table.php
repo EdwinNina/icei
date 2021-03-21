@@ -15,9 +15,9 @@ class CreateInscripcionEconomicosTable extends Migration
     {
         Schema::create('inscripcion_economicos', function (Blueprint $table) {
             $table->id();
-            $table->integer('numero_recibo')->length('20');
+            $table->string('numero_recibo')->nullable();
             $table->integer('monto')->length('15');
-            $table->string('boleta');
+            $table->string('boleta')->nullable();
             $table->date('fecha_pago');
             $table->foreignId('inscripcion_id')->constrained();
             $table->timestamps();

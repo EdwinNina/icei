@@ -43,15 +43,15 @@
 
     <x-slot name="footer">
         <x-jet-secondary-button wire:click="closeModal()">
-            {{ __('Close') }}
+            Cerrar
         </x-jet-secondary-button>
         @if ($horarioId)
             <x-jet-danger-button wire:click="update()" class="ml-2">
-                {{ __('Update') }}
+                Guardar
             </x-jet-danger-button>
         @else
             <x-jet-danger-button wire:click="save()" class="ml-2">
-                {{ __('Save') }}
+                Agregar
             </x-jet-danger-button>
         @endif
     </x-slot>

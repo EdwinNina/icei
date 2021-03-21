@@ -14,6 +14,7 @@ class ModuloComponent extends Component
     public $showModalDelete = false;
     public $modalShowVisible = false;
     public $search, $moduloId;
+    public $estadoRegistro = 0, $mensaje;
     public $titulo, $version, $temario, $cargaHoraria, $carrera, $portada;
     public function mount() {
         $this->resetPage();
@@ -23,7 +24,7 @@ class ModuloComponent extends Component
     {
         $modulos = Modulo::where('titulo', 'like', '%' . $this->search . '%')
                     ->orderBy('carrera_id','desc')
-                    ->paginate(5);
+                    ->paginate(10);
 
         return view('livewire.modulo-component', ['modulos' => $modulos ]);
     }
@@ -41,6 +42,7 @@ class ModuloComponent extends Component
     public function openDelete($id){
         $this->moduloId = $id;
         $this->showModalDelete = true;
+        $this->mensaje = '¿Desea eliminar el registro?';
     }
 
     public function delete(){

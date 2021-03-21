@@ -18,4 +18,9 @@ class Modulo extends Model
         return $this->belongsTo(Carrera::class);
     }
 
+
+    public function estudiantes()
+    {
+        return $this->belongsToMany(Estudiante::class);
+    }
 }

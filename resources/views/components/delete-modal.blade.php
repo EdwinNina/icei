@@ -1,10 +1,10 @@
 <x-jet-dialog-modal wire:model="showModalDelete">
     <x-slot name="title">
-        {{ __('Eliminar') }}
+        {{$titulo}}
     </x-slot>
 
     <x-slot name="content">
-        {{ __('Estas seguro de eliminar este registro?') }}
+        {{ $mensaje }}
     </x-slot>
 
     <x-slot name="footer">
@@ -12,8 +12,14 @@
             {{ __('Cerrar') }}
         </x-jet-secondary-button>
 
-        <x-jet-danger-button class="ml-2" wire:click="delete()" wire:loading.attr="disabled">
-            {{ __('Eliminar') }}
-        </x-jet-danger-button>
+        @if ($estadoRegistro === 1)
+            <x-jet-danger-button class="ml-2" wire:click="enable()" wire:loading.attr="disabled">
+                Habilitar
+            </x-jet-danger-button>
+        @else
+            <x-jet-danger-button class="ml-2" wire:click="delete()" wire:loading.attr="disabled">
+                Deshabilitar
+            </x-jet-danger-button>
+        @endif
     </x-slot>
 </x-jet-dialog-modal>

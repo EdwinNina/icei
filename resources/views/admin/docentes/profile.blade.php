@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('content')
-<div class="py-5">
+<div class="py-8">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         @if (session('message'))
         <div class="bg-green-500 border-l-4 px-5 py-2 rounded mb-3 border-green-600">
@@ -10,7 +10,7 @@
         @endif
         <div class="overflow-hidden">
             <div class="p-6">
-                <h1 class="text-2xl text-center uppercase font-bold mb-5">Docente {{$perfil->docente->nombre}}</h1>
+                <h1 class="text-2xl text-center uppercase font-bold mb-2">Docente {{$perfil->docente->nombre}}</h1>
                 <div class="flex flex-col flex-wrap sm:flex-row sm:justify-between sm:items-center">
                     <figure>
                         <img src="{{ Storage::url('docentesAvatar/'. $perfil->foto)}}" alt="{{$perfil->docente->nombre}}"
@@ -25,12 +25,6 @@
                             <p><span class="font-bold uppercase">Pagina web: </span><a href="https://{{$perfil->website}}" target="_blank" class="text-blue-500
                                 hover:text-blue-600 hover:underline">{{$perfil->website}}</a></p>
                         @endif
-                        <p class="my-3"><span class="font-bold uppercase">Curriculum: </span>
-                            <a href="{{Storage::url('docentesCurriculum/' . $perfil->curriculum)}}"
-                                target="_blank" class="mx-2 px-3 py-2 bg-indigo-500 hover:bg-indigo-600 text-white shadow-md rounded"
-                            >Ver curriculum
-                            </a>
-                        </p>
                     </section>
                 </div>
             </div>

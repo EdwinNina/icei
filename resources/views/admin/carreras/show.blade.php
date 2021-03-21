@@ -12,8 +12,8 @@
         <p><span class="font-bold">Requisitos: </span> <span class="text-gray-700">{{$requisitos}}</span></p>
         <p><span class="font-bold">Carga Horaria: </span> <span class="text-gray-700">{{$cargaHoraria}} horas academicas</span></p>
         <p><span class="font-bold">Categoria: </span> <span class="text-gray-700">{{$categoria}}</span></p>
-        <p><span class="font-bold">Docente a cargo del curso: </span> <span class="text-gray-700">
-            {{$docenteNombre}} {{$docentePaterno}}</span></p>
+        {{-- <p><span class="font-bold">Docente a cargo del curso: </span> <span class="text-gray-700">
+            {{$docenteNombre}} {{$docentePaterno}}</span></p> --}}
     </x-slot>
 
     <x-slot name="footer">

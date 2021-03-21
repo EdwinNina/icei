@@ -1,8 +1,15 @@
-<x-app-layout>
-    <div class="py-5">
+@extends('adminlte::page')
+
+@section('title', 'Docentes')
+
+@section('content_header')
+@stop
+
+@section('content')@trixassets
+    <div>
         <div class="w-full">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="py-3 px-8">
                     <h1 class="text-2xl text-center uppercase font-bold">Actualizar perfil</h1>
                     <form action="{{ route('docente.perfil.update', $perfil) }}" method="post" enctype="multipart/form-data">
                         @csrf
@@ -77,15 +84,21 @@
                             <x-jet-input-error for="curriculum" class="mt-2" />
                         </div>
                         <div class="flex justify-end text-right mt-6">
-                            <x-jet-danger-button type="submit" class="ml-2">
-                                {{ __('Guardar') }}
-                            </x-jet-danger-button>
+                            <x-jet-danger-button type="submit" class="ml-2">Guardar</x-jet-danger-button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="{{mix('css/app.css')}}">
+    @trixassets
+@stop
+@section('js')
+    <script src="{{ mix('js/app.js') }}"></script>
     <script>
         const inputFile = document.getElementById('foto');
 
@@ -98,4 +111,5 @@
             reader.readAsDataURL(file);
         });
     </script>
-</x-app-layout>
+@stop
+

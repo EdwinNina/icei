@@ -1,17 +1,26 @@
-<x-app-layout>
-    @section('breads')
-        <div class="-intro-x breadcrumb mr-auto hidden sm:flex">
-            <a href="">Modulo</a> <i data-feather="chevron-right" class="breadcrumb__icon"></i>
-            <a href="" class="breadcrumb--active">Horarios</a>
-        </div>
-    @endsection
+@extends('adminlte::page')
 
-    <div class="py-5">
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1>Lista de Horarios</h1>
+@stop
+
+@section('content')
+    <div class="py-2">
         <div class="w-full">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 @livewire('horario-component')
             </div>
         </div>
     </div>
+@stop
 
-</x-app-layout>
+@section('css')
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
+@stop
+
+@section('js')
+    <script src="{{ asset('js/app.js') }}"></script>
+    @stack('modals')
+@stop

@@ -1,16 +1,19 @@
-<x-app-layout>
-    @section('breads')
-        <div class="-intro-x breadcrumb mr-auto hidden sm:flex">
-            <a href="">Modulo</a> <i data-feather="chevron-right" class="breadcrumb__icon"></i>
-            <a href="" class="breadcrumb--active">Dashboard</a>
-        </div>
-    @endsection
+@extends('adminlte::page')
 
-    <div class="py-5">
-        <div class="w-full">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-jet-welcome />
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+@section('title', 'Dashboard')
+
+@section('content_header')
+    <h1>Dashboard</h1>
+@stop
+
+@section('content')
+    <p>Welcome to this beautiful admin panel.</p>
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+@section('js')
+    <script> console.log('Hi!'); </script>
+@stop

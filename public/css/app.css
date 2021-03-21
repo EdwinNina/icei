@@ -32718,7 +32718,7 @@ select {
           animation: bounce 1s infinite;
 }
 
-.table > :not([hidden]) ~ :not([hidden]) {
+.table-tail > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-y-reverse: 0;
   border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
   border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
@@ -32726,11 +32726,11 @@ select {
   border-color: rgba(229, 231, 235, var(--tw-divide-opacity));
 }
 
-.table {
+.table-tail {
   min-width: 100%;
 }
 
-.table-th{
+.table-tail-th{
   font-weight: 500;
   font-size: 0.75rem;
   line-height: 1rem;
@@ -32745,7 +32745,7 @@ select {
   letter-spacing: 0.05em;
 }
 
-.table-td{
+.table-tail-td{
   padding-top: 1rem;
   padding-bottom: 1rem;
   padding-left: 1.5rem;
@@ -32756,30 +32756,35 @@ select {
 .trix-content {
   max-height: 300px !important;
   overflow-y: scroll;
+  display: block;
 }
 
 .trix-button-group--history-tools{
   display: none !important;
 }
 
+.trix-button-group--file-tools{
+  display: none !important;
+}
+
 .trix ul {
   list-style-type: disc;
-  padding-left: 2.5rem;
+  padding-left: 2rem;
 }
 
 .trix ol {
   list-style-type: decimal;
-  padding-left: 2.5rem;
+  padding-left: 2rem;
 }
 
 ul{
   list-style-type: disc;
-  padding-left: 2.5rem;
+  padding-left: 2rem;
 }
 
 ol {
   list-style-type: decimal;
-  padding-left: 2.5rem;
+  padding-left: 2rem;
 }
 
 .btn{

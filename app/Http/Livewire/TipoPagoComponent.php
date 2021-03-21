@@ -13,6 +13,7 @@ class TipoPagoComponent extends Component
     public $modalFormVisible = false;
     public $showModalDelete = false;
     public $search;
+    public $estadoRegistro = 0,$titulo, $mensaje;
     public $nombre, $descripcion, $tipoPagoId;
 
     public function mount() {
@@ -85,6 +86,9 @@ class TipoPagoComponent extends Component
     public function openDelete($id){
         $this->tipoPagoId = $id;
         $this->showModalDelete = true;
+        $this->titulo = 'Eliminar';
+        $this->mensaje = '¿Desea eliminar este registro?';
+
     }
 
     public function delete(){

@@ -3,12 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\Carrera;
-use App\Models\Docente;
 use Livewire\Component;
-use App\Models\Categoria;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\File;
-use Livewire\WithFileUploads;
 
 class CarreraComponent extends Component
 {
@@ -17,8 +14,9 @@ class CarreraComponent extends Component
     public $showModalDelete = false;
     public $modalShowVisible = false;
     public $search;
+    public $estadoRegistro = 0, $mensaje;
     public $titulo, $descripcion, $requisitos, $cargaHoraria, $portada, $carreraId;
-    public $categoria, $docenteNombre, $docentePaterno;
+    public $categoria;
 
     public function mount() {
         $this->resetPage();
@@ -41,8 +39,8 @@ class CarreraComponent extends Component
         $this->cargaHoraria = $carrera->cargaHoraria;
         $this->portada = $carrera->portada;
         $this->categoria = $carrera->categoria->nombre;
-        $this->docenteNombre = $carrera->docente->nombre;
-        $this->docentePaterno = $carrera->docente->paterno;
+        // $this->docenteNombre = $carrera->docente->nombre;
+        // $this->docentePaterno = $carrera->docente->paterno;
         $this->modalShowVisible = true;
     }
 
@@ -50,6 +48,7 @@ class CarreraComponent extends Component
     public function openDelete($id){
         $this->carreraId = $id;
         $this->showModalDelete = true;
+        $this->mensaje = 'Desea deshabilitar el registro?';
     }
 
     public function delete(){
