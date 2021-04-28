@@ -5,7 +5,7 @@
 @section('content_header')
 @stop
 
-@section('content')@trixassets
+@section('content')
     <div>
         <div class="w-full">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -44,10 +44,10 @@
                             />
                         </div>
                         <div class="mt-4">
-                            <div class="flex flex-col sm:flex-row">
-                                <figure class="flex-none mx-auto sm:-mx-0 mb-5 sm:mr-10">
+                            <div class="flex flex-col md:flex-row">
+                                <figure class="flex-none md:mr-8">
                                     <img src="{{ $perfil->foto == '' ? asset('images/profile-picture.png') : Storage::url('docentesAvatar/'. $perfil->foto)}}" alt="{{$perfil->docente->nombre}}"
-                                        class="rounded-full w-40 h-40 shadow-md ring-2 ring-gray-400" id="image">
+                                        class="rounded-full w-32 h-32 shadow-md ring-2 ring-gray-400" id="image">
                                 </figure>
                                 @if ($perfil->foto != '')
                                     <input type="hidden" name="oldImagen" value="{{$perfil->foto}}">
@@ -76,9 +76,6 @@
                                 <div class="flex-grow">
                                     <x-jet-label for="curriculum" value="{{ __('Curriculum') }}" />
                                     <x-jet-input id="curriculum" type="file" name="curriculum" class="mt-1 block w-full" accept="application/pdf"/>
-                                    <p class="text-gray-500 font-medium mt-3">Tu curriculum podrá ser visto y descargado
-                                        por los estudiantes para que puedan ver la trayectoria que usted tiene
-                                    </p>
                                 </div>
                             </div>
                             <x-jet-input-error for="curriculum" class="mt-2" />

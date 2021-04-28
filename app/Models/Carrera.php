@@ -13,7 +13,6 @@ class Carrera extends Model
 
     protected $table = 'carreras';
 
-
     public function categoria()
     {
         return $this->belongsTo(Categoria::class);
@@ -24,13 +23,13 @@ class Carrera extends Model
         return $this->hasMany(Modulo::class);
     }
 
-    public function planificacion()
+    public function certificado()
     {
-        return $this->hasOne(Planificaciones::class);
+        return $this->hasMany(CertificadoCarrera::class);
     }
 
-    public function docentes()
+    public function planificacionCarrera()
     {
-        return $this->belongsToMany(Docente::class);
+        return $this->hasMany(PlanificacionCarrera::class);
     }
 }

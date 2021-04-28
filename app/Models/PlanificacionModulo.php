@@ -20,4 +20,13 @@ class PlanificacionModulo extends Model
     {
         return $this->belongsTo(PlanificacionCarrera::class);
     }
+    public function aula()
+    {
+        return $this->belongsTo(Aula::class,'aula_id');
+    }
+
+    public function notas()
+    {
+        return $this->hasMany(Nota::class);
+    }
 }

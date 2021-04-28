@@ -19,7 +19,7 @@
                                 <select class="custom-select sm:text-sm" id="carrera" name="carrera" value="{{ old('carrera') }}">
                                     <option value="" selected disabled>-- Seleccionar carrera --</option>
                                     @foreach ($carreras as $carrera)
-                                        <option value="{{ $carrera->id }}">{{ $carrera->titulo }}</option>
+                                        <option value="{{ $carrera->id }}">{{ Str::title($carrera->titulo) }}</option>
                                     @endforeach
                                 </select>
                                 <x-jet-input-error for="carrera" class="mt-2" />
@@ -43,7 +43,7 @@
                                 <select class="custom-select sm:text-sm" id="horario" name="horario" value="{{ old('horario') }}">
                                     <option value="" selected disabled>-- Seleccionar horario --</option>
                                     @foreach ($horarios as $horario)
-                                        <option value="{{ $horario->id }}">{{ $horario->dias }} / {{ $horario->hora_inicio }}-{{ $horario->hora_fin }}</option>
+                                        <option value="{{ $horario->id }}">{{ $horario->horario_completo }}</option>
                                     @endforeach
                                 </select>
                                 <x-jet-input-error for="horario" class="mt-2" />
@@ -54,7 +54,7 @@
                                     id="docente" name="docente" value="{{ old('docente') }}">
                                     <option value="" selected disabled>-- Seleccionar docente --</option>
                                     @foreach ($docentes as $docente)
-                                        <option value="{{ $docente->id }}">{{ $docente->nombre }}</option>
+                                        <option value="{{ $docente->id }}">{{ $docente->nombre_completo }}</option>
                                     @endforeach
                                 </select>
                                 <x-jet-input-error for="docente" class="mt-2" />

@@ -6,13 +6,13 @@
     <x-slot name="content">
         <div class="mt-4">
             <x-jet-label for="nombre" value="{{ __('Titulo') }}" />
-            <x-jet-input id="nombre" type="text" class="mt-1 block w-full" wire:model.debounce.800ms="nombre"
+            <x-jet-input id="nombre" type="text" class="mt-1 block w-full" wire:model.defer="nombre"
                 wire:keyup="makeSlug"/>
             <x-jet-input-error for="nombre" class="mt-2" />
         </div>
         <div class="mt-4">
             <x-jet-label for="slug" value="{{ __('Slug') }}" />
-            <x-jet-input id="slug" type="text" class="mt-1 block w-full" wire:model.debounce.800ms="slug" readonly/>
+            <x-jet-input id="slug" type="text" class="mt-1 block w-full" wire:model.defer="slug" readonly/>
             <x-jet-input-error for="slug" class="mt-2" />
         </div>
     </x-slot>

@@ -56,7 +56,7 @@
                             <select id="carrera" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" name="carrera" value="{{ old('carrera')}}">
                                 <option value="" selected disabled>-- Seleccionar Carrera --</option>
                                 @foreach ($carreras as $carrera)
-                                    <option value="{{ $carrera->id }}">{{$carrera->titulo}}</option>
+                                    <option value="{{ $carrera->id }}">{{Str::title($carrera->titulo)}}</option>
                                 @endforeach
                             </select>
                             <x-jet-input-error for="carrera" class="mt-2" />
@@ -76,9 +76,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex justify-end mb-4">
+                    <div class="flex justify-end my-4">
                         <x-back-button href="{{ route('admin.modulos.index') }}" class="mr-2">Volver</x-back-button>
-                        <x-jet-danger-button type="submit">Guardar</x-jet-danger-button>
+                        <x-jet-danger-button type="submit">Registrar</x-jet-danger-button>
                     </div>
                 </form>
             </div>

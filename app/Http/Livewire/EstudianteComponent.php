@@ -2,17 +2,18 @@
 
 namespace App\Http\Livewire;
 
-use App\Imports\EstudiantesImport;
-use App\Models\Estudiante;
-use App\Models\Familiar;
-use App\Models\GradoAcademico;
+use App\Models\User;
 use Livewire\Component;
+use App\Models\Familiar;
+use App\Models\Estudiante;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
-use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
+use App\Models\GradoAcademico;
+use App\Models\UsuarioGeneral;
+use Illuminate\Validation\Rule;
+use App\Imports\EstudiantesImport;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Models\User;
 use Maatwebsite\Excel\Validators\ValidationException;
 
 class EstudianteComponent extends Component
@@ -54,6 +55,39 @@ class EstudianteComponent extends Component
         return view('livewire.estudiante-component', [ 'estudiantes' => $estudiantes ]);
     }
 
+    protected $listeners = ['deshabilitarRegistro','habilitarRegistro','verificacion'];
+
+    public function verificacion($id){
+        $estudiante = Estudiante::where('id',$id)->first();
+        if(count($estudiante->inscripciones)){
+            $this->emit('exist',1);
+        }else{
+            $this->deshabilitarRegistro($id);
+        }
+    }
+
+    public function deshabilitarRegistro($id){
+        $this->estado = Estudiante::where('id',$id)->update([
+            'estado' => 0
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Registro deshabilitado correctamente');
+        }else{
+            $this->emit('messageFailed');
+        }
+    }
+
+    public function habilitarRegistro($id){
+        $this->estado = Estudiante::where('id',$id)->update([
+            'estado' => 1
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Se anuló la deshabilitación correctamente');
+        }else{
+            $this->emit('messageFailed');
+        }
+    }
+
     public function createCode(){
         $paterno = trim($this->paterno);
         $materno = trim($this->materno);
@@ -89,6 +123,8 @@ class EstudianteComponent extends Component
         $this->profesion = $estudiante->grado->profesion;
         $this->carrera = $estudiante->grado->carrera;
         $this->universidad = $estudiante->grado->universidad;
+        $this->nombreFamiliar = $estudiante->familiares->nombre_completo;
+        $this->celularFamiliar = $estudiante->familiares->celular;
         $this->modalShowVisible = true;
     }
 
@@ -118,24 +154,24 @@ class EstudianteComponent extends Component
             'carnet' => trim($this->carnet),
             'expedido' => trim($this->expedido),
             'complemento' => trim($this->complemento),
-            'nombre' => trim($this->nombre),
-            'paterno' => trim($this->paterno),
-            'materno' => trim($this->materno),
+            'nombre' => mb_strtolower(trim($this->nombre)),
+            'paterno' => mb_strtolower(trim($this->paterno)),
+            'materno' => mb_strtolower(trim($this->materno)),
             'celular' => trim($this->celular),
             'email' => trim( $this->email)
         ]);
         GradoAcademico::create([
             'estudiante_id' => $estudiante->id,
             'grado' => trim($this->grado),
-            'carrera' => trim($this->carrera),
-            'profesion' => trim($this->profesion),
-            'universidad' => trim($this->universidad)
+            'carrera' => mb_strtolower(trim($this->carrera)),
+            'profesion' => mb_strtolower(trim($this->profesion)),
+            'universidad' => mb_strtolower(trim($this->universidad))
         ]);
         Familiar::create([
             'estudiante_id' => $estudiante->id,
-            'nombre' => trim($this->nombreFamiliar),
-            'paterno' => trim($this->paternoFamiliar),
-            'materno' => trim($this->maternoFamiliar),
+            'nombre'  => mb_strtolower(trim($this->nombreFamiliar)),
+            'paterno' => mb_strtolower(trim($this->paternoFamiliar)),
+            'materno' => mb_strtolower(trim($this->maternoFamiliar)),
             'celular' => trim($this->celularFamiliar)
         ]);
 
@@ -179,18 +215,18 @@ class EstudianteComponent extends Component
             'carnet' => $this->carnet,
             'complemento' => $this->complemento,
             'expedido' => $this->expedido,
-            'nombre' => $this->nombre,
-            'paterno' => $this->paterno,
-            'materno' => $this->materno,
+            'nombre' => mb_strtolower(trim($this->nombre)),
+            'paterno' => mb_strtolower(trim($this->paterno)),
+            'materno' => mb_strtolower(trim($this->materno)),
             'celular' => $this->celular,
             'email' => $this->email,
         ]);
         GradoAcademico::where('estudiante_id',$this->estudianteId)->update([
             'estudiante_id' => $this->estudianteId,
             'grado' => $this->grado,
-            'carrera' => $this->carrera,
-            'profesion' => $this->profesion,
-            'universidad' => $this->universidad
+            'carrera' => mb_strtolower(trim($this->carrera)),
+            'profesion' => mb_strtolower(trim($this->profesion)),
+            'universidad' => mb_strtolower(trim($this->universidad))
         ]);
         $this->emit('messageSuccess','update');
         $this->resetInputs();
@@ -198,19 +234,6 @@ class EstudianteComponent extends Component
         $this->opcion = 'listado';
     }
 
-    public function openDelete($id){
-        $this->estudianteId = $id;
-        $this->showModalDelete = true;
-        $this->titulo = 'Eliminar';
-        $this->titulo = '¿Desea eliminar este registro?';
-    }
-
-    public function delete(){
-        Estudiante::where('id', $this->estudianteId)->delete();
-        $this->showModalDelete = false;
-        $this->resetPage();
-        $this->emit('deleteItem');
-    }
 
     public function resetInputs(){
         $this->estudianteId = '';
@@ -245,6 +268,7 @@ class EstudianteComponent extends Component
 
     public function openModalUser(Estudiante $estudiante){
         $this->resetInputs();
+        $this->estudianteId = $estudiante->id;
         $this->nombre = $estudiante->nombre;
         $this->paterno = $estudiante->paterno;
         $this->materno = $estudiante->materno;
@@ -259,18 +283,26 @@ class EstudianteComponent extends Component
     protected $messages = [
         'userEmail.unique' => 'Ya existe el usuario con este correo electrónico',
     ];
+
     public function addUser(){
         $this->validate([
             'userEmail' => Rule::unique('users','email'),
         ]);
 
+        $usuario_general = UsuarioGeneral::create([
+            'generable_type' => 'App\Models\Estudiante',
+            'generable_id' => $this->estudianteId
+        ]);
+
         User::create([
             'name' => $this->userName,
             'email' => $this->userEmail,
-            'password' => bcrypt($this->userPassword)
+            'password' => bcrypt($this->userPassword),
+            'usuario_general_id' => $usuario_general->id
         ])->assignRole('Estudiante');
+
         $this->resetInputs();
         $this->modalFormUserVisible = false;
-        $this->emit('customMessage', 'Usuario creado satisfactoriamente');
+        $this->emit('customSuccess', 'Usuario creado satisfactoriamente');
     }
 }

@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 class CarreraController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('can:admin.carreras.create')->only('create','store');
+        $this->middleware('can:admin.carreras.edit')->only('edit','update');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -18,7 +23,7 @@ class CarreraController extends Controller
      */
     public function create()
     {
-        $categorias = Categoria::select('nombre','id')->get();
+        $categorias = Categoria::select('nombre','id')->where('estado',1)->get();
 
         return view('admin.carreras.create', compact('categorias'));
     }
@@ -39,12 +44,12 @@ class CarreraController extends Controller
             'categoria_id' => 'required',
         ]);
 
-        $subject = new Carrera();
-        $subject->titulo = $request->titulo;
-        $subject->descripcion = $request->descripcion;
-        $subject->requisitos = $request->requisitos;
-        $subject->cargaHoraria = $request->cargaHoraria;
-        $subject->categoria_id = $request->categoria_id;
+        $carrera = new Carrera();
+        $carrera->titulo = mb_strtolower($request->titulo);
+        $carrera->descripcion = mb_strtolower($request->descripcion);
+        $carrera->requisitos = mb_strtolower($request->requisitos);
+        $carrera->cargaHoraria = $request->cargaHoraria;
+        $carrera->categoria_id = $request->categoria_id;
 
         if($request->hasFile('portada')){
             $path = 'storage/carreraPortadas';
@@ -52,10 +57,15 @@ class CarreraController extends Controller
             $namePhoto = time() . '.' . $photo->extension();
             $photo->move(public_path($path), $namePhoto);
         }
-        $subject->portada = $namePhoto;
-        $subject->save();
+        $carrera->portada = $namePhoto;
+        $carrera->save();
 
-        return redirect()->route('admin.carreras.index');
+        if ($carrera) {
+            return redirect()->route('admin.carreras.index')->with('message','good');
+        } else {
+            return redirect()->route('admin.carreras.index')->with('message','bad');
+        }
+
     }
 
     /**
@@ -77,7 +87,7 @@ class CarreraController extends Controller
      */
     public function edit(Carrera $carrera)
     {
-        $categorias = Categoria::select('nombre','id')->get();
+        $categorias = Categoria::select('nombre','id')->where('estado',1)->get();
 
         return view('admin.carreras.edit', compact('categorias','carrera'));
     }
@@ -105,8 +115,8 @@ class CarreraController extends Controller
             if(File::exists($path)){
                 File::delete($path);
             }
-            $carrera->titulo = $request->titulo;
-            $carrera->descripcion = $request->descripcion;
+            $carrera->titulo = mb_strtolower($request->titulo);
+            $carrera->descripcion = mb_strtolower($request->descripcion);
             $carrera->cargaHoraria = $request->cargaHoraria;
             $carrera->categoria_id = $request->categoria_id;
 
@@ -118,12 +128,17 @@ class CarreraController extends Controller
             $carrera->portada = $namePhoto;
             $carrera->save();
         }else{
-            $carrera->titulo = $request->titulo;
-            $carrera->descripcion = $request->descripcion;
+            $carrera->titulo = mb_strtolower($request->titulo);
+            $carrera->descripcion = mb_strtolower($request->descripcion);
             $carrera->cargaHoraria = $request->cargaHoraria;
             $carrera->categoria_id = $request->categoria_id;
             $carrera->save();
         }
-        return redirect()->route('admin.carreras.index');
+
+        if ($carrera) {
+            return redirect()->route('admin.carreras.index')->with('message','good');
+        } else {
+            return redirect()->route('admin.carreras.index')->with('message','bad');
+        }
     }
 }

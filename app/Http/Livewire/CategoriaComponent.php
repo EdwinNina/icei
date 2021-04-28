@@ -14,8 +14,8 @@ class CategoriaComponent extends Component
 
     public $modalFormVisible = false;
     public $showModalDelete = false;
-    public $search;
-    public $estadoRegistro = 0;
+    public $search, $estado;
+    public $estadoRegistro = 0, $titulo, $mensaje;
     public $nombre, $slug, $categoriaId;
 
     public function mount() {
@@ -28,6 +28,39 @@ class CategoriaComponent extends Component
             ->orderBy('id','DESC')->paginate(5);
 
         return view('livewire.categoria-component', ['categorias' => $categorias]);
+    }
+
+    protected $listeners = ['deshabilitarRegistro','habilitarRegistro','verificacion'];
+
+    public function verificacion($id){
+        $categoria = Categoria::where('id',$id)->first();
+        if(count($categoria->carreras)){
+            $this->emit('exist',1);
+        }else{
+            $this->deshabilitarRegistro($id);
+        }
+    }
+
+    public function deshabilitarRegistro($id){
+        $this->estado = Categoria::where('id',$id)->update([
+            'estado' => 0
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Registro deshabilitado correctamente');
+        }else{
+            $this->emit('messageFailed');
+        }
+    }
+
+    public function habilitarRegistro($id){
+        $this->estado = Categoria::where('id',$id)->update([
+            'estado' => 1
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Se habilitó nuevamente el registro');
+        }else{
+            $this->emit('messageFailed');
+        }
     }
 
     public function makeSlug(){
@@ -83,18 +116,6 @@ class CategoriaComponent extends Component
         ]);
         $this->resetInputs();
         $this->closeModal();
-    }
-
-    public function openDelete($id){
-        $this->categoriaId = $id;
-        $this->showModalDelete = true;
-    }
-
-    public function delete(){
-        Categoria::where('id', $this->categoriaId)->delete();
-        $this->showModalDelete = false;
-        $this->resetPage();
-        $this->emit('deleteItem');
     }
 
     public function resetInputs(){

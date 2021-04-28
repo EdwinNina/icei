@@ -21,7 +21,7 @@
                                     <option value="" selected disabled>-- Seleccionar carrera --</option>
                                     @foreach ($carreras as $carrera)
                                         <option value="{{ $carrera->id }}" {{ $carrera->id === $planificacion->carrera_id ? 'selected' : '' }}>
-                                            {{ $carrera->titulo }}
+                                            {{ Str::title($carrera->titulo) }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -49,7 +49,7 @@
                                     <option value="" selected disabled>-- Seleccionar horario --</option>
                                     @foreach ($horarios as $horario)
                                         <option value="{{ $horario->id }}" {{ $horario->id === $planificacion->horario_id ? 'selected' : '' }}>
-                                            {{ $horario->dias }} / {{ $horario->hora_inicio }}-{{ $horario->hora_fin }}
+                                            {{ $horario->horario_completo }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -62,7 +62,7 @@
                                     <option value="" selected disabled>-- Seleccionar docente --</option>
                                     @foreach ($docentes as $docente)
                                         <option value="{{ $docente->id }}" {{ $docente->id === $planificacion->docente_id ? 'selected' : '' }}>
-                                            {{ $docente->nombre }}
+                                            {{ Str::title($docente->nombre_completo) }}
                                         </option>
                                     @endforeach
                                 </select>

@@ -15,15 +15,15 @@ class CreatePlanificacionCarrerasTable extends Migration
     {
         Schema::create('planificacion_carreras', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo');
-            $table->integer('costo_carrera')->length(6);
-            $table->integer('costo_modulo')->length(6);
+            $table->string('codigo')->nullable();
+            $table->string('costo_carrera');
+            $table->string('costo_modulo');
             $table->string('gestion',5);
             $table->string('estado',2)->default(1);
             $table->foreignId('carrera_id')->constrained();
             $table->foreignId('modalidad_id')->constrained();
             $table->foreignId('horario_id')->constrained();
-            $table->foreignId('docente_id')->constrained();
+            $table->foreignId('docente_id')->nullable()->constrained();
             $table->text('observaciones')->nullable();
             $table->timestamps();
         });

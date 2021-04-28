@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Estudiante extends Model
 {
@@ -13,6 +14,13 @@ class Estudiante extends Model
 
     protected $table = 'estudiantes';
 
+    public function getNombreCompletoAttribute(){
+        return Str::ucfirst($this->paterno) . ' ' . Str::ucfirst($this->materno) . ' ' . Str::title($this->nombre);
+    }
+
+    public function usuario(){
+        return $this->morphOne(UsuarioGeneral::class, 'generable');
+    }
 
     public function grado()
     {
@@ -24,8 +32,20 @@ class Estudiante extends Model
         return $this->hasOne(Familiar::class);
     }
 
+    public function notas()
+    {
+        return $this->hasMany(Nota::class);
+    }
+
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripcion::class);
+    }
+
     public function modulos()
     {
         return $this->belongsToMany(Modulo::class);
     }
+
+
 }

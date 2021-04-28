@@ -11,14 +11,51 @@ class Inscripcion extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'fecha_congelacion_inicio' => 'datetime',
+        'fecha_congelacion_fin' => 'datetime',
+    ];
+
+    //scopes de busqueda
+    public function scopeBusqueda($query, $busqueda){
+        if($busqueda === ''){
+            return;
+        }
+
+        return $query->whereHas('estudiante', function($q) use($busqueda){
+            $q->where('nombre', 'like', "%{$busqueda}%")->orWhere('paterno', 'like', "%{$busqueda}%");
+        });
+    }
+
+    public function scopeFiltro($query, $carrera, $modulo, $horario, $modalidad, $congelacion){
+        if($congelacion === ''){ return;}
+
+        return $query->where([
+                ['modulo_id', $modulo],
+                ['congelacion', $congelacion],
+            ])->whereHas('planificacionCarrera', function($q) use($horario,$carrera,$modalidad){
+            $q->where([
+                ['carrera_id','=', $carrera],
+                ['horario_id','=', $horario],
+                ['modalidad_id','=', $modalidad],
+            ]);
+        });
+    }
+
+    public function scopeFiltroPorCarrera($query, $carrera){
+        if($carrera === ''){ return;}
+
+        return $query->whereHas('planificacionCarrera', function($q) use($carrera){
+            $q->where([
+                ['carrera_id','=', $carrera],
+            ]);
+        });
+    }
+
+    //relaciones Eloquent
     public function estudiante()
     {
         return $this->belongsTo(Estudiante::class,'estudiante_id');
-    }
-
-    public function planPago()
-    {
-        return $this->belongsTo(TipoPlanPago::class,'tipo_plan_pago_id');
     }
 
     public function planificacionCarrera()
@@ -31,9 +68,18 @@ class Inscripcion extends Model
         return $this->belongsTo(Modulo::class,'modulo_id');
     }
 
-    public function pagoInscripcion()
+    public function pagosInscripcion()
     {
-        return $this->hasOne(InscripcionEconomico::class);
+        return $this->morphMany(RegistroEconomico::class, 'economicable');
     }
 
+    public function tipoPlanPago()
+    {
+        return $this->belongsTo(TipoPlanPago::class,'tipo_plan_pago_id');
+    }
+
+    public function certificado()
+    {
+        return $this->hasOne(Certificado::class);
+    }
 }

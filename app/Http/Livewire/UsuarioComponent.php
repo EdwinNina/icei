@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use App\Models\UsuarioGeneral;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Permission\Models\Role;
@@ -15,7 +16,7 @@ class UsuarioComponent extends Component
     public $modalRoleVisible = false;
     public $showModalDelete = false;
     public $search;
-    public $estadoRegistro = 0;
+    public $estadoRegistro = 0, $titulo, $mensaje;
     public $name, $email, $password, $usuarioId;
     public $roles = [];
     public $allRoles;
@@ -109,11 +110,15 @@ class UsuarioComponent extends Component
 
     public function openDelete($id){
         $this->usuarioId = $id;
+        $this->titulo = 'Eliminación';
+        $this->mensaje = '¿Esta seguro de eliminar este usuario?';
         $this->showModalDelete = true;
     }
 
     public function delete(){
-        User::where('id', $this->usuarioId)->delete();
+        $usuario = User::where('id', $this->usuarioId)->first();
+        $usuario->delete();
+        UsuarioGeneral::where('id', $usuario->usuario_general_id)->delete();
         $this->showModalDelete = false;
         $this->resetPage();
         $this->emit('deleteItem');

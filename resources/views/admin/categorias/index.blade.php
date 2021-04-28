@@ -3,7 +3,6 @@
 @section('title', 'Categorias')
 
 @section('content_header')
-    <h1>Lista de Categorias</h1>
 @stop
 
 @section('content')
@@ -35,6 +34,46 @@
 
         window.livewire.on('messageFailed', () => {
             toastr.error('Incorrecto', 'Hubo un error, intentelo de nuevo!');
+        });
+
+        window.livewire.on('customMessage', message => {
+            toastr.success('Correcto', message);
+        });
+
+        const registros = document.querySelectorAll('.custom-control-input');
+        registros.forEach(registro => {
+            registro.addEventListener('change', (e) => {
+                let id = registro.dataset.id;
+                if(e.target.checked){
+                    Livewire.emit('verificacion',id);
+                    window.livewire.on('exist', value => {
+                        if(value == 1){
+                            Swal.fire({
+                                title: '¿Estas seguro de deshabilitar este registro? Porque ya tiene carreras asignadas',
+                                type: 'warning',
+                                showCancelButton: true,
+                                showConfirmButton: false,
+                                cancelButtonColor: '#d33',
+                                cancelButtonText: 'No'
+                            }).then((result) => {
+                                if(result.dismiss === "cancel" || result.dismiss === "backdrop") {
+                                    toastr.info('Se canceló la deshabilitación de este registro');
+                                    e.target.checked = false;
+                                    return;
+                                }else{
+                                    Livewire.emitTo('categoria-component','deshabilitarRegistro',id);
+                                    return;
+                                }
+                            });
+                        }else{
+                            Livewire.emitTo('categoria-component','deshabilitarRegistro',id);
+                        }
+                    });
+                }else{
+                    Livewire.emitTo('categoria-component','habilitarRegistro',id);
+                    return;
+                }
+            });
         });
     </script>
 @stop

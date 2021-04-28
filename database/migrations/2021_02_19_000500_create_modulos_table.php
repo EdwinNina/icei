@@ -21,6 +21,7 @@ class CreateModulosTable extends Migration
             $table->integer('cargaHoraria')->length(3);
             $table->string('portada');
             $table->foreignId('carrera_id')->constrained()->onDelete('cascade');
+            $table->string('estado',2)->default(1);
             $table->timestamps();
         });
     }

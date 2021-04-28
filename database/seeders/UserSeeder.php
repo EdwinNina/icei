@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Administrador',
             'email' => 'adminSystem.icei@icei.tech',
-            'password' => bcrypt('mcedwin123')
+            'password' => bcrypt('adminSystem')
         ])->assignRole('Administrador');
     }
 }

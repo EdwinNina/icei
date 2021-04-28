@@ -1,19 +1,22 @@
 <x-jet-dialog-modal wire:model="modalFormVisible">
-    <x-slot name="title">
-        {{ __('Guardar Docente') }}
-    </x-slot>
+    <x-slot name="title">Guardar Docente</x-slot>
 
     <x-slot name="content">
         <div class="mt-4">
             <div class="flex items-center">
                 <div class="flex-auto mr-3">
                     <x-required-label for="carnet" value="Cedula de identidad" />
-                    <x-jet-input id="carnet" type="number" wire:model="carnet" class="mt-1 block w-full"/>
+                    <x-jet-input id="carnet" type="number" wire:model.defer="carnet" class="mt-1 block w-full"/>
                     <x-jet-input-error for="carnet" class="mt-2" />
+                </div>
+                <div class="mr-3">
+                    <x-jet-label for="complemento" value="Complemento" />
+                    <x-jet-input id="complemento" type="text" wire:model.defer="complemento" class="mt-1 block w-full"/>
+                    <x-jet-input-error for="complemento" class="mt-2" />
                 </div>
                 <div class="flex-1">
                     <x-required-label for="expedido" value="Expedido"></x-required-label>
-                    <select wire:model="expedido" id="expedido" class="custom-select sm:text-sm">
+                    <select wire:model.defer="expedido" id="expedido" class="custom-select w-auto sm:text-sm">
                         <option value="" selected>-- Seleccionar expedido --</option>
                         @foreach ($expedidos as $key => $expedido)
                             <option value="{{ $key }}">{{$expedido}}</option>
@@ -32,39 +35,33 @@
             </div>
             <div>
                 <x-required-label for="paterno" value="Paterno" />
-                <x-jet-input id="paterno" type="text" class="mt-1 block w-full" wire:model.debounce.800ms="paterno"/>
+                <x-jet-input id="paterno" type="text" class="mt-1 block w-full" wire:model.defer="paterno"/>
                 <x-jet-input-error for="paterno" class="mt-2" />
             </div>
             <div>
                 <x-required-label for="materno" value="Materno" />
-                <x-jet-input id="materno" type="text" class="mt-1 block w-full" wire:model.debounce.800ms="materno"/>
+                <x-jet-input id="materno" type="text" class="mt-1 block w-full" wire:model.defer="materno"/>
                 <x-jet-input-error for="materno" class="mt-2" />
             </div>
         </div>
         <div class="mt-4">
             <x-required-label for="email" value="Correo electrónico" />
-            <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.debounce.800ms="email"/>
+            <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="email"/>
             <x-jet-input-error for="email" class="mt-2" />
         </div>
         <div class="mt-4">
             <x-required-label for="celular" value="Celular" />
-            <x-jet-input id="celular" type="number" class="mt-1 block w-full" wire:model.debounce.800ms="celular"/>
+            <x-jet-input id="celular" type="number" class="mt-1 block w-full" wire:model.defer="celular"/>
             <x-jet-input-error for="celular" class="mt-2" />
         </div>
     </x-slot>
 
     <x-slot name="footer">
-        <x-jet-secondary-button wire:click="closeModal()">
-            {{ __('Cerrar') }}
-        </x-jet-secondary-button>
+        <x-jet-secondary-button wire:click="closeModal()">Cerrar</x-jet-secondary-button>
         @if ($docenteId)
-            <x-jet-danger-button wire:click="update()" class="ml-2">
-                {{ __('Actualizar') }}
-            </x-jet-danger-button>
+            <x-jet-danger-button wire:click="update()" class="ml-2">Actualizar</x-jet-danger-button>
         @else
-            <x-jet-danger-button wire:click="save()" class="ml-2">
-                {{ __('Guardar') }}
-            </x-jet-danger-button>
+            <x-jet-danger-button wire:click="save()" class="ml-2">Registrar</x-jet-danger-button>
         @endif
     </x-slot>
 </x-jet-dialog-modal>

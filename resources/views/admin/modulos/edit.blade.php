@@ -55,7 +55,7 @@
                             <select id="carrera" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" name="carrera">
                                 <option value="" selected disabled>-- Seleccionar categoria --</option>
                                 @foreach ($carreras as $carrera)
-                                    <option value="{{ $carrera->id }}" {{$modulo->carrera_id == $carrera->id ? 'selected': ''}}>{{$carrera->titulo}}</option>
+                                    <option value="{{ $carrera->id }}" {{$modulo->carrera_id == $carrera->id ? 'selected': ''}}>{{Str::title($carrera->titulo)}}</option>
                                 @endforeach
                             </select>
                             <x-jet-input-error for="carrera" class="mt-2" />
@@ -63,12 +63,12 @@
                     </div>
                     <div class="mt-4">
                         <div class="flex flex-col sm:flex-row">
-                            <figure class="flex-none mx-auto sm:-mx-0 mb-5 sm:mr-10">
+                            <figure class="flex-none mx-auto sm:-mx-0 mb-5">
                                 <img src="{{ $modulo->portada == '' ? asset('images/profile-picture.png') : Storage::url('moduloPortadas/'. $modulo->portada)}}" alt="{{$modulo->titulo}}"
                                     class="rounded w-56 h-32 shadow-md" id="image">
                                     <input type="hidden" name="oldCover" value="{{$modulo->portada}}">
                             </figure>
-                            <div class="flex-grow sm:ml-10 ml-0">
+                            <div class="flex-grow md:ml-10 ml-10">
                                 <x-jet-label for="portada" value="{{ __('Portada del curso') }}" />
                                 <x-jet-input id="portada" type="file" class="mt-1 block w-full"
                                 name="portada" accept="image/*" />

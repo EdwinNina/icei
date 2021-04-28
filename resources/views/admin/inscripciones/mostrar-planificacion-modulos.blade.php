@@ -1,4 +1,5 @@
-<x-jet-dialog-modal wire:model="modalShowVisible">
+
+<x-jet-dialog-modal wire:model="modalShowVisible" maxWidth="4xl">
     <x-slot name="title">Modulos Asignados</x-slot>
 
     <x-slot name="content">
@@ -19,12 +20,18 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($planificacionModulos as $item)
                                 <tr>
-                                    <td class="text-xs px-2 py-1">{{ Str::camel(mb_strtolower(Str::substr($item->modulo->titulo, 0, 45))) }}</td>
-                                    <td class="text-xs text-center px-2 py-1">{{$item->modulo->cargaHoraria }} horas</td>
-                                    <td class="text-xs text-center px-2 py-1 {{ $item->fecha_inicio <= \Carbon\Carbon::now()->format('Y-m-d') ? 'text-red-500 line-through' : ''}}">
-                                        {{$item->fecha_inicio}}
+                                    <td class="text-xs px-2 py-1 w-52">
+                                        <span data-toggle="tooltip" data-placement="top" title="{{$item->modulo->titulo_completo}}">
+                                            {{ Str::substr($item->modulo->titulo_completo, 0, 30) }}...
+                                        </span>
                                     </td>
-                                    <td class="text-xs text-center px-2 py-1">{{$item->fecha_fin}}</td>
+                                    <td class="text-xs text-center px-2 py-1">{{$item->modulo->cargaHoraria }} horas</td>
+                                    <td class="text-xs text-center px-2 py-1 {{ ($item->fecha_inicio <= \Carbon\Carbon::now()->format('Y-m-d') && $item->fecha_inicio != null) ? 'text-red-500 line-through' : ''}}">
+                                        {{ $item->fecha_inicio == null ? 'Sin fecha asignada' : \Carbon\Carbon::parse($item->fecha_inicio)->format('d-m-Y')}}
+                                    </td>
+                                    <td class="text-xs text-center px-2 py-1">
+                                        {{ $item->fecha_fin == null ? 'Sin fecha asignada' : \Carbon\Carbon::parse($item->fecha_fin)->format('d-m-Y')}}
+                                    </td>
                                     <td class="text-xs text-center px-2 py-1">{{$item->observaciones}}</td>
                                 </tr>
                             @endforeach

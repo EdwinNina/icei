@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class TipoPago extends Model
 {
-    protected $fillable = ['nombre','descripcion'];
+    protected $fillable = ['nombre','descripcion','estado'];
 
     protected $table = 'tipo_pagos';
 
     use HasFactory;
+
+    public function registroEconomico()
+    {
+        return $this->hasOne(RegistroEconomico::class);
+    }
 }

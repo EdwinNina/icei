@@ -1,5 +1,5 @@
 <div class="p-6">
-    <div class="flex items-center justify-between px-4 py-3 sm:px-6">
+    <div class="flex items-center justify-between my-5">
         @include('components.search')
 
         <x-jet-button wire:click="create()" wire:loading.attr="disabled">Crear</x-jet-button>
@@ -10,47 +10,47 @@
 
     @include('components.delete-modal')
 
-    <div class="flex flex-col my-4 px-4 sm:px-6">
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <table class="table">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="table-th">Usuario</th>
-                                <th scope="col" class="table-th">Correo electronico</th>
-                                <th scope="col" class="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider text-center">Rol en el Sistema</th>
-                                <th scope="col" class="table-th text-center">Acciones</th>
+    <div class="shadow-sm border-b overflow-hidden rounded border-gray-200 sm:rounded-lg">
+        <div class="table-responsive">
+            <table class="table-tail">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="table-tail-th">Usuario</th>
+                        <th scope="col" class="table-tail-th">Correo electronico</th>
+                        <th scope="col" class="table-tail-th">Rol en el Sistema</th>
+                        <th scope="col" class="table-tail-th">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach ($usuarios as $index => $item)
+                            <tr class="text-gray-700">
+                                <td class="table-tail-td">{{ $item->name }}</td>
+                                <td class="table-tail-td">{{ $item->email }}</td>
+                                <td class="table-tail-td">
+                                    @foreach ($item->getRoleNames() as $role)
+                                        <span class="text-green-600 mr-3">{{$role}}</span>
+                                    @endforeach
+                                </td>
+                                <td class="table-tail-td text-right font-medium">
+                                    <div class="flex items-center justify-start">
+                                        <a href="#" wire:click.prevent="edit({{$item->id}})"
+                                            class=" flex justify-center items-center mx-auto bg-yellow-500 rounded-full w-7 h-7 hover:bg-yellow-600 transition-all">
+                                            @include('components.edit-icon')
+                                        </a>
+                                        <a href="#" wire:click.prevent="addRole({{$item->id}})"
+                                            class=" flex justify-center items-center mx-auto bg-green-500 rounded-full w-7 h-7 hover:bg-green-600 transition-all">
+                                            @include('components.user-icon')
+                                        </a>
+                                        <a href="#" wire:click.prevent="openDelete({{$item->id}})"
+                                            class=" flex justify-center items-center mx-auto bg-red-500 rounded-full w-7 h-7 hover:bg-red-600 transition-all">
+                                            @include('components.delete-icon')
+                                        </a>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($usuarios as $item)
-                                <tr class="text-gray-700">
-                                    <td class="px-5 py-3 text-sm">{{ $item->name }}</td>
-                                    <td class="px-5 py-3 text-sm">{{ $item->email }}</td>
-                                    <td class="px-4 py-3 text-sm text-center">
-                                        @foreach ($item->getRoleNames() as $role)
-                                            <span class="text-green-600 mr-3">{{$role}}</span>
-                                        @endforeach
-                                    </td>
-                                    <td class="px-4 py-3 text-sm text-right font-medium">
-                                        <div class="flex items-center justify-start">
-                                            <a href="#" wire:click.prevent="edit({{$item->id}})">
-                                                @include('components.edit-icon')
-                                            </a>
-                                            <a href="#" wire:click.prevent="addRole({{$item->id}})">
-                                                @include('components.user-icon')
-                                            </a>
-                                            <a href="#" wire:click.prevent="openDelete({{$item->id}})">
-                                                @include('components.delete-icon')
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="py-4">

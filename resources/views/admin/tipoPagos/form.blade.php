@@ -4,7 +4,7 @@
     <x-slot name="content">
         <div class="mt-4">
             <x-required-label for="nombre" value="Nombre" />
-            <x-jet-input id="nombre" type="text" class="mt-1 block w-full" wire:model.debounce.800ms="nombre"/>
+            <x-jet-input id="nombre" type="text" class="mt-1 block w-full" wire:model.defer="nombre"/>
             <x-jet-input-error for="nombre" class="mt-2" />
         </div>
         <div class="mt-4">
@@ -15,7 +15,7 @@
                         <trix-editor
                             class="trix-content"
                             x-ref="trix"
-                            wire:model.debounce.100000ms="descripcion"
+                            wire:model.defer="descripcion"
                             wire:key="trix-content-unique-key"
                         ></trix-editor>
                     </div>

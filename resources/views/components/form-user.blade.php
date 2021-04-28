@@ -1,4 +1,4 @@
-<x-jet-dialog-modal wire:model="modalFormUserVisible">
+<x-jet-dialog-modal wire:model="modalFormUserVisible" maxWidth="3xl">
     <x-slot name="title">
         Asignación de Usuario
     </x-slot>
@@ -8,14 +8,13 @@
             <section class="px-2">
                 <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200 mb-3">Datos Personales</h2>
                 <p>Nombre Completo:</p>
-                <span class="text-gray-600">
-                    {{$nombre}} {{$paterno}} {{$materno}}
+                <span class="text-gray-600 font-bold">
+                    {{Str::title($nombre)}} {{Str::ucfirst($paterno)}} {{Str::ucfirst($materno)}}
                 </span>
                 <p class="text-blue-500 font-semibold text-justify text-sm mt-2">
                     El sistema utilizará el correo del usuario como el correo de ingreso al sistema,
-                    como tambien usará el codigo del estudiante generado para su contraseña que siguen
-                    el patrón de las iniciales en mayuscula del paterno, materno y nombre seguido del
-                    numero de carnet de identidad.
+                    para la contraseña esta tomará el siguiente patron de las iniciales en mayuscula
+                    del paterno, materno y nombre seguido del número de carnet de identidad.
                     Tambien el sistema otorgará automaticamente el rol que le pertenece a este usuario.
                 </p>
             </section>

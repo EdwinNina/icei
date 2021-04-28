@@ -168,11 +168,11 @@ return [
     |
     */
 
-    'right_sidebar' => true,
+    'right_sidebar' => false,
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
-    'right_sidebar_slide' => true,
-    'right_sidebar_push' => true,
+    'right_sidebar_slide' => false,
+    'right_sidebar_push' => false,
     'right_sidebar_scrollbar_theme' => 'os-theme-light',
     'right_sidebar_scrollbar_auto_hide' => 'l',
 
@@ -189,7 +189,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -227,110 +227,239 @@ return [
 
     'menu' => [
 
-        ['header' => 'Administración de Carrera'],
         [
-            'text' => 'Categorias',
-            'route'  => 'admin.categorias.index',
-            'icon' => 'fas fa-fw fa-user',
-            'can' => 'admin.categoria.index'
+            'text' => 'Panel Administrativo',
+            'route'  => 'admin.dashboard.index',
+            'can'  => 'admin.dashboard.index',
+            'icon' => 'fas fa-fw fa-chart-line'
         ],
         [
-            'text' => 'Configurar perfil',
-            'route'  =>  ['docente.perfil.edit',['user' => '2']],
-            'icon' => 'fas fa-fw fa-user',
-            'can' => 'docente.perfil.edit'
+            'header' => 'Administración de Carrera',
+            'can' => 'admin.categorias.index'
+        ],
+        [
+            'text' => 'Categorías',
+            'route'  => 'admin.categorias.index',
+            'can' => 'admin.categorias.index'
         ],
         [
             'text' => 'Horarios',
             'route'  => 'admin.horarios.index',
-            'icon' => 'fas fa-fw fa-user',
-            'can' => 'admin.horario.index'
+            'can' => 'admin.horarios.index'
         ],
         [
             'text' => 'Carreras',
             'route'  => 'admin.carreras.index',
-            'icon' => 'fas fa-fw fa-user',
-            'can' => 'admin.carrera.index'
+            'can' => 'admin.carreras.index'
         ],
         [
-            'text' => 'Modulos',
+            'text' => 'Módulos',
             'route'  => 'admin.modulos.index',
-            'icon' => 'fas fa-fw fa-user',
-            'can' => 'admin.modulo.index'
-        ],
-        ['header' => 'Administración de Academica'],
-        [
-            'text' => 'Inscripciones',
-            'route'  => 'admin.inscripciones.index',
-            'icon' => 'fas fa-fw fa-user',
+            'can' => 'admin.modulos.index'
         ],
         [
-            'text' => 'Tipo de pagos',
-            'route'  => 'admin.tipoPagos.index',
+            'text' => 'Aulas',
+            'route'  => 'admin.aulas.index',
+            'can'  => 'admin.aulas.index',
+        ],
+        ['header' => 'Administración Académica'],
+        [
+            'text' => 'Historial Académico',
+            'route'  => 'estudiante.kardex.academico',
             'icon' => 'fas fa-fw fa-user',
+            'can'  => 'estudiante.kardex.academico',
         ],
         [
-            'text' => 'Tipo de Plan de Pagos',
-            'route'  => 'admin.tipoPlanPagos.index',
+            'text' => 'Historial Económico',
+            'route'  => 'estudiante.kardex.economico',
             'icon' => 'fas fa-fw fa-user',
+            'can'  => 'estudiante.kardex.economico',
         ],
-        [
-            'text' => 'Planificacion de Carrera',
-            'route'  => 'admin.planificacionCarrera.index',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        ['header' => 'Administración de Personas'],
         [
             'text' => 'Estudiantes',
             'route'  => 'admin.estudiantes.index',
-            'icon' => 'fas fa-fw fa-lock',
-            'can' => 'admin.estudiante.index'
+            'icon' => 'fa fa-users',
+            'can' => 'admin.estudiantes.index'
         ],
         [
             'text' => 'Docentes',
             'route'  => 'admin.docentes.index',
-            'icon' => 'fas fa-fw fa-lock',
-            'can' => 'admin.docente.index'
+            'icon' => 'fa fa-users',
+            'can' => 'admin.docentes.index'
         ],
-        ['header' => 'Administración de Usuarios'],
         [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
+            'text' => 'Inscripciones',
+            'route'  => 'admin.inscripciones.index',
+            'icon' => 'fas fa-address-card',
+            'can'  => 'admin.inscripciones.index',
+        ],
+        [
+            'text' => 'Planificación de Carreras',
+            'route'  => 'admin.planificacionCarrera.index',
+            'icon' => 'fa fa-calendar',
+            'can'  => 'admin.planificacionCarrera.index',
+        ],
+        [
+            'text' => 'Búsqueda Planificación',
+            'route'  => 'docente.notas.index',
+            'icon' => ' fas fa-search',
+            'can'  => 'docente.notas.index',
+        ],
+        [
+            'text' => 'Búsqueda Planificación',
+            'route'  => 'admin.busquedaPorPlanificacion.index',
+            'icon' => 'fas fa-fw fa-search',
+            'can'  => 'admin.busquedaPorPlanificacion.index',
+        ],
+        [
+            'text'    => 'Certificados',
+            'icon'    => 'fas fa-file-pdf',
+            'can'  => 'admin.certificadoFinal.index',
             'submenu' => [
                 [
-                    'text' => 'Usuarios',
-                    'route'  => 'admin.usuarios.index',
-                    'can' => 'admin.usuarios.index'
-                ],
-                [
-                    'text'    => 'level_one',
-                    'url'     => '#',
+                    'text'    => 'Carrera Finalizada',
                     'submenu' => [
                         [
-                            'text' => 'level_two',
-                            'url'  => '#',
+                            'text' => 'Búsqueda Certificado Final',
+                            'route'  => 'admin.certificadoFinal.index',
+                            'icon' => 'fas fa-fw fa-search',
                         ],
                         [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
+                            'text' => 'Solicitados',
+                            'route'  => 'admin.certificadoFinal.solicitados',
+                            'can'  => 'admin.certificadoFinal.solicitados',
+                            'icon' => 'fas fa-hourglass-half'
+                        ],
+                        [
+                            'text' => 'Entregados',
+                            'route'  => 'admin.certificadoFinal.entregados',
+                            'icon' => 'fas fa-smile'
                         ],
                     ],
                 ],
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text'    => 'Módulos',
+                    'url'     => '#',
+                    'submenu' => [
+                        [
+                            'text' => 'Solicitados',
+                            'route'  => 'admin.certificados.solicitados',
+                            'can'  => 'admin.certificados.solicitados',
+                            'icon' => 'fas fa-hourglass-half'
+                        ],
+                        [
+                            'text' => 'Entregados',
+                            'route'  => 'admin.certificados.entregados',
+                            'icon' => 'fas fa-smile'
+                        ],
+                    ],
+                ],
+                [
+                    'text'    => 'Talleres',
+                    'url'     => '#',
+                    'submenu' => [
+                        [
+                            'text' => 'Solicitados',
+                            'route'  => 'admin.certificadosTalleres.solicitados',
+                            'can'  => 'admin.certificadosTalleres.solicitados',
+                            'icon' => 'fas fa-hourglass-half'
+                        ],
+                        [
+                            'text' => 'Entregados',
+                            'route'  => 'admin.certificadosTalleres.entregados',
+                            'icon' => 'fas fa-smile'
+                        ],
+                    ],
                 ],
             ],
+        ],
+        [
+            'text' => 'Anteriores Estudiantes',
+            'route'  => 'admin.anterioresEstudiantes.index',
+            'can'  => 'admin.anterioresEstudiantes.index',
+            'icon' => 'fa fa-users',
+        ],
+        [
+            'text'    => 'Módulo Talleres',
+            'can'  => 'admin.talleres.index',
+            'submenu' => [
+                [
+                    'text' => 'Talleres',
+                    'route'  => 'admin.talleres.index',
+                    'icon' => 'fas fa-fw fa-search',
+                ],
+                [
+                    'text' => 'Planificación',
+                    'route'  => 'admin.planificacionTaller.index',
+                    'icon' => 'fa fa-calendar',
+                ],
+                [
+                    'text' => 'Inscripción',
+                    'route'  => 'admin.inscripcionesTalleres.index',
+                    'icon' => 'fas fa-address-card',
+                ],
+            ],
+        ],
+        [
+            'header' => 'Administración Económica',
+            'can' => 'admin.tipoPagos.index'
+        ],
+        [
+            'text' => 'Tipo de pagos',
+            'route'  => 'admin.tipoPagos.index',
+            'icon' => 'fas fa-money-bill-alt',
+            'can'  => 'admin.tipoPagos.index',
+        ],
+        [
+            'text' => 'Tipo de razón',
+            'route'  => 'admin.tipoRazon.index',
+            'can'  => 'admin.tipoRazon.index',
+        ],
+        [
+            'text' => 'Tipo de Plan de Pagos',
+            'route'  => 'admin.tipoPlanPagos.index',
+            'can'  => 'admin.tipoPlanPagos.index',
+        ],
+        [
+            'header' => 'Otros servicios',
+            'can' => 'admin.categoriaServiciosVarios.index'
+        ],
+        [
+            'text' => 'Categoría Servicios',
+            'route'  => 'admin.categoriaServiciosVarios.index',
+            'can'  => 'admin.categoriaServiciosVarios.index',
+        ],
+        [
+            'text' => 'Servicios Varios',
+            'route'  => 'admin.serviciosVarios.index',
+            'icon' => 'fa fa-suitcase',
+            'can'  => 'admin.serviciosVarios.index',
+        ],
+        [
+            'header' => 'Administración de la Empresa',
+            'can' => 'admin.configuraciones.index'
+        ],
+        [
+            'text' => 'Configuraciones',
+            'route'  => 'admin.configuraciones.index',
+            'icon' => 'fa fa-cogs',
+            'can'  => 'admin.configuraciones.index',
+        ],
+        [
+            'header' => 'Administración de Usuarios',
+            'can' => 'admin.usuarios.index'
+        ],
+        [
+            'text' => 'Usuarios',
+            'route'  => 'admin.usuarios.index',
+            'icon' => 'fas fa-fw fa-users',
+            'can' => 'admin.usuarios.index',
+        ],
+        [
+            'text' => 'Roles',
+            'route'  => 'admin.roles.index',
+            'icon' => 'fas fa-fw fa-users',
+            'can' => 'admin.roles.index',
         ],
     ],
 
@@ -390,7 +519,7 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => true,
+            'active' => false,
             'files' => [
                 [
                     'type' => 'js',
@@ -405,7 +534,7 @@ return [
             ],
         ],
         'Chartjs' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
@@ -415,7 +544,7 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

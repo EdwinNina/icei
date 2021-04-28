@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Docente extends Model
 {
@@ -21,12 +22,19 @@ class Docente extends Model
         });
     }
 
+    public function usuario(){
+        return $this->morphOne(UsuarioGeneral::class, 'generable');
+    }
+
+    public function planificacionCarrera(){
+        return $this->hasOne(PlanificacionCarrera::class);
+    }
+
     public function perfil(){
         return $this->hasOne(PerfilDocente::class);
     }
 
-    public function carreras()
-    {
-        return $this->belongsToMany(Carrera::class);
+    public function getNombreCompletoAttribute(){
+        return Str::title($this->nombre) .' '. Str::ucfirst($this->paterno) .' '. Str::ucfirst($this->materno);
     }
 }

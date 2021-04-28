@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class PlanificacionCarreraController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:admin.planificacionCarrera.create')->only('create','store');
+        $this->middleware('can:admin.planificacionCarrera.edit')->only('edit','update');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -21,7 +26,7 @@ class PlanificacionCarreraController extends Controller
         $carreras = Carrera::select('titulo','id')->get();
         $modalidades = Modalidad::get();
         $horarios = Horario::get();
-        $docentes = Docente::select('nombre','paterno','id')->get();
+        $docentes = Docente::select('nombre','paterno','materno','id')->get();
         $anio = date('Y');
 
         return view('admin.planificacionCarrera.create', compact('carreras','modalidades','horarios','docentes','anio'));
@@ -45,7 +50,7 @@ class PlanificacionCarreraController extends Controller
         ]);
 
         $codigo = "Plan-".date('Y');
-        PlanificacionCarrera::create([
+        $planificacion = PlanificacionCarrera::create([
             'carrera_id' => $request->carrera,
             'docente_id' => $request->docente,
             'horario_id' => $request->horario,
@@ -57,19 +62,9 @@ class PlanificacionCarreraController extends Controller
             'codigo' => $codigo
         ]);
 
-        return redirect()->route('admin.planificacionCarrera.index');
+        return redirect()->route('admin.planificacionModulo.create', $planificacion->id);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

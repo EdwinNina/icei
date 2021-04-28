@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Inscripciones')
 
 @section('content_header')
 @stop
@@ -42,30 +42,12 @@
                 break;
             }
         });
+        window.livewire.on('customSuccess', value => {
+            toastr.success('Correcto', value);
+        });
 
         window.livewire.on('messageFailed', () => {
             toastr.error('Incorrecto', 'Hubo un error, intentelo de nuevo!');
         });
     </script>
-    {{-- <script>Libreria axios</script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const fecha_de = document.getElementById('fecha_de');
-            const fecha_hasta = document.getElementById('fecha_hasta');
-            const boton = document.getElementById('boton');
-
-            boton.addEventListener('click', (e) => {
-                e.preventDefault();
-                //aqui haces la llamada al controlador por medio de ajax
-                const data = new FormData();
-                data.append('fecha_de',fecha_de.value);
-                data.append('fecha_hasta',fecha_de.value);
-                axios.get('ruta al metodo del controlador',data)
-                    .then(resp => {
-                        let respuesta = resp.body;
-                        //dibujas la tabla
-                    })
-            });
-        });
-    </script> --}}
 @stop

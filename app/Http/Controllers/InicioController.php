@@ -14,13 +14,12 @@ class InicioController extends Controller
     }
 
     public function cursos(){
-
-        $carreras = Carrera::get();
+        $carreras = Carrera::where('estado',1)->get();
         return view('inicio.cursos', compact('carreras'));
     }
 
     public function detalleCurso($id){
-        $carrera = Carrera::find($id)->first();
+        $carrera = Carrera::where('id',$id)->first();
         return view('inicio.detalle-curso', compact('carrera'));
     }
 }

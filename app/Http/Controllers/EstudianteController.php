@@ -10,15 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class EstudianteController extends Controller
 {
-    private $consulta = [];
 
     public function modulosInscritos(Estudiante $estudiante){
         $detalles = DB::table('inscripcions as in')
             ->join('modulos as mo', 'mo.id', '=', 'in.modulo_id')
             ->join('carreras as ca', 'ca.id', '=', 'mo.carrera_id')
-            ->join('inscripcion_economicos as ec', 'ec.inscripcion_id','=','in.id')
             ->where('in.estudiante_id',$estudiante->id)
-            ->select('in.created_at as fecha','ec.monto','mo.id','mo.titulo','ca.titulo as carrera')
+            ->select('in.created_at as fecha','mo.id','mo.titulo','ca.titulo as carrera')
             ->get();
         $this->consulta = $detalles;
         return view('admin.estudiantes.modulos-inscritos', compact('detalles','estudiante'));
@@ -73,22 +71,19 @@ class EstudianteController extends Controller
         $fpdf->Cell(10,8,'ID',1,0,'C',true);
         $fpdf->Cell(40,8,'CARRERA',1,0,'C',true);
         $fpdf->Cell(90,8,'MODULO',1,0,'C',true);
-        $fpdf->Cell(25,8,'MONTO (Bs)',1,0,'C',true);
         $fpdf->Cell(30,8,'FECHA',1,0,'C',true);
         $fpdf->Ln();
         $detalles = DB::table('inscripcions as in')
             ->join('modulos as mo', 'mo.id', '=', 'in.modulo_id')
             ->join('carreras as ca', 'ca.id', '=', 'mo.carrera_id')
-            ->join('inscripcion_economicos as ec', 'ec.inscripcion_id','=','in.id')
             ->where('in.estudiante_id',$estudiante->id)
-            ->select('in.created_at as fecha','ec.monto','mo.id','mo.titulo','ca.titulo as carrera')
+            ->select('in.created_at as fecha','mo.id','mo.titulo','ca.titulo as carrera')
             ->get();
         $fpdf->SetFont('Arial','',6);
         foreach ($detalles as $key => $detalle) {
             $fpdf->Cell(10,8,$key + 1,1,0,'C');
             $fpdf->Cell(40,8,utf8_decode($detalle->carrera),1,0,'C');
             $fpdf->Cell(90,8,utf8_decode($detalle->titulo),1,0,'C');
-            $fpdf->Cell(25,8,$detalle->monto,1,0,'C');
             $fpdf->Cell(30,8,$detalle->fecha,1,0,'C');
             $fpdf->Ln();
         }

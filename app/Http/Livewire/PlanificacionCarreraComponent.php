@@ -11,11 +11,7 @@ class PlanificacionCarreraComponent extends Component
 {
     use WithPagination;
 
-    public $modalFormVisible = false;
-    public $showModalDelete = false;
-    public $search;
-    public $estadoRegistro = 0, $titulo, $mensaje;
-    public $planificacionId;
+    public $search, $estado = '';
 
     public function mount() {
         $this->resetPage();
@@ -23,44 +19,43 @@ class PlanificacionCarreraComponent extends Component
 
     public function render()
     {
-        $planificaciones = PlanificacionCarrera::simplePaginate();
+        $planificaciones = PlanificacionCarrera::busqueda($this->search)->filtro($this->estado);
+        $planificaciones = $planificaciones->paginate();
 
         return view('livewire.planificacion-carrera-component',['planificaciones' => $planificaciones]);
     }
 
+    protected $listeners = ['deshabilitarRegistro','habilitarRegistro','verificacion'];
 
-    public function enableItem($id){
-        $this->planificacionId = $id;
-        $this->showModalDelete = true;
-        $this->estadoRegistro = 1;
-        $this->titulo = 'Habilitación del registro';
-        $this->mensaje = '¿Desea habilitar nuevamente el registro?';
-    }
-
-    public function openDelete($id){
-        $this->planificacionId = $id;
-        $this->showModalDelete = true;
-        $this->estadoRegistro = 0;
-        $this->titulo = 'Deshabilitar';
-        $existe = PlanificacionModulo::where('planificacion_carrera_id', $this->planificacionId)->first();
-        if ($existe) {
-            $this->mensaje = 'Estas seguro de volver inactivo esta planificacion porque ya contiene planificaciones de los módulos';
+    public function verificacion($id){
+        $planificaciones = PlanificacionCarrera::where('id',$id)->first();
+        if(count($planificaciones->planificacionModulos)){
+            $this->emit('exist',1);
         }else{
-            $this->mensaje = 'Estas seguro de volver inactivo esta planificacion? Aún no cuenta con planificaciones de los módulos';
+            $this->deshabilitarRegistro($id);
         }
     }
 
-    public function delete(){
-        PlanificacionCarrera::where('id', $this->planificacionId)->update(['estado' => 0]);
-        $this->showModalDelete = false;
-        $this->resetPage();
-        $this->emit('deleteItem');
+    public function deshabilitarRegistro($id){
+        $this->estado = PlanificacionCarrera::where('id',$id)->update([
+            'estado' => 0
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Registro deshabilitado correctamente');
+        }else{
+            $this->emit('messageFailed');
+        }
     }
 
-    public function enable(){
-        PlanificacionCarrera::where('id', $this->planificacionId)->update(['estado' => 1]);
-        $this->showModalDelete = false;
-        $this->resetPage();
-        $this->emit('deleteItem');
+    public function habilitarRegistro($id){
+        $this->estado = PlanificacionCarrera::where('id',$id)->update([
+            'estado' => 1
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Se anuló la deshabilitación correctamente');
+        }else{
+            $this->emit('messageFailed');
+        }
     }
+
 }

@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "arielcr/numero-a-letras": "dev-master",
         "codedge/laravel-fpdf": "^1.7",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -21,6 +22,7 @@
         "laraveles/spanish": "^1.5",
         "livewire/livewire": "^2.0",
         "maatwebsite/excel": "^3.1",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-permission": "^4.0",
         "te7a-houdini/laravel-trix": "^2.0"
     },

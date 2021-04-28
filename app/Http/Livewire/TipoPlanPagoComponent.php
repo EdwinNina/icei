@@ -28,6 +28,39 @@ class TipoPlanPagoComponent extends Component
         return view('livewire.tipo-plan-pago-component', ['tipoPlanPagos' => $tipoPlanPagos]);
     }
 
+    protected $listeners = ['deshabilitarRegistro','habilitarRegistro','verificacion'];
+
+    public function verificacion($id){
+        $tipos = TipoPlanPago::where('id',$id)->first();
+        if($tipos->inscripcion){
+            $this->emit('exist',1);
+        }else{
+            $this->deshabilitarRegistro($id);
+        }
+    }
+
+    public function deshabilitarRegistro($id){
+        $this->estado = TipoPlanPago::where('id',$id)->update([
+            'estado' => 0
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Registro deshabilitado correctamente');
+        }else{
+            $this->emit('messageFailed');
+        }
+    }
+
+    public function habilitarRegistro($id){
+        $this->estado = TipoPlanPago::where('id',$id)->update([
+            'estado' => 1
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Se anuló la deshabilitación correctamente');
+        }else{
+            $this->emit('messageFailed');
+        }
+    }
+
     public function create(){
         $this->resetInputs();
         $this->resetValidation();
@@ -48,8 +81,8 @@ class TipoPlanPagoComponent extends Component
     public function save(){
         $this->validate();
         $tipo = TipoPlanPago::create([
-            'nombre' => $this->nombre,
-            'descripcion' => $this->descripcion
+            'nombre' => mb_strtolower($this->nombre),
+            'descripcion' => mb_strtolower($this->descripcion)
         ]);
         $this->resetInputs();
         $this->closeModal();
@@ -71,8 +104,8 @@ class TipoPlanPagoComponent extends Component
     public function update(){
         $this->validate();
         $tipo = TipoPlanPago::where('id', $this->tipoPagoId)->update([
-            'nombre' => $this->nombre,
-            'descripcion' => $this->descripcion
+            'nombre' => mb_strtolower($this->nombre),
+            'descripcion' => mb_strtolower($this->descripcion)
         ]);
         if($tipo){
             $this->emit('messageSuccess','update');
@@ -81,20 +114,6 @@ class TipoPlanPagoComponent extends Component
         }
         $this->resetInputs();
         $this->closeModal();
-    }
-
-    public function openDelete($id){
-        $this->tipoPagoId = $id;
-        $this->showModalDelete = true;
-        $this->titulo = 'Eliminar';
-        $this->mensaje = '¿Desea eliminar este registro?';
-    }
-
-    public function delete(){
-        TipoPlanPago::where('id', $this->tipoPagoId)->delete();
-        $this->showModalDelete = false;
-        $this->resetPage();
-        $this->emit('deleteItem');
     }
 
     public function resetInputs(){

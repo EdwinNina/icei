@@ -19,7 +19,7 @@ class CreateFamiliarsTable extends Migration
             $table->string('paterno',50);
             $table->string('materno',50);
             $table->integer('celular')->length(8);
-            $table->foreignId('estudiante_id')->constrained()->onDelete('cascade');
+            $table->foreignId('estudiante_id')->constrained();
             $table->timestamps();
         });
     }

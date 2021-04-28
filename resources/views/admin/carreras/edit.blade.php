@@ -7,6 +7,17 @@
 
 @section('content')
     <div>
+        @if (session('message'))
+        <div class=" border-l-4 px-5 py-2 rounded mb-3
+            {{session('message') === 'good' ? 'bg-green-500 border-green-600' : 'bg-red-500 border-red-600'}}">
+            <span class="text-white text-center">
+                {{ session('message') === 'good'
+                    ? 'El módulo se actualizó con exito'
+                    : 'Ocurrió un error, intentelo de nuevo'
+                }}
+            </span>
+        </div>
+        @endif
         <div class="w-full">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-2 px-4">
                 <h1 class="text-gray-500 uppercase text-2xl mt-5 text-center">Registrar Carrera</h1>
@@ -45,9 +56,13 @@
                         </div>
                         <div>
                             <x-jet-label for="category_id" value="{{ __('Categoria del curso') }}" />
-                            <select id="turno" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" name="categoria_id">
+                            <select id="turno"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                name="categoria_id">
                                 @foreach ($categorias as $categoria)
-                                    <option value="{{ $categoria->id }}" {{$carrera->category_id == $categoria->id ? 'selected': ''}}>{{$categoria->nombre}}</option>
+                                    <option value="{{ $categoria->id }}"
+                                        {{$carrera->categoria_id == $categoria->id ? 'selected': ''}}
+                                    >{{$categoria->nombre}}</option>
                                 @endforeach
                             </select>
                             <x-jet-input-error for="category_id" class="mt-2" />

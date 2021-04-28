@@ -28,6 +28,39 @@ class HorarioComponent extends Component
         return view('livewire.horario-component', ['horarios' => $horarios]);
     }
 
+    protected $listeners = ['deshabilitarRegistro','habilitarRegistro','verificacion'];
+
+    public function verificacion($id){
+        $horario = Horario::where('id',$id)->first();
+        if(count($horario->planificacionCarrera)){
+            $this->emit('exist',1);
+        }else{
+            $this->deshabilitarRegistro($id);
+        }
+    }
+
+    public function deshabilitarRegistro($id){
+        $this->estado = Horario::where('id',$id)->update([
+            'estado' => 0
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Registro deshabilitado correctamente');
+        }else{
+            $this->emit('messageFailed');
+        }
+    }
+
+    public function habilitarRegistro($id){
+        $this->estado = Horario::where('id',$id)->update([
+            'estado' => 1
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Se anuló la deshabilitación correctamente');
+        }else{
+            $this->emit('messageFailed');
+        }
+    }
+
     public function create(){
         $this->resetInputs();
         $this->resetValidation();
@@ -84,20 +117,6 @@ class HorarioComponent extends Component
         ]);
         $this->resetInputs();
         $this->closeModal();
-    }
-
-    public function openDelete($id){
-        $this->horarioId = $id;
-        $this->showModalDelete = true;
-        $this->titulo = 'Eliminar';
-        $this->mensaje = '¿Desea eliminar este registro?';
-    }
-
-    public function delete(){
-        Horario::where('id', $this->horarioId)->delete();
-        $this->showModalDelete = false;
-        $this->resetPage();
-        $this->emit('deleteItem');
     }
 
     public function resetInputs(){

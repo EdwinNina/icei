@@ -15,10 +15,12 @@ class CreatePlanificacionModulosTable extends Migration
     {
         Schema::create('planificacion_modulos', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
+            $table->date('fecha_inicio')->nullable();
+            $table->date('fecha_fin')->nullable();
+            $table->boolean('habilitar_notas')->default(0);
             $table->foreignId('planificacion_carrera_id')->constrained();
             $table->foreignId('modulo_id')->constrained();
+            $table->foreignId('aula_id')->nullable()->constrained();
             $table->text('observaciones')->nullable();
             $table->timestamps();
         });

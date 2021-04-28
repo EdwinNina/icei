@@ -28,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'usuario_general_id'
     ];
 
     /**
@@ -59,4 +60,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function usuarioGeneral()
+    {
+        return $this->belongsTo(UsuarioGeneral::class, 'usuario_general_id');
+    }
 }

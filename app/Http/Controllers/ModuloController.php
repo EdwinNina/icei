@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\File;
 
 class ModuloController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:admin.modulos.create')->only('create','store');
+        $this->middleware('can:admin.modulos.edit')->only('edit','update');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -39,11 +45,11 @@ class ModuloController extends Controller
         ]);
 
         $modulo = new Modulo();
-        $modulo->titulo = $request->titulo;
+        $modulo->titulo = mb_strtolower($request->titulo,"utf8");
         $modulo->version = $request->version;
-        $modulo->temario = $request->temario;
-        $modulo->cargaHoraria = $request->cargaHoraria;
-        $modulo->carrera_id = $request->carrera;
+        $modulo->temario = mb_strtolower($request->temario,"utf8");
+        $modulo->cargaHoraria = mb_strtolower($request->cargaHoraria,"utf8");
+        $modulo->carrera_id = mb_strtolower($request->carrera,"utf8");
 
         if($request->hasFile('portada')){
             $path = 'storage/moduloPortadas';
@@ -54,7 +60,11 @@ class ModuloController extends Controller
         $modulo->portada = $namePhoto;
         $modulo->save();
 
-        return redirect()->route('admin.modulos.index');
+        if ($modulo) {
+            return redirect()->route('admin.modulos.index')->with('message','good');
+        }else{
+            return redirect()->route('admin.modulos.index')->with('message','bad');
+        }
 
     }
 
@@ -89,11 +99,11 @@ class ModuloController extends Controller
             if(File::exists($path)){
                 File::delete($path);
             }
-            $modulo->titulo = $request->titulo;
+            $modulo->titulo = mb_strtolower($request->titulo,"utf8");
             $modulo->version = $request->version;
-            $modulo->temario = $request->temario;
-            $modulo->cargaHoraria = $request->cargaHoraria;
-            $modulo->carrera_id = $request->carrera;
+            $modulo->temario = mb_strtolower($request->temario,"utf8");
+            $modulo->cargaHoraria = mb_strtolower($request->cargaHoraria,"utf8");
+            $modulo->carrera_id = mb_strtolower($request->carrera,"utf8");
 
             $path = 'storage/moduloPortadas';
             $photo = $request->file('portada');
@@ -103,13 +113,13 @@ class ModuloController extends Controller
             $modulo->portada = $namePhoto;
             $modulo->save();
         }else{
-            $modulo->titulo = $request->titulo;
+            $modulo->titulo = mb_strtolower($request->titulo,"utf8");
             $modulo->version = $request->version;
-            $modulo->temario = $request->temario;
-            $modulo->cargaHoraria = $request->cargaHoraria;
-            $modulo->carrera_id = $request->carrera;
+            $modulo->temario = mb_strtolower($request->temario,"utf8");
+            $modulo->cargaHoraria = mb_strtolower($request->cargaHoraria,"utf8");
+            $modulo->carrera_id = mb_strtolower($request->carrera,"utf8");
             $modulo->save();
         }
-        return redirect()->route('admin.modulo.index');
+        return redirect()->route('admin.modulos.index');
     }
 }

@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="content">
-        <p><span class="font-bold">Titulo: </span> <span class="text-gray-700">{{$titulo}}</span></p>
+        <p><span class="font-bold">Titulo: </span> <span class="text-gray-700">{{$tituloCarrera}}</span></p>
         <span class="font-bold">Descripción: </span>
         <div class="overscroll-auto overflow-y-scroll max-h-44">
             {!! $descripcion !!}

@@ -17,6 +17,7 @@ class CreateTipoPlanPagosTable extends Migration
             $table->id();
             $table->string('nombre',50);
             $table->text('descripcion');
+            $table->string('estado',2)->default(1);
             $table->timestamps();
         });
     }

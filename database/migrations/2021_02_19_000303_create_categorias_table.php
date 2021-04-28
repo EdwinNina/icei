@@ -17,6 +17,7 @@ class CreateCategoriasTable extends Migration
             $table->id();
             $table->string('nombre',100);
             $table->string('slug',120);
+            $table->string('estado',2)->default(1);
             $table->timestamps();
         });
     }

@@ -14,8 +14,8 @@ class CarreraComponent extends Component
     public $showModalDelete = false;
     public $modalShowVisible = false;
     public $search;
-    public $estadoRegistro = 0, $mensaje;
-    public $titulo, $descripcion, $requisitos, $cargaHoraria, $portada, $carreraId;
+    public $estadoRegistro = 0, $mensaje, $titulo;
+    public $tituloCarrera, $descripcion, $requisitos, $cargaHoraria, $portada, $carreraId;
     public $categoria;
 
     public function mount() {
@@ -32,23 +32,54 @@ class CarreraComponent extends Component
         return view('livewire.carrera-component', ['carreras' => $carreras]);
     }
 
+    protected $listeners = ['deshabilitarRegistro','habilitarRegistro','verificacion'];
+
+    public function verificacion($id){
+        $carrera = Carrera::where('id',$id)->first();
+        if(count($carrera->planificacionCarrera)){
+            $this->emit('exist',1);
+        }else{
+            $this->deshabilitarRegistro($id);
+        }
+    }
+
+    public function deshabilitarRegistro($id){
+        $this->estado = Carrera::where('id',$id)->update([
+            'estado' => 0
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Se deshabilitó el registro');
+        }else{
+            $this->emit('messageFailed');
+        }
+    }
+    public function habilitarRegistro($id){
+        $this->estado = Carrera::where('id',$id)->update([
+            'estado' => 1
+        ]);
+        if($this->estado == 1){
+            $this->emit('customMessage','Se habilitó nuevamente el registro');
+        }else{
+            $this->emit('messageFailed');
+        }
+    }
+
     public function openModalShow(Carrera $carrera){
-        $this->titulo = $carrera->titulo;
+        $this->tituloCarrera = $carrera->titulo;
         $this->descripcion = $carrera->descripcion;
         $this->requisitos = $carrera->requisitos;
         $this->cargaHoraria = $carrera->cargaHoraria;
         $this->portada = $carrera->portada;
         $this->categoria = $carrera->categoria->nombre;
-        // $this->docenteNombre = $carrera->docente->nombre;
-        // $this->docentePaterno = $carrera->docente->paterno;
         $this->modalShowVisible = true;
     }
 
 
-    public function openDelete($id){
+ /*    public function openDelete($id){
         $this->carreraId = $id;
         $this->showModalDelete = true;
-        $this->mensaje = 'Desea deshabilitar el registro?';
+        $this->titulo = 'Deshabilitar';
+        $this->mensaje = '¿Está seguro de deshabilitar el registro? Porque ya tiene módulos asignados';
     }
 
     public function delete(){
@@ -60,5 +91,6 @@ class CarreraComponent extends Component
         $this->resetPage();
         $this->emit('deleteItem');
     }
+ */
 
 }

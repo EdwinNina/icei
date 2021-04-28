@@ -18,7 +18,7 @@
                 <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200">Datos del Estudiante</h2>
                 <div class="flex mt-3">
                     <label>Nombre:</label>
-                    <p class="ml-3">{{$estudiante->nombre}} {{$estudiante->paterno}} {{$estudiante->materno}}</p>
+                    <p class="ml-3">{{$estudiante->nombre_completo}}</p>
                 </div>
                 <div class="flex">
                     <label>Cédulo de identidad:</label>
@@ -45,7 +45,6 @@
                                         <th scope="col" class="table-tail-th">Carrera</th>
                                         <th scope="col" class="table-tail-th">Módulos tomados</th>
                                         <th scope="col" class="table-tail-th text-center">Fecha de inscripcion</th>
-                                        <th scope="col" class="table-tail-th text-center">Monto depositado</th>
                                     </tr>
                                 </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
@@ -61,10 +60,7 @@
                                                     <div class="text-sm text-gray-900">{{ $detalle->titulo}}</div>
                                                 </td>
                                                 <td class="table-tail-td">
-                                                    <div class="text-sm text-center text-gray-900">{{ Carbon\Carbon::parse($detalle->fecha)->format('d-M-Y') }}</div>
-                                                </td>
-                                                <td class="table-tail-td">
-                                                    <div class="text-sm text-center text-gray-900">{{$detalle->monto}}</div>
+                                                    <div class="text-sm text-center text-gray-900">{{ Carbon\Carbon::parse($detalle->fecha)->format('d-m-Y') }}</div>
                                                 </td>
                                             </tr>
                                         @endforeach

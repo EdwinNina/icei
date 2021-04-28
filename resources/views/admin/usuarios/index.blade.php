@@ -1,7 +1,53 @@
-<x-app-layout>
-    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
-        <div class="bg-white w-full overflow-x-auto">
-            @livewire('usuario-component')
+@extends('adminlte::page')
+
+@section('title', 'Administración de Usuarios')
+
+@section('content_header')
+@stop
+
+@section('content')
+    <div>
+        @if (session('message'))
+            <div class=" border-l-4 px-5 py-2 rounded mb-3
+                {{session('message') === 'good' ? 'bg-green-500 border-green-600' : 'bg-red-500 border-red-600'}}">
+                <span class="text-white text-center">
+                    {{ session('message') === 'good'
+                        ? 'La inscripcion se realizo con exito'
+                        : 'Ocurrió un error, intentelo de nuevo'
+                    }}
+                </span>
+            </div>
+        @endif
+        <div class="w-full">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                @livewire('usuario-component')
+            </div>
         </div>
     </div>
-</x-app-layout>
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="{{mix('css/app.css')}}">
+@stop
+@section('js')
+    <script src="{{ mix('js/app.js') }}"></script>
+    <script>
+        window.livewire.on('messageSuccess', value => {
+            switch (value) {
+                case 'create':
+                    toastr.success('Correcto', 'Registro agregado correctamente');
+                    break;
+                case 'update':
+                    toastr.success('Correcto', 'Registro actualizado correctamente');
+                break;
+            }
+        });
+        window.livewire.on('customSuccess', value => {
+            toastr.success('Correcto', value);
+        });
+
+        window.livewire.on('messageFailed', () => {
+            toastr.error('Incorrecto', 'Hubo un error, intentelo de nuevo!');
+        });
+    </script>
+@stop

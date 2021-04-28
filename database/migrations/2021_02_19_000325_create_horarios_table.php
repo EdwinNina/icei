@@ -19,6 +19,7 @@ class CreateHorariosTable extends Migration
             $table->time('hora_inicio',0);
             $table->time('hora_fin',0);
             $table->enum('turno',['mañana','tarde','noche']);
+            $table->string('estado',2)->default(1);
             $table->timestamps();
         });
     }

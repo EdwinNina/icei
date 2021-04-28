@@ -1,0 +1,204 @@
+@extends('adminlte::page')
+
+@section('title', 'Historial Académico')
+
+@section('content_header')
+@stop
+
+@section('content')
+<div class="w-full pb-4">
+    @php  $montos_inscripcion = array(); $suma_montos_total_inscripcion = ''; @endphp
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <h1 class="text-gray-500 uppercase text-2xl mt-5 text-center">Mi historial Económico</h1>
+        <div class="rounded p-6">
+            <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200 mb-3">Detalles económicos de relacionados a la inscripción</h2>
+            <div class="table-responsive">
+                <table class="table-tail">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="table-tail-th w-32">Factura</th>
+                            <th scope="col" class="text-xs font-medium text-gray-500 uppercase w-24">Tipo de Pago</th>
+                            <th scope="col" class="table-tail-th">Razón</th>
+                            <th scope="col" class="text-xs font-medium text-gray-500 uppercase w-40">Módulo</th>
+                            <th scope="col" class="table-tail-th">Concepto</th>
+                            <th scope="col" class="table-tail-th">Monto (Bs)</th>
+                            <th scope="col" class="table-tail-th">Fecha de Deposito</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200 relative">
+                        @foreach ($inscripciones as $index => $inscripcion)
+                            @foreach ($inscripcion->pagosInscripcion as $index => $pago)
+                                <tr>
+                                    <td class="table-tail-td w-32">
+                                        <div class="text-sm text-gray-900">{{ $pago->numeroFactura }}</div>
+                                    </td>
+                                    <td class="w-24">
+                                        <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
+                                    </td>
+                                    <td class="table-tail-td">
+                                        <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
+                                    </td>
+                                    <td class="w-40">
+                                        <div class="text-sm text-gray-900" data-toggle="tooltip" data-placement="top" title="{{$inscripcion->modulo->titulo_completo}}">
+                                            {{ Str::length($inscripcion->modulo->titulo_completo) > 30 ? Str::substr($inscripcion->modulo->titulo_completo, 0, 30).'...' : $inscripcion->modulo->titulo_completo }}
+                                        </div>
+                                    </td>
+                                    <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
+                                    <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
+                                    <td class="table-tail-td">
+                                        <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
+                                    </td>
+                                </tr>
+                                @php
+                                    $montos_inscripcion[$index] = $pago->monto;
+                                @endphp
+                            @endforeach
+                        @endforeach
+                    </tbody>
+                    @php
+                        $suma_montos_total_inscripcion = array_sum($montos_inscripcion);
+                    @endphp
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-right">Total Cancelado</td>
+                            <td class="text-center font-bold">{{ number_format($suma_montos_total_inscripcion,2)}} Bs</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    @if ($servicios->count())
+        @php  $montos_servicio = array(); $suma_montos_total_servicio = ''; @endphp
+
+        <div class="bg-white overflow-hidden shadow-sm my-4 sm:rounded-lg">
+            <div class="rounded p-6">
+                <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200 mb-3">Detalles económicos de relacionados a Pago de Servicios</h2>
+                <div class="table-responsive">
+                    <table class="table-tail">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="table-tail-th w-32">Factura</th>
+                                <th scope="col" class="text-xs font-medium text-gray-500 uppercase w-24">Tipo de Pago</th>
+                                <th scope="col" class="table-tail-th">Razón</th>
+                                <th scope="col" class="text-xs font-medium text-gray-500 uppercase w-40">Servicio</th>
+                                <th scope="col" class="table-tail-th">Concepto</th>
+                                <th scope="col" class="table-tail-th">Monto (Bs)</th>
+                                <th scope="col" class="table-tail-th">Fecha de Deposito</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 relative">
+                            @foreach ($servicios as $servicio)
+                                @foreach ($servicio->pagosServicios as $index => $pago)
+                                    <tr>
+                                        <td class="table-tail-td w-32">
+                                            <div class="text-sm text-gray-900">{{ $pago->numeroFactura }}</div>
+                                        </td>
+                                        <td class="w-24">
+                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
+                                        </td>
+                                        <td class="table-tail-td">
+                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
+                                        </td>
+                                        <td class="w-40">
+                                            <div class="text-sm text-gray-900" data-toggle="tooltip" data-placement="top" title="{{$inscripcion->modulo->titulo_completo}}">
+                                                {{ $servicio->categoria->nombre}}
+                                            </div>
+                                        </td>
+                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
+                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
+                                        <td class="table-tail-td">
+                                            <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
+                                        </td>
+                                    </tr>
+                                    @php
+                                        $montos_servicio[$index] = $pago->monto;
+                                    @endphp
+                                @endforeach
+                            @endforeach
+                        </tbody>
+                        @php
+                            $suma_montos_total_servicio = array_sum($montos_servicio);
+                        @endphp
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="text-right">Total Cancelado</td>
+                                <td class="text-center font-bold">{{ number_format($suma_montos_total_servicio,2)}} Bs</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if ($talleres->count())
+        @php  $montos_taller = array(); $suma_montos_total_taller = ''; @endphp
+        <div class="bg-white overflow-hidden shadow-sm my-4 sm:rounded-lg">
+            <div class="rounded p-6">
+                <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200 mb-3">Detalles económicos de relacionados a Pago de Servicios</h2>
+                <div class="table-responsive">
+                    <table class="table-tail">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="table-tail-th w-32">Factura</th>
+                                <th scope="col" class="text-xs font-medium text-gray-500 uppercase w-24">Tipo de Pago</th>
+                                <th scope="col" class="table-tail-th">Razón</th>
+                                <th scope="col" class="text-xs font-medium text-gray-500 uppercase w-40">Taller</th>
+                                <th scope="col" class="table-tail-th">Concepto</th>
+                                <th scope="col" class="table-tail-th">Monto (Bs)</th>
+                                <th scope="col" class="table-tail-th">Fecha de Deposito</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 relative">
+                            @foreach ($talleres as $taller)
+                                @foreach ($taller->pagosInscripcionTaller as $index => $pago)
+                                    <tr>
+                                        <td class="table-tail-td w-32">
+                                            <div class="text-sm text-gray-900">{{ $pago->numeroFactura }}</div>
+                                        </td>
+                                        <td class="w-24">
+                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
+                                        </td>
+                                        <td class="table-tail-td">
+                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
+                                        </td>
+                                        <td class="w-40">
+                                            <div class="text-sm text-gray-900" data-toggle="tooltip" data-placement="top" title="{{$inscripcion->modulo->titulo_completo}}">
+                                                {{ $taller->planificacionTaller->taller->nombre}}
+                                            </div>
+                                        </td>
+                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
+                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
+                                        <td class="table-tail-td">
+                                            <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
+                                        </td>
+                                    </tr>
+                                    @php
+                                        $montos_taller[$index] = $pago->monto;
+                                    @endphp
+                                @endforeach
+                            @endforeach
+                        </tbody>
+                        @php
+                            $suma_montos_total_taller = array_sum($montos_taller);
+                        @endphp
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="text-right">Total Cancelado</td>
+                                <td class="text-center font-bold">{{ number_format($suma_montos_total_taller,2)}} Bs</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="{{mix('css/app.css')}}">
+@stop
+@section('js')
+    <script src="{{ mix('js/app.js') }}"></script>
+@stop

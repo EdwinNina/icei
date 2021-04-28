@@ -19,7 +19,7 @@ class CreateGradoAcademicosTable extends Migration
             $table->string('profesion')->nullable();
             $table->string('universidad');
             $table->string('carrera');
-            $table->foreignId('estudiante_id')->constrained()->onDelete('cascade');
+            $table->foreignId('estudiante_id')->constrained();
             $table->timestamps();
         });
     }

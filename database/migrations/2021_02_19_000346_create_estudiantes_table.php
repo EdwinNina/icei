@@ -23,7 +23,8 @@ class CreateEstudiantesTable extends Migration
             $table->string('materno',50);
             $table->string('codigo',20);
             $table->string('email',30);
-            $table->integer('celular')->length(8);
+            $table->string('celular',8);
+            $table->string('estado',2)->default(1);
             $table->timestamps();
         });
     }

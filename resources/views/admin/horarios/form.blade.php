@@ -7,9 +7,14 @@
         <div class="mt-4">
             <x-jet-label for="dias" value="{{ __('Dias de clase') }}" />
             <select id="turno" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            wire:model="dias">
+            wire:model.defer="dias">
                 <option value="" selected disabled>-- Seleccionar dias de clase --</option>
                 <option value="lunes a viernes">Lunes a viernes</option>
+                <option value="lunes">Lunes</option>
+                <option value="martes">Martes</option>
+                <option value="miercoles">Miercoles</option>
+                <option value="jueves">Jueves</option>
+                <option value="viernes">Viernes</option>
                 <option value="sabados">Sabados</option>
                 <option value="domingos">Domingos</option>
             </select>
@@ -19,19 +24,19 @@
             <div>
                 <x-jet-label for="hora_inicio" value="{{ __('Hora inicio') }}" />
                 <x-jet-input id="hora_inicio" type="time" class="mt-1 block w-full"
-                    wire:model.debounce.800ms="hora_inicio" autofocus />
+                    wire:model..defer="hora_inicio" autofocus />
                 <x-jet-input-error for="hora_inicio" class="mt-2" />
             </div>
             <div>
                 <x-jet-label for="hora_fin" value="{{ __('Hora Fin') }}" />
-                <x-jet-input id="hora_fin" type="time" class="mt-1 block w-full" wire:model.debounce.800ms="hora_fin"/>
+                <x-jet-input id="hora_fin" type="time" class="mt-1 block w-full" wire:model.defer="hora_fin"/>
                 <x-jet-input-error for="hora_fin" class="mt-2" />
             </div>
         </div>
         <div class="mt-4">
             <x-jet-label for="turno" value="{{ __('Turno') }}" />
             <select id="turno" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                wire:model="turno">
+                wire:model.defer="turno">
                 <option value="" selected disabled>-- Seleccionar turno --</option>
                 <option value="mañana">Mañana</option>
                 <option value="tarde">Tarde</option>

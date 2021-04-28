@@ -22,9 +22,9 @@ class EstudiantesImport implements OnEachRow, WithValidation, WithHeadingRow
             $estudiante = Estudiante::updateOrCreate([
                 'carnet' => trim($row['carnet']),
                 'expedido' => trim($row['expedido']),
-                'paterno' => trim($row['paterno']),
-                'materno' => trim($row['materno']),
-                'nombre' => trim($row['nombre']),
+                'paterno' => mb_strtolower(trim($row['paterno'])),
+                'materno' => mb_strtolower(trim($row['materno'])),
+                'nombre' => mb_strtolower(trim($row['nombre'])),
                 'email' => trim($row['email']),
                 'celular' => trim($row['celular']),
                 'codigo' => empty($row['codigo'])
@@ -34,16 +34,16 @@ class EstudiantesImport implements OnEachRow, WithValidation, WithHeadingRow
             $estudiante->grado()->updateOrCreate([
                 'estudiante_id' => $estudiante->id,
                 'grado' => trim($row['grado']),
-                'profesion' => trim($row['profesion']),
-                'universidad' => trim($row['universidad']),
-                'carrera' => trim($row['carrera']),
+                'profesion' => mb_strtolower(trim($row['profesion'])),
+                'universidad' => mb_strtolower(trim($row['universidad'])),
+                'carrera' => mb_strtolower(trim($row['carrera'])),
             ]);
 
             $estudiante->familiares()->updateOrCreate([
                 'estudiante_id' => $estudiante->id,
-                'nombre'  => trim($row['nombre_familiar']),
-                'paterno' => trim($row['paterno_familiar']),
-                'materno' => trim($row['materno_familiar']),
+                'nombre'  => mb_strtolower(trim($row['nombre_familiar'])),
+                'paterno' => mb_strtolower(trim($row['paterno_familiar'])),
+                'materno' => mb_strtolower(trim($row['materno_familiar'])),
                 'celular' => trim($row['celular_familiar']),
             ]);
             DB::commit();

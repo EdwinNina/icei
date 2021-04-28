@@ -10,4 +10,9 @@ class TipoPlanPago extends Model
     use HasFactory;
 
     protected $fillable = ['nombre','descripcion'];
+
+    public function inscripcion()
+    {
+        return $this->hasOne(Inscripcion::class);
+    }
 }
