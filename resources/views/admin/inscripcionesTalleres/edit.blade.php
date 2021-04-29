@@ -159,7 +159,7 @@
                     confirmButtonText: 'Solicitar',
                     showLoaderOnConfirm: false,
                     }).then((result) => {
-                        if(result.dismiss === "cancel") {
+                        if(result.dismiss === "cancel" && result.dismiss === "backdrop") {
                             toastr.info('Se canceló la solicitud del certificado');
                             btnHabilitarCertificado.checked = false;
                             return;
@@ -176,7 +176,7 @@
                 }else{
                     axios.post("/admin/inscripcion-taller/deshabilitarCertificado",{ id: inscripcionId})
                     .then(resp => {
-                        mensajes(resp, 'Solicitud del certificado del taller denegado','Ocurrió un error al solicitar el certificado! Intentelo nuevamente')
+                        mensajes(resp, 'Se canceló la solicitud del certificado','Ocurrió un error al solicitar el certificado! Intentelo nuevamente')
                         setTimeout(() => { location.reload(); }, 1500);
                     });
                 }

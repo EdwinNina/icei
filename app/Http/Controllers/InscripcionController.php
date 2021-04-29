@@ -407,4 +407,25 @@ class InscripcionController extends Controller
         $fpdf->Output("Comprobante_de_Ingreso.pdf","F");
         $fpdf->Output();
     }
+
+    public function cambiarEstadoPagoInscripcion(Request $request){
+        $pago = RegistroEconomico::where('id',$request->idPago)->first();
+        $estado = Inscripcion::where('id', $request->idInscripcion)->first();
+        switch ($request->opcion) {
+            case 'inscripcion':
+                $estado->total_pagado = ($estado->total_pagado - $pago->monto);
+                $estado->saldo = ($estado->saldo + $pago->monto);
+                $estado->save();
+            break;
+            case 'examen':
+                $estado->saldo_examen = ($estado->saldo_examen + $pago->monto);
+                $estado->save();
+            break;
+            case 'certificado':
+                $estado->saldo_certificado = ($estado->saldo_certificado + $pago->monto);
+                $estado->save();
+            break;
+        }
+        return response()->json($estado);
+    }
 }

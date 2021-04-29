@@ -21,8 +21,8 @@
                             <th scope="col" class="table-tail-th">Materno</th>
                             <th scope="col" class="table-tail-th">Nombre</th>
                             <th scope="col" class="table-tail-th">Carrera</th>
-                            <th scope="col" class="w-20">Módulo</th>
-                            <th scope="col" class="w-20">Nota</th>
+                            <th scope="col" class="table-tail-th">Módulo</th>
+                            <th scope="col" class="table-tail-th">Nota</th>
                             <th scope="col" class="table-tail-th">Docente</th>
                             <th scope="col" class="table-tail-th">Fecha inicio</th>
                             <th scope="col" class="table-tail-th">Fecha fin</th>
@@ -43,10 +43,10 @@
                                 <td class="table-tail-td">
                                     <div class="text-sm text-gray-900">{{ Str::title($item->carrera)  }}</div>
                                 </td>
-                                <td class="w-20">
+                                <td class="table-tail-td">
                                     <div class="text-sm text-gray-900">{{ Str::title($item->modulo)  }}</div>
                                 </td>
-                                <td class="w-20">
+                                <td class="table-tail-td">
                                     <div class="text-sm text-gray-900">{{ Str::title($item->nota) }}</div>
                                 </td>
                                 <td class="table-tail-td">

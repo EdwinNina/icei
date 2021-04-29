@@ -9,7 +9,6 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Configuracion;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CertificadoController extends Controller
 {
@@ -19,7 +18,6 @@ class CertificadoController extends Controller
         ->select('certificados.*')
         ->where([
             ['solicitado','=','1'],
-            ['entregado','=','0'],
         ])
         ->orderBy('es.paterno','asc')
         ->paginate();
@@ -51,40 +49,40 @@ class CertificadoController extends Controller
         Carbon::setLocale('es');
         $fpdf = new Fpdf('P','cm','Letter');
         $fpdf->AddPage();
-        $fpdf->SetXY(2,5.8);
-        $fpdf->SetFont('Arial','',5);
+        $fpdf->SetXY(2,7);
+        $fpdf->SetFont('Arial','',7);
         $fpdf->Cell(40,0, utf8_decode($certificado->codigo));
-        $fpdf->SetXY(5,11.4);
+        $fpdf->SetXY(4.5,13);
         $fpdf->SetFont('Arial','B',15);
         $fpdf->Cell(40,0, utf8_decode(Str::upper($certificado->estudiante->nombre_completo)));
-        $fpdf->SetXY(7.8,13.3);
+        $fpdf->SetXY(7.2,15);
         $fpdf->SetFont('Arial','B',11);
-        $fpdf->MultiCell(10,0.5,utf8_decode(Str::title($certificado->inscripcion->modulo->titulo)),0,'C');
-        $fpdf->SetXY(11,15.8);
+        $fpdf->MultiCell(10,0.7,utf8_decode(Str::upper($certificado->inscripcion->modulo->titulo)),0,'C');
+        $fpdf->SetXY(11,17.5);
         $fpdf->Cell(40,0, utf8_decode($certificado->nota->nota_final . "% (" . Str::title(NumeroALetras::convertir($certificado->nota->nota_final)) . 'por ciento)'));
-        $fpdf->SetXY(9,18);
+        $fpdf->SetXY(8,19.7);
         $fpdf->SetFont('Arial','B',11);
         $fpdf->Cell(40,0, utf8_decode('Del ' . Str::title(Carbon::parse($certificado->planificacionModulo->fecha_inicio)->translatedFormat('d F Y')) . ' al ' . Str::title(Carbon::parse($certificado->planificacionModulo->fecha_fin)->translatedFormat('d F Y'))));
-        $fpdf->SetXY(6.7,20.2);
+        $fpdf->SetXY(6.7,21.8);
         $fpdf->Cell(40,0, utf8_decode($certificado->inscripcion->modulo->cargaHoraria));
-        $fpdf->SetXY(13,20.2);
+        $fpdf->SetXY(12.5,21.8);
         $fpdf->Cell(40,0, utf8_decode(Carbon::now()->translatedFormat('d F Y')));
         $fpdf->SetXY(3,24);
         $fpdf->SetFont('Arial','',9);
         $fpdf->Cell(60,0,'.....................................................');
-        $fpdf->SetXY(4.3,24.5);
+        $fpdf->SetXY(4.6,24.5);
         $fpdf->Cell(60,0,'DOCENTE');
-        $fpdf->SetXY(2.7,25);
+        $fpdf->SetXY(3.1,25);
         $nombre_docente = $certificado->planificacionModulo->planificacionCarrera->docente->nombre_completo;
         $fpdf->Cell(60,0,utf8_decode('ING. '. Str::upper($nombre_docente)));
-        if ( strcmp(Str::upper($nombre_docente),Str::upper($configuracion->director_academico)) > 0 ) {
+/*         if ( strcmp(Str::upper($nombre_docente),Str::upper($configuracion->director_academico)) > 0 ) {
             $fpdf->SetXY(10,24);
             $fpdf->Cell(60,0,'................................................');
             $fpdf->SetXY(10.3,24.5);
             $fpdf->Cell(60,0, utf8_decode('DIRECTOR ACADÉMICO'));
             $fpdf->SetXY(10,25);
             $fpdf->Cell(60,0,utf8_decode('ING. ' . Str::upper($configuracion->director_academico)));
-        }
+        } */
         $fpdf->Output('','reporte','true');
         exit;
     }

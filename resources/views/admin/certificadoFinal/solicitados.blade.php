@@ -18,6 +18,7 @@
                                 <tr>
                                     <th scope="col" class="table-tail-th">Nombre del Estudiante</th>
                                     <th scope="col" class="text-xs font-medium pl-2 text-gray-500 uppercase w-44">Carrera</th>
+                                    <th scope="col" class="table-tail-th">Fecha de Solicitud</th>
                                     <th scope="col" class="table-tail-th text-center">Impreso</th>
                                     <th scope="col" class="table-tail-thr text-center">Acciones</th>
                                 </tr>
@@ -32,6 +33,9 @@
                                                 <div class="text-sm text-gray-900">
                                                     {{ Str::title($item->carrera->titulo)}}
                                                 </div>
+                                            </td>
+                                            <td class="table-tail-td">
+                                                <div class="text-sm text-gray-900">{{ Str::title(Carbon\Carbon::parse($item->fecha_solicitado)->translatedFormat('d F Y'))}}</div>
                                             </td>
                                             <td class="table-tail-td text-center">
                                                 <div class="text-sm text-gray-900">

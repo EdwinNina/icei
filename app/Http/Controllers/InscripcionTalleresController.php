@@ -240,10 +240,7 @@ class InscripcionTalleresController extends Controller
                 'certificado_habilitado' => false
             ]);
 
-            CertificadoTaller::where('inscripcion_taller_id', $request->id)->update([
-                'solicitado' => 0,
-                'fecha_solicitado' => null
-            ]);
+            CertificadoTaller::where('inscripcion_taller_id', $request->id)->delete();
             DB::commit();
             return response()->json('good');
         } catch (\Throwable $th) {

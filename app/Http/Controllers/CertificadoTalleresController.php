@@ -14,7 +14,6 @@ class CertificadoTalleresController extends Controller
     public function solicitados(){
         $solicitados = CertificadoTaller::where([
             ['solicitado','=','1'],
-            ['entregado','=','0'],
         ])->paginate();
         return view('admin.certificadosTalleres.solicitados', compact('solicitados'));
     }

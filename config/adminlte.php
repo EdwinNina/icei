@@ -272,8 +272,8 @@ return [
         [
             'text' => 'Historial Económico',
             'route'  => 'estudiante.kardex.economico',
-            'icon' => 'fas fa-fw fa-user',
             'can'  => 'estudiante.kardex.economico',
+            'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => 'Estudiantes',

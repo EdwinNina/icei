@@ -23,7 +23,7 @@
                 @foreach ($pagos as $index => $pago)
                     <tr>
                         <td class="px-1 py-2 w-auto">
-                            <select name="pagos[{{$index}}][tipo_razon_id]" wire:model="pagos.{{$index}}.tipo_razon_id"
+                            <select name="pagos[{{$index}}][tipo_razon_id]" wire:model.defer="pagos.{{$index}}.tipo_razon_id"
                                 class="custom-select sm:text-sm" required>
                                 <option value="" selected>Seleccionar</option>
                                 @foreach ($tipoRazones as $tipo)
@@ -32,7 +32,7 @@
                             </select>
                         </td>
                         <td class="px-1 py-2 w-auto">
-                            <select name="pagos[{{$index}}][tipo_pago_id]" wire:model="pagos.{{$index}}.tipo_pago_id"
+                            <select name="pagos[{{$index}}][tipo_pago_id]" wire:model.defer="pagos.{{$index}}.tipo_pago_id"
                                 class="custom-select sm:text-sm" required>
                                 <option value="" selected>Seleccionar</option>
                                 @foreach ($tipoPagos as $tipo)
@@ -41,7 +41,7 @@
                             </select>
                         </td>
                         <td class="px-1 py-2">
-                            <select name="pagos[{{$index}}][concepto]" wire:model="pagos.{{$index}}.concepto"
+                            <select name="pagos[{{$index}}][concepto]" wire:model.defer="pagos.{{$index}}.concepto"
                                 class="custom-select sm:text-sm concepto" required>
                                 <option value="" selected>Seleccionar</option>
                                 <option value="adelanto">Adelanto</option>

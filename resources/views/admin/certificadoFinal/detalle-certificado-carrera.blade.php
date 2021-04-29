@@ -75,7 +75,7 @@
                     </thead>
                     <tbody>
                         @foreach ($certificado->pagosCertificadoFinal as $index => $pago)
-                            @if ($pago->tipo_razon_id == "2" && $pago->estado != 0)
+                            @if ($pago->tipoDeRazon->nombre == "certificado" && $pago->estado != 0)
                                 <tr class="text-center">
                                     <td>{{ Str::title($pago->numeroFactura)}}</td>
                                     <td>{{ Str::title($pago->tipoDeRazon->nombre)}}</td>
@@ -133,6 +133,7 @@
             </div>
 
             <div class="flex justify-end mt-4">
+                <input type="hidden" id="idCertificado" value="{{$certificado->id}}">
                 <div class="custom-control ml-3 custom-switch">
                     <input type="checkbox" class="custom-control-input" id="solicitarCertificado"
                      {{$certificado->solicitado == 1 ? 'checked':''}}>
@@ -254,7 +255,7 @@
             e.preventDefault();
             axios.post('/admin/certificados-final/reporte-pago', {id:id})
                 .then(resp => {
-                    window.open("http://icei.test/Comprobante_de_Ingreso.pdf", "_blank");
+                    window.open("{{ asset('/')}}" + "Comprobante_de_Ingreso.pdf", "_blank");
                 });
         }
 
@@ -314,15 +315,81 @@
                 'certificado_id': certificadoId,
             }
             axios.post('/admin/certificados-final/entregaCertificado', data)
-                .then( resp => {
-                    if(resp.status === 200){
-                        toastr.success('Correcto', 'Los datos de entrega se enviaron correctamente');
-                        entregado_a.value = '';
-                        mostrarEntrega.style.display = 'none';
-                    }else{
-                        toastr.error('Incorrecto', 'Hubó un error, inténtelo de nuevo!');
-                    }
-                });
+            .then( resp => {
+                if(resp.status === 200){
+                    toastr.success('Correcto', 'Los datos de entrega se enviaron correctamente');
+                    entregado_a.value = '';
+                    mostrarEntrega.style.display = 'none';
+                }else{
+                    toastr.error('Incorrecto', 'Hubó un error, inténtelo de nuevo!');
+                }
+            });
         }
+
+        function anularPago(e,id){
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Estas seguro de anular este registro de pago?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if(result.dismiss === "cancel" || result.dismiss === "backdrop") {
+                    toastr.info('Se canceló la anulación de este registro');
+                    return;
+                }else{
+                    axios.post('/admin/registroEconomico/anular',{id:id})
+                    .then( resp => {
+                        if (resp.status == 200) {
+                            axios.post('/admin/certificados-final/cambiarEstadoPago',{idPago:id,idCertificado: certificadoId})
+                            .then( response => {
+                                toastr.success('Correcto', 'El pago se anuló correctamente');
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1500);
+                            })
+                        }else{
+                            toastr.error('Incorrecto', 'Hubó un error, inténtelo de nuevo!');
+                        }
+                    });
+                }
+            })
+        }
+
+        const btnsolicitarCertificado = document.getElementById('solicitarCertificado'),
+            idCertificado = document.getElementById('idCertificado').value;
+        btnsolicitarCertificado.addEventListener('change', e => {
+            if(e.target.checked == false){
+                Swal.fire({
+                title: '¿Estas seguro de cancelar la solicitud?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No'
+                }).then((result) => {
+                    if(result.dismiss === "cancel" || result.dismiss === "backdrop") {
+                        toastr.info('Se canceló la petición');
+                        return;
+                    }else{
+                        axios.post('/admin/certificados-final/cancelarSolicitud',{id:idCertificado})
+                        .then( resp => {
+                            if (resp.status == 200) {
+                                toastr.success('Correcto', 'Se canceló la solicitud correctamente');
+                                setTimeout(() => {
+                                    window.open("{{ route('admin.certificadoFinal.index')}}")
+                                }, 1500);
+                            }else{
+                                toastr.error('Incorrecto', 'Hubó un error, inténtelo de nuevo!');
+                            }
+                        });
+                    }
+                })
+            }
+        });
     </script>
 @stop

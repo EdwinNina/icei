@@ -49,14 +49,18 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'admin.configuraciones.index','descripcion' => 'ver listado de configuraciones'])->syncRoles([$administrador]);
         Permission::create(['name' => 'admin.categoriaServiciosVarios.index','descripcion' => 'ver categorias de servicios'])->syncRoles([$administrador]);
         Permission::create(['name' => 'admin.serviciosVarios.index','descripcion' => 'ver listado de servicios varios'])->syncRoles([$administrador]);
+        Permission::create(['name' => 'admin.serviciosVarios.create','descripcion' => 'registrar un nuevo servicio'])->syncRoles([$administrador]);
+        Permission::create(['name' => 'admin.serviciosVarios.edit','descripcion' => 'editar un servicio'])->syncRoles([$administrador]);
         Permission::create(['name' => 'admin.roles.index','descripcion' => 'ver listado de roles'])->syncRoles([$administrador]);
         Permission::create(['name' => 'admin.roles.create','descripcion' => 'crear un rol'])->syncRoles([$administrador]);
         Permission::create(['name' => 'admin.roles.edit','descripcion' => 'editar un rol'])->syncRoles([$administrador]);
         Permission::create(['name' => 'admin.registroEconomico.anularPago','descripcion' => 'anular registro de pago'])->syncRoles([$administrador]);
+        Permission::create(['name' => 'admin.anterioresEstudiantes.index','descripcion' => 'ver estudiantes antiguos'])->syncRoles([$administrador, $coordinador]);
 
         Permission::create(['name' => 'docente.notas.index','descripcion' => 'ver listado de notas'])->syncRoles([$docente]);
         Permission::create(['name' => 'docente.perfil.edit','descripcion' => 'editar perfil de docente'])->syncRoles([$docente]);
-        Permission::create(['name' => 'estudiante.kardex.index','descripcion' => 'ver kardex de estudiante'])->syncRoles([$estudiante]);
+        Permission::create(['name' => 'estudiante.kardex.academico','descripcion' => 'ver kardex academico de estudiante'])->syncRoles([$estudiante]);
+        Permission::create(['name' => 'estudiante.kardex.economico','descripcion' => 'ver kardex economico de estudiante'])->syncRoles([$estudiante]);
 
         Permission::create(['name' => 'admin.talleres.index', 'descripcion' => 'ver modulo de talleres'])->syncRoles([$administrador,$coordinador]);
         Permission::create(['name' => 'admin.planificacionTaller.create', 'descripcion' => 'crear una nueva planificacion de taller'])->syncRoles([$administrador,$coordinador]);

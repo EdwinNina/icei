@@ -200,7 +200,7 @@
                     showLoaderOnConfirm: false,
                     allowOutsideClick: () => !Swal.isLoading()
                     }).then((result) => {
-                        if(result.dismiss === "cancel") {
+                        if(result.dismiss === "cancel" || result.dismiss === "backdrop") {
                             toastr.info('Se canceló la habilitación del 2T');
                             btnHabilitar2t.checked = false;
                             return;
@@ -240,7 +240,7 @@
                     showLoaderOnConfirm: false,
                     allowOutsideClick: () => !Swal.isLoading()
                     }).then((result) => {
-                        if(result.dismiss === "cancel") {
+                        if(result.dismiss === "cancel" || result.dismiss === "backdrop") {
                             toastr.info('Se canceló la generación del certificado');
                             btnhabilitarCertificado.checked = false;
                             return;
@@ -286,7 +286,7 @@
                         confirmButtonText: 'Si',
                         cancelButtonText: 'No'
                     }).then((result) => {
-                        if(result.dismiss === "cancel") {
+                        if(result.dismiss === "cancel" || result.dismiss === "backdrop") {
                             toastr.info('Se canceló la aceptación de fotografías');
                             btnSolicitarFotos.checked = false;
                             return;
@@ -360,7 +360,7 @@
                 });
         }
 
-        function anularPago(e,id){
+        function anularPago(e,id,opcion){
             e.preventDefault();
             Swal.fire({
                 title: '¿Estas seguro de anular este registro de pago?',
@@ -371,17 +371,54 @@
                 confirmButtonText: 'Si',
                 cancelButtonText: 'No'
             }).then((result) => {
-                if(result.dismiss === "cancel") {
+                if(result.dismiss === "cancel" || result.dismiss === "backdrop") {
                     toastr.info('Se canceló la anulación de este registro');
                     return;
                 }else{
                     axios.post('/admin/registroEconomico/anular',{id:id})
                     .then( resp => {
                         if (resp.status == 200) {
-                            toastr.success('Correcto', 'Los datos de entrega se enviaron correctamente');
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1500);
+                            switch (opcion) {
+                                case "inscripcion":
+                                    axios.post('/admin/inscripciones/cambiarEstadoPagoInscripcion',{
+                                        idPago:id,
+                                        idInscripcion:inscripcionId,
+                                        opcion: 'inscripcion'
+                                    })
+                                    .then(resp => {
+                                        toastr.success('Correcto', 'Los registro de pago se anuló correctamente');
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1500);
+                                    });
+                                break;
+                                case "examen":
+                                    axios.post('/admin/inscripciones/cambiarEstadoPagoInscripcion',{
+                                        idPago:id,
+                                        idInscripcion:inscripcionId,
+                                        opcion: 'examen'
+                                    })
+                                    .then(resp => {
+                                        toastr.success('Correcto', 'Los registro de pago se anuló correctamente');
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1500);
+                                    });
+                                break;
+                                case "certificado":
+                                    axios.post('/admin/inscripciones/cambiarEstadoPagoInscripcion',{
+                                        idPago:id,
+                                        idInscripcion:inscripcionId,
+                                        opcion: 'certificado'
+                                    })
+                                    .then(resp => {
+                                        toastr.success('Correcto', 'Los registro de pago se anuló correctamente');
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1500);
+                                    });
+                                break;
+                            }
                         }else{
                             toastr.error('Incorrecto', 'Hubó un error, inténtelo de nuevo!');
                         }

@@ -127,7 +127,6 @@
                         </table>
                     </div>
                     <div class="my-4 px-6 flex justify-end items-center">
-                        <x-back-button href="{{ route('dashboard')}}">Volver</x-back-button>
                         <x-jet-danger-button type="submit" class="ml-2">Registrar</x-jet-danger-button>
                     </div>
                 </form>

@@ -38,8 +38,8 @@
                 <div>
                     <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200">Detalle del Servicio</h2>
                     <p><span class="font-bold">Categoria:</span> {{ Str::title($servicio->categoria->nombre) }}</p>
-                    <p><span class="font-bold">Fecha de Recepción:</span> {{ $servicio->fecha_recepcion }}</p>
-                    <p><span class="font-bold">Fecha de Entrega:</span> {{ $servicio->fecha_entrega }}</p>
+                    <p><span class="font-bold">Fecha de Recepción:</span> {{ $servicio->fecha_recepcion->format('d-m-Y') }}</p>
+                    <p><span class="font-bold">Fecha de Entrega:</span> {{ $servicio->fecha_entrega->format('d-m-Y') }}</p>
                     <p>
                         <span class="font-bold">Detalles:</span>
                         <span>{!! $servicio->detalles !!}</span>
@@ -65,7 +65,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($servicio->pagosServicios as $index => $pago)
-                                    @if ($pago->tipoDeRazon->nombre == "servicios varios")
+                                    @if ($pago->tipoDeRazon->nombre == "servicios varios" && $pago->estado != 0)
                                         <tr class="text-center">
                                             <td>{{ $pago->numeroFactura }}</td>
                                             <td>{{ Str::title($pago->tipoDePago->nombre)}}</td>
@@ -80,7 +80,7 @@
                                             <td>
                                                 <div class="flex items-center justify-evenly">
                                                 <a href="" onclick="imprimirRecibo(event, {{$pago->id}})"
-                                                    class="my-3 flex justify-center items-center mx-auto bg-red-500 rounded-full shadow-lg w-10 h-10">
+                                                    class="my-3 flex justify-center items-center mx-auto bg-green-500 rounded-full shadow-lg w-7 h-7">
                                                     @include('components.print-icon')
                                                 </a>
                                                 @can('admin.registroEconomico.anularPago')
@@ -120,6 +120,7 @@
                             </tfoot>
                         </table>
                     </div>
+                    <input type="hidden" value="{{$servicio->id}}" id="servicioId">
                     @if ($servicio->saldo > "0" || $servicio->saldo == null)
                         <div class="flex justify-end" >
                             <button type="button" id="btnAgregarPagoCertificado" class="btn bg-green-600 focus:border-green-800 hover:bg-green-700 hover:text-white"
@@ -178,9 +179,45 @@
             e.preventDefault();
             console.log(id);
             axios.post('/admin/servicios-varios/reporte-pago', {id:id})
-                .then(resp => {
-                    window.open("{{asset('/')}}" + "Comprobante_de_Ingreso.pdf", "_blank");
-                });
+            .then(resp => {
+                window.open("{{asset('/')}}" + "Comprobante_de_Ingreso.pdf", "_blank");
+            });
+        }
+
+        const servicioId = document.getElementById('servicioId').value;
+        function anularPago(e,id){
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Estas seguro de anular este registro de pago?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if(result.dismiss === "cancel" || result.dismiss === "backdrop") {
+                    toastr.info('Se canceló la anulación de este registro');
+                    return;
+                }else{
+                    axios.post('/admin/registroEconomico/anular',{id:id})
+                    .then( resp => {
+                        if (resp.status == 200) {
+                            axios.post('/admin/servicios-varios/cambiarEstadoPago',{
+                                idPago:id,
+                                idServicio:servicioId,
+                            }).then(resp => {
+                                toastr.success('Correcto', 'Los registro de pago se anuló correctamente');
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1500);
+                            });
+                        }else{
+                            toastr.error('Incorrecto', 'Hubó un error, inténtelo de nuevo!');
+                        }
+                    });
+                }
+            })
         }
 
     </script>

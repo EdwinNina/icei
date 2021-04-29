@@ -7,7 +7,6 @@
 
 @section('content')
 <div class="w-full pb-4">
-    @php  $montos_inscripcion = array(); $suma_montos_total_inscripcion = ''; @endphp
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <h1 class="text-gray-500 uppercase text-2xl mt-5 text-center">Mi historial Económico</h1>
         <div class="rounded p-6">
@@ -26,7 +25,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 relative">
-                        @foreach ($inscripciones as $index => $inscripcion)
+                        @foreach ($inscripciones as $inscripcion)
                             @foreach ($inscripcion->pagosInscripcion as $index => $pago)
                                 <tr>
                                     <td class="table-tail-td w-32">
@@ -49,28 +48,14 @@
                                         <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
                                     </td>
                                 </tr>
-                                @php
-                                    $montos_inscripcion[$index] = $pago->monto;
-                                @endphp
                             @endforeach
                         @endforeach
                     </tbody>
-                    @php
-                        $suma_montos_total_inscripcion = array_sum($montos_inscripcion);
-                    @endphp
-                    <tfoot>
-                        <tr>
-                            <td colspan="5" class="text-right">Total Cancelado</td>
-                            <td class="text-center font-bold">{{ number_format($suma_montos_total_inscripcion,2)}} Bs</td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
     </div>
     @if ($servicios->count())
-        @php  $montos_servicio = array(); $suma_montos_total_servicio = ''; @endphp
-
         <div class="bg-white overflow-hidden shadow-sm my-4 sm:rounded-lg">
             <div class="rounded p-6">
                 <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200 mb-3">Detalles económicos de relacionados a Pago de Servicios</h2>
@@ -111,28 +96,15 @@
                                             <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
                                         </td>
                                     </tr>
-                                    @php
-                                        $montos_servicio[$index] = $pago->monto;
-                                    @endphp
                                 @endforeach
                             @endforeach
                         </tbody>
-                        @php
-                            $suma_montos_total_servicio = array_sum($montos_servicio);
-                        @endphp
-                        <tfoot>
-                            <tr>
-                                <td colspan="5" class="text-right">Total Cancelado</td>
-                                <td class="text-center font-bold">{{ number_format($suma_montos_total_servicio,2)}} Bs</td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
     @endif
     @if ($talleres->count())
-        @php  $montos_taller = array(); $suma_montos_total_taller = ''; @endphp
         <div class="bg-white overflow-hidden shadow-sm my-4 sm:rounded-lg">
             <div class="rounded p-6">
                 <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200 mb-3">Detalles económicos de relacionados a Pago de Servicios</h2>
@@ -173,21 +145,9 @@
                                             <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
                                         </td>
                                     </tr>
-                                    @php
-                                        $montos_taller[$index] = $pago->monto;
-                                    @endphp
                                 @endforeach
                             @endforeach
                         </tbody>
-                        @php
-                            $suma_montos_total_taller = array_sum($montos_taller);
-                        @endphp
-                        <tfoot>
-                            <tr>
-                                <td colspan="5" class="text-right">Total Cancelado</td>
-                                <td class="text-center font-bold">{{ number_format($suma_montos_total_taller,2)}} Bs</td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>

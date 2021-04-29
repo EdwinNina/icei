@@ -124,7 +124,7 @@ Route::get('inscripcion-talleres', function(){
 
 Route::get('anteriores-estudiantes', function(){
     return view('admin.anterioresEstudiantes.index');
-})->name('admin.anterioresEstudiantes.index');
+})->middleware('can:admin.anterioresEstudiantes.index')->name('admin.anterioresEstudiantes.index');
 
 
 Route::get('/perfil/{user}/edit', [PerfilDocenteController::class,'edit'])->middleware('can:docente.perfil.edit')->name('docente.perfil.edit');
@@ -155,6 +155,7 @@ Route::post('/inscripciones/detalle-pago-inscripcion/', [InscripcionController::
 Route::post('/inscripciones/detalle-pago-examen/', [InscripcionController::class,'detallePagoExamen'])->name('admin.inscripciones.detallePagoExamen');
 Route::get('/inscripciones/detalle-pago-certificado/', [InscripcionController::class,'detallePagoCertificado'])->name('admin.inscripciones.detallePagoCertificado');
 Route::put('/inscripciones/cambiar-carrera/{inscripcion}', [InscripcionController::class,'cambiarCarrera'])->name('admin.inscripciones.cambiarCarrera');
+Route::post('/inscripciones/cambiarEstadoPagoInscripcion/', [InscripcionController::class,'cambiarEstadoPagoInscripcion'])->name('admin.inscripciones.cambiarEstadoPagoInscripcion');
 
 
 Route::get('/modulosInscritos/{estudiante}', [EstudianteController::class, 'modulosInscritos'])->name('admin.estudiantes.modulosInscritos');
@@ -178,6 +179,7 @@ Route::post('/servicios-varios', [ServiciosVariosController::class,'store'])->na
 Route::get('/servicios-varios/{servicio}/edit', [ServiciosVariosController::class,'edit'])->name('admin.serviciosVarios.edit');
 Route::put('/servicios-varios/{servicio}', [ServiciosVariosController::class,'update'])->name('admin.serviciosVarios.update');
 Route::post('/servicios-varios/reporte-pago/', [ServiciosVariosController::class,'generarPdfPago'])->name('admin.serviciosVarios.generarPdfPago');
+Route::post('/servicios-varios/cambiarEstadoPago', [ServiciosVariosController::class,'cambiarEstadoPago'])->name('admin.inscripciones.cambiarEstadoPago');
 
 Route::get('/notas-estudiantes/inscritos-planificacion/{id}',[NotasController::class,'inscritosPlanificacion'])->name('admin.notas.inscritos.planificacion');
 Route::post('/notas-estudiantes/inscritos-planificacion/',[NotasController::class,'store'])->name('admin.notas.inscritos.store');
@@ -208,6 +210,8 @@ Route::post('/certificados-final/solicitarFotos', [CertificadoFinalController::c
 Route::post('/certificados-final/cancelarSolicitarFotos', [CertificadoFinalController::class,'cancelarSolicitarFotos'])->name('admin.certificadoFinal.cancelarSolicitarFotos');
 Route::post('/certificados-final/entregaCertificado', [CertificadoFinalController::class,'entregaCertificado'])->name('admin.certificadoFinal.entregaCertificado');
 Route::get('/certificados-final/generar-certificado/{certificado}', [CertificadoFinalController::class,'generarCertificado'])->name('admin.certificadoFinal.generarCertificado');
+Route::post('/certificados-final/cancelarSolicitud', [CertificadoFinalController::class,'cancelarSolicitud'])->name('admin.certificadoFinal.cancelarSolicitud');
+Route::post('/certificados-final/cambiarEstadoPago', [CertificadoFinalController::class,'cambiarEstadoPago'])->name('admin.certificadoFinal.cambiarEstadoPago');
 
 
 Route::get('/certificados-talleres/solicitudes', [CertificadoTalleresController::class,'solicitados'])->name('admin.certificadosTalleres.solicitados');

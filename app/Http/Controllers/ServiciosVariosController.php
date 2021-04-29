@@ -198,4 +198,13 @@ class ServiciosVariosController extends Controller
         $fpdf->Output("Comprobante_de_Ingreso.pdf","F");
         $fpdf->Output();
     }
+
+    public function cambiarEstadoPago(Request $request){
+        $pago = RegistroEconomico::where('id',$request->idPago)->first();
+        $estado = Servicio::where('id', $request->idServicio)->first();
+        $estado->saldo = ($estado->saldo + $pago->monto);
+        $estado->save();
+        return response()->json($estado);
+    }
+
 }

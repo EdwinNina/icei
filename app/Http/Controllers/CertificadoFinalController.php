@@ -217,7 +217,6 @@ class CertificadoFinalController extends Controller
         ->select('certificado_carreras.*')
         ->where([
             ['solicitado','=','1'],
-            ['entregado','=','0'],
         ])
         ->orderBy('es.paterno','asc')
         ->paginate();
@@ -310,6 +309,9 @@ class CertificadoFinalController extends Controller
                 $fpdf->Cell(40,1,Carbon::parse($modulo->fecha_fin)->format('Y'));
             }
         }
+        $fpdf->SetFont('Arial','',12);
+        $fpdf->SetXY(16.6,24.4);
+        $fpdf->Cell(40,1,$certificado->planificacionCarrera->carrera->cargaHoraria);
         $fpdf->SetXY(13.5,28.5);
         $fpdf->SetFont('Arial','',12);
         $fpdf->Cell(40,0, utf8_decode('La Paz '.Carbon::now()->translatedFormat('d F Y')));
@@ -333,4 +335,17 @@ class CertificadoFinalController extends Controller
         exit;
     }
 
+    public function cancelarSolicitud(Request $request){
+        $estado = CertificadoCarrera::where('id', $request->id)->delete();
+        return response()->json($estado);
+    }
+
+    public function cambiarEstadoPago(Request $request){
+        $pago = RegistroEconomico::where('id',$request->idPago)->first();
+        $estado = CertificadoCarrera::where('id', $request->idCertificado)->first();
+        $estado->total_pagado = ($estado->total_pagado - $pago->monto);
+        $estado->saldo = ($estado->saldo + $pago->monto);
+        $estado->save();
+        return response()->json($estado);
+    }
 }

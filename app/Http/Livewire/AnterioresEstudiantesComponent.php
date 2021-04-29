@@ -7,11 +7,14 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\AnterioresEstudiantes;
 use App\Imports\AnterioresEstudiantesImport;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Validators\ValidationException;
 
 class AnterioresEstudiantesComponent extends Component
 {
     use WithFileUploads;
+    use WithPagination;
+
     public $modalFormVisible = false;
     public $nombreBotonCarga = 'Subir', $excel;
     public $searchPaterno, $searchMaterno, $searchNombre;
