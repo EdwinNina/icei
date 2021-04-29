@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>ICEI TECH</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -23,7 +23,7 @@
                 <!-- BEGIN: Login Info -->
                 <div class="hidden xl:flex flex-col min-h-screen">
                     <a href="" class="-intro-x flex items-center pt-5">
-                        <img alt="Midone Tailwind HTML Admin Template" class="w-6" src="{{ asset('images/logo.svg')}}">
+                        <img alt="Midone Tailwind HTML Admin Template" class="w-6" src="{{ asset('images/logo2.png')}}">
                         <span class="text-white text-lg ml-3"> ICEI<span class="font-medium"> S.R.L</span> </span>
                     </a>
                     <div class="my-auto">
