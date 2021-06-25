@@ -38,8 +38,4 @@ class Carrera extends Model
     {
         return $this->hasMany(PlanificacionCarrera::class);
     }
-
-    public function likes(){
-        return $this->belongsToMany(UsuarioGeneral::class, 'likes_usuarios');
-    }
 }
