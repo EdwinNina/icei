@@ -16,7 +16,8 @@ class PagosController extends Controller
         ->where([
             ['planificacion_carrera_id','=', $planificacionModulo->planificacion_carrera_id],
             ['modulo_id','=',$planificacionModulo->modulo_id],
-            ['congelacion','=',0],
+            ['congelacion','=', 0],
+            ['inscripcions.estado','=', 1],
         ])->orderBy('es.paterno','asc')->paginate();
 
         return view('admin.pagos.estudiantes-inscritos-planificacion', compact('inscritos'));

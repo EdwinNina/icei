@@ -1,14 +1,19 @@
 <div class="p-6">
-    <div class="flex items-center justify-between py-3">
+    <div class="flex flex-col md:flex-row md:justify-between py-3">
         @include('components.search')
-        <div>
+        <div class="grid grid-cols-2 gap-4 items-end">
+            <select class="custom-select sm:text-sm mt-2 md:mt-0 md:mr-3" wire:model="estado">
+                <option value="1" selected>Activos</option>
+                <option value="0">Anulados</option>
+            </select>
             <a href="{{ route('admin.inscripciones.create') }}"
-            class="btn bg-gray-800 focus:border-gray-900 hover:bg-gray-700 hover:text-white">Nuevo</a>
+            class="btn bg-gray-800 md:mx-auto focus:border-gray-900 hover:bg-gray-700 hover:text-white">Nuevo</a>
         </div>
     </div>
 
     @include('components.delete-modal')
     @include('admin.inscripciones.modal-congelamiento')
+
     <div class="mb-4">
         <div class="flex justify-between items-center mb-2">
             <h3 class="text-gray-500 uppercase text-sm font-semibold w-full">Buscar Por:</h3>
@@ -21,13 +26,13 @@
         </div>
         <div class="bg-gray-100 px-2 py-3 rounded-lg">
             <div class="flex items-start mt-1 flex-wrap">
-                <select class="custom-select sm:text-sm flex-1" wire:model="carrera_id">
+                <select class="custom-select sm:text-sm w-full md:flex-1" wire:model="carrera_id">
                     <option value="" selected>Seleccionar Carrera</option>
                     @foreach ($carreras as $carrera)
                         <option value="{{$carrera->id}}">{{$carrera->titulo}}</option>
                     @endforeach
                 </select>
-                <select class="custom-select sm:text-sm md:ml-4 flex-1" wire:model.defer="modulo_id">
+                <select class="custom-select sm:text-sm md:ml-4 w-full md:flex-1" wire:model.defer="modulo_id">
                     <option value="" selected>Seleccionar Modulo</option>
                     @if (!is_null($modulos))
                         @foreach ($modulos as $modulo)
@@ -64,7 +69,8 @@
                     <thead class="bg-gray-50">
                     <tr>
                         <th scope="col" class="table-tail-th">Nombre del Estudiante</th>
-                        <th scope="col" class="table-tail-th">Carrera</th>
+                        <th scope="col" class="text-xs font-medium pl-2 text-gray-500 uppercase w-44">Carrera</th>
+                        <th scope="col" class="w-44 text-xs font-medium pl-2 text-gray-500 uppercase">Módulo</th>
                         <th scope="col" class="table-tail-th text-center">Horario</th>
                         <th scope="col" class="table-tail-th text-center">Estado</th>
                         <th scope="col" class="table-tail-thr text-center">Acciones</th>
@@ -80,10 +86,18 @@
                                         {{ $item->congelacion == "1" ? 'Congeló el módulo' : '' }}
                                     </div>
                                 </td>
-                                <td class="table-tail-td">
+                                <td class="w-44">
                                     <div class="text-sm text-gray-900">{{ Str::title($item->modulo->carrera->titulo) }}</div>
                                     <div class="text-xs font-semibold text-gray-600">
                                         Mod. {{ Str::title($item->planificacionCarrera->modalidad->nombre) }}
+                                    </div>
+                                </td>
+                                <td class="w-44" data-toggle="tooltip" data-placement="top" title="{{$item->modulo->titulo_completo}}">
+                                    <div class="text-sm text-gray-900">{{
+                                        Str::length($item->modulo->titulo_completo) > 40
+                                        ? Str::substr($item->modulo->titulo_completo, 0, 40) . "..."
+                                        : $item->modulo->titulo_completo
+                                    }}
                                     </div>
                                 </td>
                                 <td class="table-tail-td text-center">
@@ -173,7 +187,7 @@
             {{ $inscripciones->links() }}
         </div>
         @else
-            <p class="text-red-400 text-center mt-4 font-bold">No existen registros en la base de datos</p>
+            <p class="text-red-400 text-center mt-4 font-bold">No existen coincidencias con lo seleccionado</p>
         @endif
 </div>
 

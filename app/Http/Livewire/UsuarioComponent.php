@@ -21,6 +21,7 @@ class UsuarioComponent extends Component
     public $roles = [];
     public $allRoles;
     public $currentRoles = [];
+    protected $paginationTheme = 'bootstrap';
 
     public function render()
     {

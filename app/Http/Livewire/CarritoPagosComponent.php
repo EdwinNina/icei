@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class CarritoPagosComponent extends Component
 {
-    public $modalFormVisible = false;
+    public $modalFormVisible = false, $mostrarCarrito = true;
     public $totalPagado = 0.0;
     public $costoModulo, $saldo = 0.0, $pagoAnterior;
     public $pagos = [], $tipoPagos = [], $tipoRazones = [];
@@ -29,11 +29,23 @@ class CarritoPagosComponent extends Component
         ];
     }
 
-    protected $listeners = ['costoModulo' => 'obtenerCostoModulo'];
+    protected $listeners = [
+        'costoModulo' => 'obtenerCostoModulo',
+        'mostrarCarrito',
+        'errorMostrarCarrito'
+    ];
 
     public function render()
     {
         return view('livewire.carrito-pagos-component');
+    }
+
+    public function mostrarCarrito(){
+        $this->mostrarCarrito = true;
+    }
+
+    public function errorMostrarCarrito(){
+        $this->mostrarCarrito = false;
     }
 
     public function agregarPago(){
@@ -67,10 +79,16 @@ class CarritoPagosComponent extends Component
         }
         $todosLosMontos[count($todosLosMontos)+1] = $this->pagoAnterior;
         $this->totalPagado = array_sum($todosLosMontos);
-        if($this->costoModulo >= $this->totalPagado ){
-            $calculoSaldo = $this->costoModulo - $this->totalPagado;
-            $this->saldo = empty($this->totalPagado) ? 0 : $calculoSaldo;
-            $this->emit('montoCorrecto');
+        if($this->costoModulo >= $this->totalPagado){
+            if ($this->totalPagado >= 0) {
+                $calculoSaldo = $this->costoModulo - $this->totalPagado;
+                $this->saldo = empty($this->totalPagado) ? 0 : $calculoSaldo;
+                $this->emit('montoCorrecto');
+            } else {
+                $this->emit('errorMontoCero');
+                $this->totalPagado = '0';
+                $this->saldo = '0';
+            }
         }else{
             $this->emit('errorMonto');
             $this->totalPagado = '0';

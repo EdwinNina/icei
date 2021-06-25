@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('content')
-<div class="py-8">
+<div class="py-8 mb-20">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         @if (session('message'))
         <div class="bg-green-500 border-l-4 px-5 py-2 rounded mb-3 border-green-600">
@@ -10,7 +10,7 @@
         @endif
         <div class="overflow-hidden">
             <div class="p-6">
-                <h1 class="text-2xl text-center uppercase font-bold mb-2">Docente {{$perfil->docente->nombre}}</h1>
+                <h1 class="text-2xl text-center uppercase font-bold mb-2">Docente {{Str::title($perfil->docente->nombre)}}</h1>
                 <div class="flex flex-col flex-wrap sm:flex-row sm:justify-between sm:items-center">
                     <figure>
                         <img src="{{ Storage::url('docentesAvatar/'. $perfil->foto)}}" alt="{{$perfil->docente->nombre}}"

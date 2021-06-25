@@ -14,6 +14,7 @@ class InscripcionTalleresComponent extends Component
     public $estadoRegistro = 1, $titulo, $mensaje, $opcionBoton = false;
     public $search = '';
     public $inscripcion_id;
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();

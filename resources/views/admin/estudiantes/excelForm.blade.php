@@ -30,8 +30,12 @@
 
     <x-slot name="footer">
         <x-jet-secondary-button wire:click="$set('modalFormVisible', false)" class="mr-2">Volver</x-jet-secondary-button>
-        <x-jet-danger-button wire:click="import()" class="flex justify-center items-center">
+        <x-jet-danger-button
+            wire:click="import()"
+            class="flex justify-center items-center"
+            wire:loading.remove wire:target="import">
             {{$nombreBotonCarga}}
         </x-jet-danger-button>
+        <span class="text-blue-500" wire:loading wire:target="import">Subiendo registros...</span>
     </x-slot>
 </x-jet-dialog-modal>

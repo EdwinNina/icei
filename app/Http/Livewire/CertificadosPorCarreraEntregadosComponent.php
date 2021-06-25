@@ -13,6 +13,7 @@ class CertificadosPorCarreraEntregadosComponent extends Component
 
     public $search;
     public $fecha_de = '', $fecha_hasta = '';
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();

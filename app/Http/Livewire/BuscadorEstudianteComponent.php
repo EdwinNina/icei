@@ -25,6 +25,10 @@ class BuscadorEstudianteComponent extends Component
         'buscarPorCarnet' => 'required|min:3',
     ];
 
+    protected $messages = [
+        'buscarPorCarnet.min' => 'El campo buscar por carnet debe contener al menos 3 números',
+    ];
+
     public function updated($buscarPorCarnet)
     {
         $this->validateOnly($buscarPorCarnet);
@@ -32,7 +36,7 @@ class BuscadorEstudianteComponent extends Component
 
     public function buscarEstudiante(){
         $validatedData = $this->validate();
-        $this->estudianteEncontrado = Estudiante::where('carnet','like', '%' . $validatedData['buscarPorCarnet'] . '%')->get();
+        $this->estudianteEncontrado = Estudiante::where('carnet','like', '%' . $validatedData['buscarPorCarnet'] . '%')->where('estado',1)->get();
     }
 
     public function updatedEstudianteId($estudiante_id){

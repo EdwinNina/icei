@@ -15,4 +15,9 @@ class UsuarioGeneral extends Model
     {
         return $this->morphTo();
     }
+
+    public function meGusta(){
+        return $this->belongsToMany(Carrera::class, 'likes_usuarios');
+    }
+
 }

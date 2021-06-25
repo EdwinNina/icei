@@ -16,7 +16,7 @@ class CreateRegistroEconomicosTable extends Migration
         Schema::create('registro_economicos', function (Blueprint $table) {
             $table->id();
             $table->string('numeroFactura',100)->nullable();
-            $table->enum('concepto',['adelanto','cancelacionTotal']);
+            $table->enum('concepto',['reserva','adelanto','cancelacionTotal']);
             $table->string('numero_recibo')->nullable();
             $table->decimal('monto',8,2);
             $table->date('fecha_pago');

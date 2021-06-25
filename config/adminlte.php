@@ -48,7 +48,7 @@ return [
     */
 
     'logo' => '<b>ICEI</b>TECH',
-    'logo_img' => 'images/logo2.png',
+    'logo_img' => 'images/logo2.svg',
     'logo_img_class' => 'brand-image',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -266,14 +266,14 @@ return [
         [
             'text' => 'Historial Académico',
             'route'  => 'estudiante.kardex.academico',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-fw fa-id-card',
             'can'  => 'estudiante.kardex.academico',
         ],
         [
             'text' => 'Historial Económico',
             'route'  => 'estudiante.kardex.economico',
             'can'  => 'estudiante.kardex.economico',
-            'icon' => 'fas fa-fw fa-user',
+            'icon' => 'fas fa-fw fa-money-bill-alt',
         ],
         [
             'text' => 'Estudiantes',
@@ -534,7 +534,7 @@ return [
             ],
         ],
         'Chartjs' => [
-            'active' => true,
+            'active' => false,
             'files' => [
                 [
                     'type' => 'js',

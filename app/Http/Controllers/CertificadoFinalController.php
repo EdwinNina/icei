@@ -320,7 +320,7 @@ class CertificadoFinalController extends Controller
         $fpdf->Cell(60,0,'..........................................');
         $fpdf->SetXY(8.5,31.5);
         $fpdf->Cell(60,0,'DOCENTE');
-        $fpdf->SetXY(7.8,32);
+        $fpdf->SetXY(7.4,32);
         $nombre_docente = $certificado->planificacionCarrera->docente->nombre_completo;
         $fpdf->Cell(60,0,utf8_decode('ING. '. $nombre_docente));
         if ( strcmp(Str::upper($nombre_docente),Str::upper($configuracion->director_academico)) > 0 ) {

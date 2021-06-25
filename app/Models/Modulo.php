@@ -17,7 +17,7 @@ class Modulo extends Model
     //mutadores
     public function getTituloCompletoAttribute()
     {
-        return "{$this->version} - " . Str::title($this->titulo);
+        return Str::upper($this->version) . " - " . Str::title($this->titulo);
     }
 
     //filtros con scope

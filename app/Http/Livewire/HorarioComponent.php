@@ -16,6 +16,7 @@ class HorarioComponent extends Component
     public $search;
     public $estadoRegistro = 0,  $titulo, $mensaje;
     public $dias, $hora_inicio, $hora_fin, $turno, $horarioId;
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();
@@ -101,8 +102,8 @@ class HorarioComponent extends Component
         $this->resetValidation();
         $this->horarioId = $horario->id;
         $this->dias = $horario->dias;
-        $this->hora_inicio = $horario->hora_inicio;
-        $this->hora_fin = $horario->hora_fin;
+        $this->hora_inicio = $horario->hora_inicio->format('H:i');
+        $this->hora_fin = $horario->hora_fin->format('H:i');
         $this->turno = $horario->turno;
         $this->modalFormVisible = true;
     }

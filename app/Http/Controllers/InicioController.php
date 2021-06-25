@@ -18,8 +18,7 @@ class InicioController extends Controller
         return view('inicio.cursos', compact('carreras'));
     }
 
-    public function detalleCurso($id){
-        $carrera = Carrera::where('id',$id)->first();
+    public function detalleCurso(Carrera $carrera){
         return view('inicio.detalle-curso', compact('carrera'));
     }
 }

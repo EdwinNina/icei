@@ -12,6 +12,7 @@ class TalleresComponent extends Component
 
     public $modalFormVisible = false;
     public $search, $nombre, $descripcion, $tallerId;
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();

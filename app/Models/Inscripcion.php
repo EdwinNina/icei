@@ -23,33 +23,26 @@ class Inscripcion extends Model
         }
 
         return $query->whereHas('estudiante', function($q) use($busqueda){
-            $q->where('nombre', 'like', "%{$busqueda}%")->orWhere('paterno', 'like', "%{$busqueda}%");
+            $q->where('nombre', 'like', "%" . $busqueda . "%")
+                ->orWhere('paterno', 'like', "%" . $busqueda . "%");
         });
     }
 
     public function scopeFiltro($query, $carrera, $modulo, $horario, $modalidad, $congelacion){
-        if($congelacion === ''){ return;}
+        if($congelacion === ''){
+            return;
+        }
 
         return $query->where([
-                ['modulo_id', $modulo],
-                ['congelacion', $congelacion],
+            ['modulo_id', $modulo],
+            ['congelacion', $congelacion],
             ])->whereHas('planificacionCarrera', function($q) use($horario,$carrera,$modalidad){
-            $q->where([
-                ['carrera_id','=', $carrera],
-                ['horario_id','=', $horario],
-                ['modalidad_id','=', $modalidad],
-            ]);
-        });
-    }
-
-    public function scopeFiltroPorCarrera($query, $carrera){
-        if($carrera === ''){ return;}
-
-        return $query->whereHas('planificacionCarrera', function($q) use($carrera){
-            $q->where([
-                ['carrera_id','=', $carrera],
-            ]);
-        });
+                $q->where([
+                    ['carrera_id','=', $carrera],
+                    ['horario_id','=', $horario],
+                    ['modalidad_id','=', $modalidad],
+                ]);
+            });
     }
 
     //relaciones Eloquent

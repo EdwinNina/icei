@@ -55,11 +55,11 @@
                                 @endif
                             <td class="table-tail-td">
                                 <div class="flex items-center justify-start">
-                                    <a href="{{ route('admin.carreras.edit', $item) }}"
+                                    <a href="{{ route('admin.carreras.edit', $item->id) }}"
                                         class="flex justify-center items-center mx-auto bg-yellow-500 rounded-full w-7 h-7 hover:bg-yellow-600 transition-all">
                                         @include('components.edit-icon')
                                     </a>
-                                    <a href="#" wire:click.prevent="openModalShow({{$item}})"
+                                    <a href="#" wire:click.prevent="openModalShow({{$item->id}})"
                                         class="flex justify-center items-center mx-auto bg-indigo-500 rounded-full w-7 h-7 hover:bg-indigo-600 transition-all">
                                         @include('components.show-icon')
                                     </a>

@@ -18,6 +18,13 @@
                 </span>
             </div>
         @endif
+        @if (session('error'))
+            <div class=" border-l-4 px-5 py-2 rounded mb-3 bg-red-500 border-red-600">
+                <span class="text-white text-center">
+                    {{session('error')}}
+                </span>
+            </div>
+        @endif
         <div class="w-full">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 @livewire('inscripcion-component')

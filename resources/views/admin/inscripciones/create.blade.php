@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Inscripcion')
 
 @section('content_header')
 @stop
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                        @livewire('carrito-pagos-component')
+                    @livewire('carrito-pagos-component')
                 </div>
                 <div class="flex justify-end mt-6 bg-gray-50 py-4 px-6">
                     <x-back-button href="{{ route('admin.inscripciones.index') }}" class="mr-2">Volver</x-back-button>
@@ -75,8 +75,14 @@
             document.getElementById('btnGuardar').classList.add('hidden');
         });
 
-/*         window.livewire.on('mostrarCarrito', () => {
-            document.getElementById('mostrarCarrito').classList.remove('hidden');
-        }); */
+        window.livewire.on('errorMontoCero', () => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'No puedes ingresar un monto menor a cero',
+                footer: 'Por favor ingrese un monto mayor o igual a cero si corresponde'
+            });
+            document.getElementById('btnGuardar').classList.add('hidden');
+        });
     </script>
 @stop

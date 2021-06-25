@@ -2,27 +2,31 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Nota;
 use App\Models\Modulo;
 use App\Models\Carrera;
 use App\Models\Horario;
 use Livewire\Component;
-use App\Models\Inscripcion;
 use App\Models\Modalidad;
+use App\Models\Inscripcion;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
+use App\Models\PlanificacionModulo;
 
 class InscripcionComponent extends Component
 {
 
     use WithPagination;
 
+    protected $paginationTheme = 'bootstrap';
+
     public $showModalDelete = false, $modalFormVisible = false;
     public $estadoRegistro = 1, $titulo, $mensaje, $opcionBoton = false;
     public $search = '', $estado_congelacion = '';
     public $inscripcion_id, $carrera, $modulo, $fecha_congelacion_inicio, $fecha_congelacion_fin, $congelacion;
-    public $modulos, $carrera_id = '', $horario_id = '', $modulo_id = '', $modalidad_id = '';
+    public $modulos, $carrera_id = '', $horario_id = '', $modulo_id = '', $modalidad_id = '', $estado = true;
 
-    public function mount() {
+    public function updatingSearch() {
         $this->resetPage();
     }
 
@@ -32,7 +36,8 @@ class InscripcionComponent extends Component
         $carreras = Carrera::get();
         $modalidades = Modalidad::get();
         $inscripciones = Inscripcion::leftJoin('estudiantes as es','inscripcions.estudiante_id','=','es.id')
-            ->select('inscripcions.*')->busqueda($this->search)
+            ->where('inscripcions.estado',$this->estado)
+            ->select('inscripcions.*')->busqueda(trim($this->search))
             ->filtro($this->carrera_id,$this->modulo_id,$this->horario_id,$this->modalidad_id,$this->estado_congelacion);
 
         $inscripciones = $inscripciones->orderBy('es.paterno','asc')->paginate(10);
@@ -67,15 +72,47 @@ class InscripcionComponent extends Component
         $this->mensaje = '¿Desea anular este registro?';
     }
 
-    public function delete(){
-        Inscripcion::where('id', $this->inscripcion_id)->update(['estado' => 0]);
+    public function delete()
+    {
+        $inscripcion = Inscripcion::where('id', $this->inscripcion_id)->first();
+        $estudiante = $inscripcion->estudiante->id;
+        $planificacionModulo = PlanificacionModulo::where([
+            ['planificacion_carrera_id', '=', $inscripcion->planificacionCarrera->id],
+            ['modulo_id', '=', $inscripcion->modulo_id],
+        ])->first();
+        $inscripcion->update(['estado' => 0]);
+
+        $notaEncontrada = Nota::where('estudiante_id', $estudiante)->where('planificacion_modulo_id',$planificacionModulo->id)->first();
+        if ($inscripcion->estado === 0) {
+            if ($notaEncontrada != null) {
+                Nota::where([
+                    'estudiante_id' => $estudiante,
+                    'planificacion_modulo_id' => $planificacionModulo->id
+                ])->delete();
+            }
+        }
         $this->showModalDelete = false;
         $this->resetPage();
         $this->emit('deleteItem');
     }
 
     public function enable(){
-        Inscripcion::where('id', $this->inscripcion_id)->update(['estado' => 1]);
+        $inscripcion = Inscripcion::where('id', $this->inscripcion_id)->first();
+        $estudiante = $inscripcion->estudiante->id;
+        $planificacionModulo = PlanificacionModulo::where([
+            ['planificacion_carrera_id', '=', $inscripcion->planificacionCarrera->id],
+            ['modulo_id', '=', $inscripcion->modulo_id],
+        ])->first();
+        $inscripcion->update(['estado' => 1]);
+        $notaEncontrada = Nota::where('estudiante_id', $estudiante)->where('planificacion_modulo_id',$planificacionModulo->id)->first();
+        if ($inscripcion->estado === 1) {
+            if ($notaEncontrada == null) {
+                Nota::create([
+                    'estudiante_id' => $estudiante,
+                    'planificacion_modulo_id' => $planificacionModulo->id
+                ]);
+            }
+        }
         $this->showModalDelete = false;
         $this->resetPage();
         $this->emit('deleteItem');

@@ -11,7 +11,7 @@ class PlanificacionCarreraComponent extends Component
 {
     use WithPagination;
 
-    public $search, $estado = '';
+    public $search, $estado = 1;
 
     public function mount() {
         $this->resetPage();

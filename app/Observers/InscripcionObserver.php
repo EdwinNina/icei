@@ -35,14 +35,27 @@ class InscripcionObserver
     public function updated(Inscripcion $inscripcion)
     {
         $estudiante = $inscripcion->estudiante->id;
-        $verificacion = Nota::where('estudiante_id', $estudiante)->first();
+        $planificacionModulo = PlanificacionModulo::where([
+            ['planificacion_carrera_id', '=', $inscripcion->planificacionCarrera->id],
+            ['modulo_id', '=', $inscripcion->modulo_id],
+        ])->first();
+
+        $notaEncontrada = Nota::where('estudiante_id', $estudiante)->where('planificacion_modulo_id',$planificacionModulo->id)->first();
 
         if($inscripcion->saldo == "0.00" || $inscripcion->saldo == "0"){
-            if (!$verificacion) {
-                $planificacionModulo = PlanificacionModulo::where([
-                    ['planificacion_carrera_id', '=', $inscripcion->planificacionCarrera->id],
-                    ['modulo_id', '=', $inscripcion->modulo_id],
-                ])->first();
+            if ($notaEncontrada == null) {
+                Nota::create([
+                    'estudiante_id' => $estudiante,
+                    'planificacion_modulo_id' => $planificacionModulo->id
+                ]);
+            }
+        }else{
+            if ($notaEncontrada != null) {
+                Nota::where([
+                    'estudiante_id' => $estudiante,
+                    'planificacion_modulo_id' => $planificacionModulo->id
+                ])->delete();
+            }else{
                 Nota::create([
                     'estudiante_id' => $estudiante,
                     'planificacion_modulo_id' => $planificacionModulo->id

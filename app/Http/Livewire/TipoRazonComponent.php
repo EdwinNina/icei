@@ -15,6 +15,7 @@ class TipoRazonComponent extends Component
     public $search;
     public $estadoRegistro = 0,$titulo, $mensaje;
     public $nombre, $descripcion, $tipoRazonId;
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();

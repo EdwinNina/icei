@@ -38,6 +38,7 @@ class EstudianteComponent extends Component
     'TJ' => 'TJ', 'SC' => 'SC', 'BN' => 'BN', 'PD' => 'PD'];
     public $grados = ['estudiante' => 'Estudiante', 'tecnico superior' => 'Técnico superior', 'licenciado' => 'Licenciado',
     'magister' => 'Magister', 'doctor' => 'Doctor'];
+    protected $paginationTheme = 'bootstrap';
 
 
     public function mount() {

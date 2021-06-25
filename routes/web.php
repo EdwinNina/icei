@@ -20,7 +20,7 @@ use App\Http\Controllers\PerfilDocenteController;
 
 Route::get('/', [InicioController::class, 'index'])->name('inicio');
 Route::get('/cursos', [InicioController::class, 'cursos'])->name('cursos');
-Route::get('/cursos/{curso}', [InicioController::class, 'detalleCurso'])->name('detalleCurso');
+Route::get('/curso/{carrera}', [InicioController::class, 'detalleCurso'])->name('detalleCurso');
 
 Route::get('/perfil/{perfil}', [PerfilDocenteController::class,'show'])->name('docente.perfil.show');
 
@@ -33,5 +33,3 @@ Route::get('historial-economico', [KardexEstudianteController::class,'economico'
 
 Route::get('/notas-estudiantes/inscritos-planificacion/{id}',[NotasController::class,'inscritosPlanificacion'])->name('admin.notas.inscritos.planificacion');
 Route::post('/notas-estudiantes/inscritos-planificacion/',[NotasController::class,'store'])->name('admin.notas.inscritos.store');
-
-

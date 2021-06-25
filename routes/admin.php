@@ -30,6 +30,7 @@ use App\Http\Controllers\PlanificacionModuloController;
 use App\Http\Controllers\PlanificacionTallerController;
 use App\Http\Controllers\PlanificacionCarreraController;
 use App\Http\Controllers\AnterioresEstudiantesController;
+use App\Http\Controllers\CalendarioPlanificacionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -182,7 +183,7 @@ Route::post('/servicios-varios/reporte-pago/', [ServiciosVariosController::class
 Route::post('/servicios-varios/cambiarEstadoPago', [ServiciosVariosController::class,'cambiarEstadoPago'])->name('admin.inscripciones.cambiarEstadoPago');
 
 Route::get('/notas-estudiantes/inscritos-planificacion/{id}',[NotasController::class,'inscritosPlanificacion'])->name('admin.notas.inscritos.planificacion');
-Route::post('/notas-estudiantes/inscritos-planificacion/',[NotasController::class,'store'])->name('admin.notas.inscritos.store');
+Route::post('/notas-estudiantes/inscritos-planificacion',[NotasController::class,'store'])->name('admin.notas.inscritos.store');
 
 Route::resource('/roles', RoleController::class)->names('admin.roles');
 
@@ -239,3 +240,8 @@ Route::post('/inscripcion-taller/deshabilitarCertificado', [InscripcionTalleresC
 
 Route::get('/dashboard', [DashboardController::class,'index'])->middleware('can:admin.dashboard.index') ->name('admin.dashboard.index');
 Route::post('/estado-certificados', [DashboardController::class,'estadoCertificados'])->name('admin.dashboard.estadoCertificados');
+Route::post('/ingresos-mes', [DashboardController::class,'ingresosMes'])->name('admin.dashboard.ingresosMes');
+Route::post('/ingresos-anio', [DashboardController::class,'ingresosAnio'])->name('admin.dashboard.ingresosAnio');
+
+Route::get('/calendario-planificaciones', [CalendarioPlanificacionController::class, 'index'])->name('admin.calendario.index');
+Route::get('/calendario-planificaciones/mostrar', [CalendarioPlanificacionController::class, 'show'])->name('admin.calendario.show');

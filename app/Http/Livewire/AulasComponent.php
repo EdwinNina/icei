@@ -14,6 +14,7 @@ class AulasComponent extends Component
     public $modalFormVisible = false, $showModalDelete = false;
     public $search, $aula, $piso, $aulaId;
     public $estadoRegistro = 0, $titulo, $mensaje;
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();

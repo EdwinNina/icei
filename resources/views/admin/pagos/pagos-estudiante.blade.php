@@ -47,20 +47,22 @@
                         @php  $montos = array(); $suma_montos_total = ''; @endphp
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($inscripcion->pagosInscripcion as $index => $pago)
-                            <tr class="text-center">
-                                <td class="table-tail-td"><div class="text-sm text-gray-900">{{$index + 1}}</div></td>
-                                <td class="table-tail-td">
-                                    <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
-                                </td>
-                                <td class="table-tail-td">
-                                    <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
-                                </td>
-                                <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
-                                <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
-                                <td class="table-tail-td">
-                                    <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
-                                </td>
-                            </tr>
+                                @if ($pago->estado != 0)
+                                    <tr class="text-center">
+                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{$index + 1}}</div></td>
+                                        <td class="table-tail-td">
+                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
+                                        </td>
+                                        <td class="table-tail-td">
+                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
+                                        </td>
+                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
+                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
+                                        <td class="table-tail-td">
+                                            <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
+                                        </td>
+                                    </tr>
+                                @endif
                             @php
                                 $montos[$index] = $pago->monto;
                                 $suma_montos_total = array_sum($montos);

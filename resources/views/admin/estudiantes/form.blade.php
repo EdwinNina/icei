@@ -2,6 +2,7 @@
     <div class="w-full">
         <div class="overflow-hidden bg-white sm:rounded-lg px-5 py-2">
             <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200">Datos Personales</h2>
+            {{$holis}}
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3 mt-4">
                 <div>
                     <x-required-label for="nombre" value="Nombre" />

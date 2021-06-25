@@ -4,18 +4,18 @@
         <div class="flex items-center justify-between py-3">
             @include('components.search')
         </div>
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center">
             <label>Buscar por fechas</label>
-            <div class="flex items-center">
-                <div class="mx-3">
+            <div class="flex items-center flex-wrap">
+                <div class="flex-1">
                     <x-jet-label value="Fecha Inicio" />
-                    <x-jet-input type="date" wire:model.defer="fecha_de" />
+                    <x-jet-input type="date" class="w-full" wire:model.defer="fecha_de" />
                 </div>
-                <div>
+                <div class="flex-1 md:mx-4">
                     <x-jet-label value="Fecha Fin" />
-                    <x-jet-input type="date" wire:model.delay.1000ms="fecha_hasta" />
+                    <x-jet-input type="date" class="w-full" wire:model.delay.1000ms="fecha_hasta" />
                 </div>
-                <div class="flex-1 mt-4">
+                <div class="w-full md:w-min mt-2 md:mt-0 flex justify-end">
                     <a href="" wire:click.prevent="limpiarFiltro()"
                     class="p-2 flex items-center bg-purple-600 text-white rounded-md shadow-md hover:bg-purple-700 ml-4 mt-1">
                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

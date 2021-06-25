@@ -17,6 +17,7 @@ class ModuloComponent extends Component
     public $search = '', $moduloId, $carrera_id = '';
     public $estadoRegistro = 0, $mensaje;
     public $titulo, $version, $temario, $cargaHoraria, $carrera, $portada;
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();

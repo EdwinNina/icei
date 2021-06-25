@@ -31,10 +31,10 @@
                                 <div class="text-sm text-gray-900">{{ Str::title($item->dias) }}</div>
                             </td>
                             <td class="table-tail-td">
-                                <div class="text-sm text-gray-900">{{ $item->hora_inicio->format('d-m-Y') }}</div>
+                                <div class="text-sm text-gray-900">{{ $item->hora_inicio->format('H:i') }}</div>
                             </td>
                             <td class="table-tail-td">
-                                <div class="text-sm text-gray-900">{{ $item->hora_fin->format('d-m-Y') }}</div>
+                                <div class="text-sm text-gray-900">{{ $item->hora_fin->format('H:i') }}</div>
                             </td>
                             <td class="table-tail-td">
                                 <div class="text-sm text-gray-900">{{ Str::title($item->turno) }}</div>

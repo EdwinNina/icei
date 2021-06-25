@@ -29,4 +29,10 @@ class PlanificacionModulo extends Model
     {
         return $this->hasMany(Nota::class);
     }
+
+    public function detalleNota()
+    {
+        return $this->hasOne(DetalleNota::class);
+    }
+
 }

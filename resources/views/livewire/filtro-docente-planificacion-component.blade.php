@@ -16,7 +16,7 @@
                     <option value="{{$carrera->id}}">{{ Str::title($carrera->titulo) }}</option>
                 @endforeach
             </select>
-            <select name="" class="custom-select sm:text-sm w-full md:flex-1 md:ml-4" wire:model.lazy="modulo_id">
+            <select name="" class="custom-select sm:text-sm w-full md:flex-1 md:ml-4" wire:model.defer="modulo_id">
                 <option value="" selected>Seleccionar Modulo</option>
                 @if (!is_null($modulos))
                     @foreach ($modulos as $modulo)
@@ -26,19 +26,19 @@
             </select>
         </div>
         <div class="flex items-start mt-1 flex-wrap">
-            <select name="" class="custom-select sm:text-sm w-full md:flex-1" wire:model.lazy="horario_id">
+            <select name="" class="custom-select sm:text-sm w-full md:flex-1" wire:model.defer="horario_id">
                 <option value="" selected>Seleccionar Horario</option>
                 @foreach ($horarios as $horario)
                     <option value="{{$horario->id}}">{{$horario->horario_completo}}</option>
                 @endforeach
             </select>
-            <select name="" class="custom-select sm:text-sm w-full md:mx-4 md:flex-1" wire:model.lazy="modalidad_id">
+            <select name="" class="custom-select sm:text-sm w-full md:mx-4 md:flex-1" wire:model.defer="modalidad_id">
                 <option value="" selected>Seleccionar Modalidad</option>
                 @foreach ($modalidades as $modalidad)
                     <option value="{{$modalidad->id}}">{{$modalidad->nombre}}</option>
                 @endforeach
             </select>
-            <select name="" class="custom-select sm:text-sm w-full md:flex-1" wire:model.lazy="gestion">
+            <select name="" class="custom-select sm:text-sm w-full md:flex-1" wire:model.defer="gestion">
                 <option value="" selected>Seleccionar Gestión</option>
                 <option value="2019">2019</option>
                 <option value="2020">2020</option>

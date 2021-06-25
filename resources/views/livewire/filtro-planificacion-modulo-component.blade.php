@@ -25,7 +25,7 @@
                 @endif
             </select>
         </div>
-        <div class="flex items-start mt-1 flex-wrap">
+        <div class="flex items-start justify-end mt-1 flex-wrap">
             <select name="" class="custom-select sm:text-sm w-full md:flex-1" wire:model.defer="horario_id">
                 <option value="" selected>Seleccionar Horario</option>
                 @foreach ($horarios as $horario)
@@ -62,6 +62,7 @@
     <h3 class="text-gray-500 uppercase font-semibold my-3">Lista de Planificaciones por Módulo</h3>
     <div class="shadow-sm overflow-hidden border-b rounded border-gray-200 sm:rounded-lg">
             @if (count($planificaciones) != 0)
+        <div class="table-responsive">
             <table class="table-tail">
                 <thead class="bg-gray-50">
                 <tr>
@@ -126,15 +127,16 @@
                         @endforeach
                 </tbody>
             </table>
-            @else
-                <div class="py-3">
-                    @if ($carrera_id == '' && $modulo_id == '')
-                        <p class="text-blue-500 font-bold text-sm text-center no-encontrado">Seleccione algún criterio para la búsqueda</p>
-                    @else
-                        <p class="text-red-500 font-bold text-sm text-center no-encontrado">No existen registros en la base de datos que coincidan esos criterios</p>
-                    @endif
-                </div>
-            @endif
+        </div>
+        @else
+            <div class="py-3">
+                @if ($carrera_id == '' && $modulo_id == '')
+                    <p class="text-blue-500 font-bold text-sm text-center no-encontrado">Seleccione algún criterio para la búsqueda</p>
+                @else
+                    <p class="text-red-500 font-bold text-sm text-center no-encontrado">No existen registros en la base de datos que coincidan esos criterios</p>
+                @endif
+            </div>
+        @endif
     </div>
 </div>
 

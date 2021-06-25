@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carrera;
-use App\Models\Categoria;
 use App\Models\Docente;
-use Illuminate\Support\Facades\File;
+use App\Models\Categoria;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class CarreraController extends Controller
 {
@@ -46,6 +48,8 @@ class CarreraController extends Controller
 
         $carrera = new Carrera();
         $carrera->titulo = mb_strtolower($request->titulo);
+        $slugGenerado = Str::slug($request->titulo);
+        $carrera->slug = $slugGenerado;
         $carrera->descripcion = mb_strtolower($request->descripcion);
         $carrera->requisitos = mb_strtolower($request->requisitos);
         $carrera->cargaHoraria = $request->cargaHoraria;
@@ -85,10 +89,10 @@ class CarreraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Carrera $carrera)
+    public function edit($id)
     {
         $categorias = Categoria::select('nombre','id')->where('estado',1)->get();
-
+        $carrera = Carrera::where('id', $id)->first();
         return view('admin.carreras.edit', compact('categorias','carrera'));
     }
 
@@ -99,8 +103,11 @@ class CarreraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Carrera $carrera)
+    public function update(Request $request, $id)
     {
+        $carrera = Carrera::where('id', $id)->first();
+        $slugGenerado = Str::slug($request->titulo);
+
         if($request->hasFile('portada')){
 
             $request->validate([
@@ -116,6 +123,7 @@ class CarreraController extends Controller
                 File::delete($path);
             }
             $carrera->titulo = mb_strtolower($request->titulo);
+            $carrera->slug = $slugGenerado;
             $carrera->descripcion = mb_strtolower($request->descripcion);
             $carrera->cargaHoraria = $request->cargaHoraria;
             $carrera->categoria_id = $request->categoria_id;
@@ -129,6 +137,7 @@ class CarreraController extends Controller
             $carrera->save();
         }else{
             $carrera->titulo = mb_strtolower($request->titulo);
+            $carrera->slug = $slugGenerado;
             $carrera->descripcion = mb_strtolower($request->descripcion);
             $carrera->cargaHoraria = $request->cargaHoraria;
             $carrera->categoria_id = $request->categoria_id;
@@ -139,6 +148,42 @@ class CarreraController extends Controller
             return redirect()->route('admin.carreras.index')->with('message','good');
         } else {
             return redirect()->route('admin.carreras.index')->with('message','bad');
+        }
+    }
+
+    public function getCarreras() {
+         $modulosProximos = DB::table('carreras as ca')
+                ->join('planificacion_carreras as pc', 'pc.carrera_id','=','ca.id')
+                ->join('planificacion_modulos as pm','pm.planificacion_carrera_id','=','pc.id')
+                ->join('modulos as mo','mo.id','=','pm.modulo_id')
+                ->select('ca.titulo as carrera','mo.titulo as modulo','mo.version as version','mo.portada as imagen','pm.fecha_inicio as inicio','pm.fecha_fin as fin')
+                ->whereMonth('pm.fecha_inicio', date('m'))
+                ->orWhere(function($query) {
+                    $query->whereMonth('pm.fecha_inicio', date('m') + 1);
+                })
+                ->orderBy('pm.fecha_inicio','asc')
+                ->get();
+
+        $carreras = DB::table('carreras as ca')
+            ->join('modulos as mo','mo.carrera_id','=','ca.id')
+            ->select('ca.titulo', 'ca.requisitos', 'ca.portada', 'ca.cargaHoraria', DB::raw("count(mo.carrera_id) as cantidadModulos"))
+            ->groupBy('ca.titulo','ca.requisitos', 'ca.portada', 'ca.cargaHoraria','mo.carrera_id')
+            ->where('ca.estado', 1)
+            ->get();
+
+        if(count($modulosProximos)){
+            return response()->json([
+                'modulosProximos' => $modulosProximos,
+                'carreras' => $carreras,
+                'status' => 'ok',
+                'mensaje' => 'Obtención de Información existosa'
+            ],200);
+        }else{
+            return response()->json([
+            'carreras' => 0,
+            'status' => 'bad',
+            'mensaje' => 'No hay modulos nuevos disponibles'
+            ],200);
         }
     }
 }

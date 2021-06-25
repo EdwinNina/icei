@@ -14,7 +14,7 @@ class RegistroEconomico extends Model
     protected $table = 'registro_economicos';
 
     protected $casts = [
-        'fecha_pago' => 'datetime'
+        'fecha_pago' => 'date:d-m-Y'
     ];
 
 

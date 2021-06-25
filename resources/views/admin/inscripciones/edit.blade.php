@@ -30,10 +30,10 @@
             <div class="p-6">
                 <div class="flex justify-between mb-3 items-start">
                     <h1 class="text-gray-500 uppercase text-2xl mt-1 mb-3 text-center">Actualizar datos de asignación del alumno</h1>
-                    <button type="button"
+{{--                     <button type="button"
                         class="btn bg-yellow-500 focus:bg-yellow-600 hover:bg-yellow-600 hover:text-white"
                         onclick="anularInscripcion({{$inscripcion->id}})">Anular Inscripción
-                    </button>
+                    </button> --}}
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -51,6 +51,7 @@
                     </div>
                     <div>
                         <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200">Detalle de la Carrera o Módulo tomado</h2>
+                        <input type="hidden" id="inscripcion_id" value="{{$inscripcion->id}}">
                         <p><span class="font-bold">Codigo:</span> {{$inscripcion->planificacionCarrera->codigo}}</p>
                         <p><span class="font-bold">Carrera:</span> {{ Str::title($inscripcion->modulo->carrera->titulo)}}</p>
                         <p class="obtenerModulo">
@@ -70,23 +71,23 @@
     </div>
     <div x-data="{mostrarPagosInscripcion: true, mostrarPagosExamen: false, mostrarPagosCertificado : false, mostrarCambioDeCarrera: false}">
         <h2 class="text-sm uppercase font-bold text-yellow-500 border-b-2 mt-4 border-gray-200">Otras acciones a realizar</h2>
-        <div class="flex justify-end mt-4">
+        <div class="flex flex-col md:flex-row md:justify-end md:items-end flex-wrap mt-4">
             <button type="button"
                 @click="mostrarPagosInscripcion = !mostrarPagosInscripcion; mostrarPagosCertificado = false; mostrarPagosExamen = false; mostrarCambioDeCarrera = false;"
                 class="btn flex justify-center bg-blue-800 focus:border-blue-900 hover:bg-blue-700 hover:text-white"
                 x-text="[mostrarPagosInscripcion == true ? 'Ocultar Pagos Inscripcion' : 'Ver Pagos Inscripcion']"></button>
             <button type="button"
                 @click="mostrarPagosExamen = !mostrarPagosExamen; mostrarPagosInscripcion = false; mostrarPagosCertificado = false; mostrarCambioDeCarrera = false"
-                class="btn mx-4 flex justify-center bg-blue-800 focus:border-blue-900 hover:bg-blue-700 hover:text-white"
+                class="btn mt-4 md:mt-0 md:mx-4 flex justify-center bg-blue-800 focus:border-blue-900 hover:bg-blue-700 hover:text-white"
                 x-text="[mostrarPagosExamen == true ? 'Ocultar Pagos Examen 2T' : 'Ver Pagos Examen 2T']"></button>
-                <button type="button"
+            <button type="button"
                 @click="mostrarPagosCertificado = !mostrarPagosCertificado; mostrarPagosInscripcion = false; mostrarPagosExamen = false; mostrarCambioDeCarrera = false"
-                class="btn flex justify-center bg-blue-800 focus:border-blue-900 hover:bg-blue-700 hover:text-white"
+                class="btn mt-4 md:mt-0 flex justify-center bg-blue-800 focus:border-blue-900 hover:bg-blue-700 hover:text-white"
                 x-text="[mostrarPagosCertificado == true ? 'Ocultar Pagos Certificado' : 'Ver Pagos Certificado']">
             </button>
             <button type="button"
                 @click="mostrarCambioDeCarrera = !mostrarCambioDeCarrera; mostrarPagosInscripcion = false; mostrarPagosCertificado= false; mostrarPagosExamen = false"
-                class="btn ml-4 flex justify-center bg-yellow-500 focus:border-yellow-600 hover:bg-yellow-600 hover:text-white">
+                class="btn mt-4 md:mt-0 md:ml-4 flex justify-center bg-yellow-500 focus:border-yellow-600 hover:bg-yellow-600 hover:text-white">
                 Cambiar Carrera
             </button>
         </div>
@@ -156,7 +157,7 @@
             document.getElementById('btnGuardar').classList.add('hidden');
         });
 
-        function anularInscripcion(id){
+/*         function anularInscripcion(id){
             Swal.fire({
                 title: '¿Estas seguro de anular esta inscripción?',
                 type: 'warning',
@@ -181,7 +182,7 @@
                     toastr.info('Se cancelo la accion de deshabilitación');
                 }
             })
-        }
+        }*/
 
         const btnHabilitar2t = document.getElementById('habilitar2t'),
             btnSolicitarFotos = document.getElementById('solicitarFotos'),

@@ -52,27 +52,27 @@ class CertificadoController extends Controller
         $fpdf->SetXY(2,7);
         $fpdf->SetFont('Arial','',7);
         $fpdf->Cell(40,0, utf8_decode($certificado->codigo));
-        $fpdf->SetXY(4.5,13);
+        $fpdf->SetXY(4.5,13.2);
         $fpdf->SetFont('Arial','B',15);
         $fpdf->Cell(40,0, utf8_decode(Str::upper($certificado->estudiante->nombre_completo)));
-        $fpdf->SetXY(7.2,15);
+        $fpdf->SetXY(7.4,15.3);
         $fpdf->SetFont('Arial','B',11);
-        $fpdf->MultiCell(10,0.7,utf8_decode(Str::upper($certificado->inscripcion->modulo->titulo)),0,'C');
-        $fpdf->SetXY(11,17.5);
+        $fpdf->MultiCell(8,0.6,utf8_decode(Str::upper($certificado->inscripcion->modulo->titulo)),0,'C');
+        $fpdf->SetXY(10.7,17.7);
         $fpdf->Cell(40,0, utf8_decode($certificado->nota->nota_final . "% (" . Str::title(NumeroALetras::convertir($certificado->nota->nota_final)) . 'por ciento)'));
-        $fpdf->SetXY(8,19.7);
+        $fpdf->SetXY(8,19.8);
         $fpdf->SetFont('Arial','B',11);
         $fpdf->Cell(40,0, utf8_decode('Del ' . Str::title(Carbon::parse($certificado->planificacionModulo->fecha_inicio)->translatedFormat('d F Y')) . ' al ' . Str::title(Carbon::parse($certificado->planificacionModulo->fecha_fin)->translatedFormat('d F Y'))));
-        $fpdf->SetXY(6.7,21.8);
+        $fpdf->SetXY(6.4,22);
         $fpdf->Cell(40,0, utf8_decode($certificado->inscripcion->modulo->cargaHoraria));
-        $fpdf->SetXY(12.5,21.8);
+        $fpdf->SetXY(12.5,22);
         $fpdf->Cell(40,0, utf8_decode(Carbon::now()->translatedFormat('d F Y')));
-        $fpdf->SetXY(3,24);
+        $fpdf->SetXY(3,25);
         $fpdf->SetFont('Arial','',9);
         $fpdf->Cell(60,0,'.....................................................');
-        $fpdf->SetXY(4.6,24.5);
+        $fpdf->SetXY(4.6,25.5);
         $fpdf->Cell(60,0,'DOCENTE');
-        $fpdf->SetXY(3.1,25);
+        $fpdf->SetXY(3.3,25.9);
         $nombre_docente = $certificado->planificacionModulo->planificacionCarrera->docente->nombre_completo;
         $fpdf->Cell(60,0,utf8_decode('ING. '. Str::upper($nombre_docente)));
 /*         if ( strcmp(Str::upper($nombre_docente),Str::upper($configuracion->director_academico)) > 0 ) {
@@ -83,7 +83,7 @@ class CertificadoController extends Controller
             $fpdf->SetXY(10,25);
             $fpdf->Cell(60,0,utf8_decode('ING. ' . Str::upper($configuracion->director_academico)));
         } */
-        $fpdf->Output('','reporte','true');
+        $fpdf->Output('','reporte.pdf','true');
         exit;
     }
 

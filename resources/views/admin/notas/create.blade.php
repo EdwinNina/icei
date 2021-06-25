@@ -11,6 +11,22 @@
             <span class="text-white text-center">{{session('message')}}</span>
         </div>
     @endif
+    @php
+        $docente_id = $planificacionModulo->planificacionCarrera->docente->id;
+        $habilitar = $planificacionModulo->habilitar_notas;
+        $usuario = Auth::user()->usuarioGeneral;
+    @endphp
+
+    @if ($usuario != null)
+        @if ($usuario->generable_id === $docente_id && !$habilitar)
+            <div class="border-l-8 px-5 py-2 rounded mb-3 bg-red-500 border-red-600 flex items-center justify-around shadow-md">
+                <img src="{{ asset('images/denegado.png') }}" alt="acceso denegado" class="hidden md:block max-h-14 object-cover object-center">
+                <span class="text-white text-center">El ingreso de notas no esta habilitado, por favor comuniquese con el coordinador o administrador para que pueda habilitarlo</span>
+            </div>
+        @endif
+    @endif
+
+
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
         <h1 class="text-gray-500 uppercase text-2xl text-center">Centralizador de Notas</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 my-4 gap-4">
@@ -39,96 +55,137 @@
                     @csrf
                     <input type="hidden" name="planificacion_modulo_id" value="{{$planificacionModulo->id}}">
                     <input type="hidden" value="{{$configuracion->nota_minima_aprobacion}}" id="nota_minima">
-                    <div class="table-responsive">
-                        <table class="table-tail">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="table-tail-th text-center">Carnet</th>
-                                    <th class="table-tail-th text-center">Nombre del Estudiante</th>
-                                    <th class="table-tail-th w-20">Form (60%)</th>
-                                    <th class="table-tail-th w-20">Sum (40%)</th>
-                                    <th class="table-tail-th w-20">Total</th>
-                                    <th class="table-tail-thr text-center">Observacion</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @php
-                                    $docente_id = $planificacionModulo->planificacionCarrera->docente->id;
-                                    $habilitar = $planificacionModulo->habilitar_notas;
-                                    $usuario = Auth::user()->usuarioGeneral;
-                                @endphp
-                                @foreach ($inscritos as $index => $item)
+                    @if ($usuario === null)
+                        <div class="table-responsive">
+                            <table class="table-tail">
+                                <thead class="bg-gray-50">
                                     <tr>
-                                        <td class="table-tail-td">
-                                            <div class="text-sm text-gray-900">{{ $item->estudiante->carnet}}</div>
-                                            <input type="hidden" name="registros[{{$index}}][estudiante_id]" value="{{$item->estudiante->id}}">
-                                        </td>
-                                        <td>
-                                            <div class="text-sm text-gray-900">{{Str::ucfirst($item->estudiante->nombre_completo)}}</div>
-                                        </td>
-                                        @if ($usuario !== null)
-                                            <td class="text-center">
-                                                @if ($usuario->generable_id === $docente_id && $habilitar)
-                                                    <x-jet-input type="number" name="registros[{{$index}}][nota_1]" class="w-16"
-                                                    value="0"
-                                                    onkeyup="sumarNotaPrimero(this)" />
-                                                @else
-                                                    <span class="text-xs font-normal text-gray-600">0</span>
-                                                @endif
+                                        <th class="table-tail-th text-center">Carnet</th>
+                                        <th class="table-tail-th text-center">Nombre del Estudiante</th>
+                                        <th class="table-tail-th w-20">Form (60%)</th>
+                                        <th class="table-tail-th w-20">Sum (40%)</th>
+                                        <th class="table-tail-th w-20">Total</th>
+                                        <th class="table-tail-thr text-center">Observacion</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @foreach ($inscritos as $index => $item)
+                                        <tr>
+                                            <td class="table-tail-td">
+                                                <div class="text-sm text-gray-900">{{ $item->estudiante->carnet}}</div>
+                                                <input type="hidden" name="registros[{{$index}}][estudiante_id]" value="{{$item->estudiante->id}}">
+                                            </td>
+                                            <td>
+                                                <div class="text-sm text-gray-900">{{Str::ucfirst($item->estudiante->nombre_completo)}}</div>
                                             </td>
                                             <td class="text-center">
-                                                @if ($usuario->generable_id === $docente_id && $habilitar)
-                                                    <x-jet-input type="number" name="registros[{{$index}}][nota_2]" class="w-16"
-                                                    value="0"
-                                                    onkeyup="sumarNotaSegundo(this)"/>
-                                                @else
-                                                    <span class="text-xs font-normal text-gray-600">0</span>
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                                @if ($usuario->generable_id === $docente_id && $habilitar)
-                                                    <x-jet-input type="text"
-                                                    value="0"
-                                                    name="registros[{{$index}}][nota_final]"
-                                                    class="w-16" readonly/>
-                                                @else
-                                                    <span class="text-xs font-normal text-gray-600">0</span>
-                                                @endif
-                                            </td>
-                                        @else
-                                            <td class="text-center">
-                                                <x-jet-input type="number"
-                                                name="registros[{{$index}}][nota_1]" class="w-16"
+                                                <x-jet-input type="number" name="registros[{{$index}}][nota_1]" class="w-16"
+                                                value="0"
                                                 onkeyup="sumarNotaPrimero(this)" />
                                             </td>
                                             <td class="text-center">
-                                                <x-jet-input type="number"
-                                                name="registros[{{$index}}][nota_2]" class="w-16"
+                                                <x-jet-input type="number" name="registros[{{$index}}][nota_2]" class="w-16"
+                                                value="0"
                                                 onkeyup="sumarNotaSegundo(this)"/>
                                             </td>
                                             <td class="text-center">
                                                 <x-jet-input type="text"
+                                                value="0"
                                                 name="registros[{{$index}}][nota_final]"
                                                 class="w-16" readonly/>
                                             </td>
-                                        @endif
-                                        <td class="text-center">
-                                            @if ($item->nota_final == null)
-                                                <span class="font-bold text-sm">Sin nota asignada</span>
-                                            @else
-                                                <span class="text-sm font-bold {{$item->nota_final >= $configuracion->nota_minima_aprobacion ? 'text-green-500' : 'text-red-500'}}">
-                                                    {{$item->nota_final >= $configuracion->nota_minima_aprobacion ? 'Aprobado' : 'Reprobado'}}
-                                                </span>
-                                            @endif
-                                        </td>
+                                            <td class="text-center">
+                                                @if ($item->nota_final == null)
+                                                    <span class="font-bold text-sm">Sin nota asignada</span>
+                                                @else
+                                                    <span class="text-sm font-bold {{$item->nota_final >= $configuracion->nota_minima_aprobacion ? 'text-green-500' : 'text-red-500'}}">
+                                                        {{$item->nota_final >= $configuracion->nota_minima_aprobacion ? 'Aprobado' : 'Reprobado'}}
+                                                    </span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="my-4 px-6 flex justify-end items-center">
+                            @if ($rol_actual[0] == 'Administrador' || $rol_actual[0] == 'Coordinador')
+                                <x-back-button href="{{ route('admin.busquedaPorPlanificacion.index')}}">Volver</x-back-button>
+                            @else
+                                <x-back-button href="{{ route('docente.notas.index')}}">Volver</x-back-button>
+                            @endif
+                            <x-jet-danger-button type="submit" class="ml-2">Registrar</x-jet-danger-button>
+                        </div>
+                    @else
+                        <div class="table-responsive">
+                            <table class="table-tail">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="table-tail-th">Carnet</th>
+                                        <th class="table-tail-th">Nombre del Estudiante</th>
+                                        <th class="table-tail-th w-20">Form (60%)</th>
+                                        <th class="table-tail-th w-20">Sum (40%)</th>
+                                        <th class="table-tail-th w-20">Total</th>
+                                        <th class="table-tail-thr text-center">Observacion</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="my-4 px-6 flex justify-end items-center">
-                        <x-jet-danger-button type="submit" class="ml-2">Registrar</x-jet-danger-button>
-                    </div>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @foreach ($verificacion as $index => $item)
+                                        <input type="hidden" name="registros[{{$index}}][id]" value="{{$item->id}}">
+                                        <input type="hidden" name="registros[{{$index}}][planificacion_modulo_id]" value="{{$item->planificacion_modulo_id}}">
+                                        <tr>
+                                            <td class="table-tail-td">
+                                                <div class="text-sm text-gray-900">{{ $item->estudiante->carnet}} {{ $item->estudiante->expedido}}</div>
+                                                <input type="hidden" name="registros[{{$index}}][estudiante_id]" value="{{$item->estudiante->id}}">
+                                            </td>
+                                            <td>
+                                                <div class="text-sm text-gray-900">{{Str::ucfirst($item->estudiante->nombre_completo)}}</div>
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($usuario->generable_id === $docente_id && $habilitar)
+                                                    <x-jet-input type="number" name="registros[{{$index}}][nota_1]" class="w-16 text-center"
+                                                    value="{{$item->nota_1}}" onkeyup="sumarNotaPrimero(this)" min="0" max="60"/>
+                                                @else
+                                                    <span class="text-xs font-bold text-gray-600">{{$item->nota_1}}</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($usuario->generable_id === $docente_id && $habilitar)
+                                                    <x-jet-input type="number" name="registros[{{$index}}][nota_2]" class="w-16 text-center"
+                                                    value="{{$item->nota_2}}" onkeyup="sumarNotaSegundo(this)" min="0" max="40"/>
+                                                @else
+                                                    <span class="text-xs font-bold text-gray-600">{{$item->nota_2}}</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($usuario->generable_id === $docente_id && $habilitar)
+                                                    <x-jet-input type="text" name="registros[{{$index}}][nota_final]"
+                                                    class="w-16 text-center" value="{{$item->nota_final}}" readonly/>
+                                                @else
+                                                    <span class="text-xs font-bold text-gray-600">{{$item->nota_final}}</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($item->nota_final == null)
+                                                    <span class="font-bold text-sm">Sin nota asignada</span>
+                                                @else
+                                                    <span class="text-sm font-bold {{$item->nota_final >= $configuracion->nota_minima_aprobacion ? 'text-green-500' : 'text-red-500'}}">
+                                                        {{$item->nota_final >= $configuracion->nota_minima_aprobacion ? 'Aprobado' : 'Reprobado'}}
+                                                    </span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="my-4 px-6 flex justify-end items-center">
+                            <x-back-button href="{{ route('docente.notas.index')}}">Volver</x-back-button>
+                            @if ($usuario->generable_id === $docente_id && $habilitar)
+                                <x-jet-danger-button type="submit" class="ml-2">Registrar</x-jet-danger-button>
+                            @endif
+                        </div>
+                    @endif
                 </form>
             @else
                 <div class="py-4 uppercase">

@@ -18,6 +18,7 @@ class AnterioresEstudiantesComponent extends Component
     public $modalFormVisible = false;
     public $nombreBotonCarga = 'Subir', $excel;
     public $searchPaterno, $searchMaterno, $searchNombre;
+    protected $paginationTheme = 'bootstrap';
 
     public function mount(){
         $this->reset();

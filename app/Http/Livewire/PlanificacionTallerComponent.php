@@ -12,6 +12,7 @@ class PlanificacionTallerComponent extends Component
 
     public $search;
     public $estado = '';
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();

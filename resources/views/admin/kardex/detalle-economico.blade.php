@@ -27,27 +27,29 @@
                     <tbody class="bg-white divide-y divide-gray-200 relative">
                         @foreach ($inscripciones as $inscripcion)
                             @foreach ($inscripcion->pagosInscripcion as $index => $pago)
-                                <tr>
-                                    <td class="table-tail-td w-32">
-                                        <div class="text-sm text-gray-900">{{ $pago->numeroFactura }}</div>
-                                    </td>
-                                    <td class="w-24">
-                                        <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
-                                    </td>
-                                    <td class="table-tail-td">
-                                        <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
-                                    </td>
-                                    <td class="w-40">
-                                        <div class="text-sm text-gray-900" data-toggle="tooltip" data-placement="top" title="{{$inscripcion->modulo->titulo_completo}}">
-                                            {{ Str::length($inscripcion->modulo->titulo_completo) > 30 ? Str::substr($inscripcion->modulo->titulo_completo, 0, 30).'...' : $inscripcion->modulo->titulo_completo }}
-                                        </div>
-                                    </td>
-                                    <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
-                                    <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
-                                    <td class="table-tail-td">
-                                        <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
-                                    </td>
-                                </tr>
+                                @if ($pago->estado != 0)
+                                    <tr>
+                                        <td class="table-tail-td w-32">
+                                            <div class="text-sm text-gray-900">{{ $pago->numeroFactura }}</div>
+                                        </td>
+                                        <td class="w-24">
+                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
+                                        </td>
+                                        <td class="table-tail-td">
+                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
+                                        </td>
+                                        <td class="w-40">
+                                            <div class="text-sm text-gray-900" data-toggle="tooltip" data-placement="top" title="{{$inscripcion->modulo->titulo_completo}}">
+                                                {{ Str::length($inscripcion->modulo->titulo_completo) > 30 ? Str::substr($inscripcion->modulo->titulo_completo, 0, 30).'...' : $inscripcion->modulo->titulo_completo }}
+                                            </div>
+                                        </td>
+                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
+                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
+                                        <td class="table-tail-td">
+                                            <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                         @endforeach
                     </tbody>
@@ -75,27 +77,29 @@
                         <tbody class="bg-white divide-y divide-gray-200 relative">
                             @foreach ($servicios as $servicio)
                                 @foreach ($servicio->pagosServicios as $index => $pago)
-                                    <tr>
-                                        <td class="table-tail-td w-32">
-                                            <div class="text-sm text-gray-900">{{ $pago->numeroFactura }}</div>
-                                        </td>
-                                        <td class="w-24">
-                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
-                                        </td>
-                                        <td class="table-tail-td">
-                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
-                                        </td>
-                                        <td class="w-40">
-                                            <div class="text-sm text-gray-900" data-toggle="tooltip" data-placement="top" title="{{$inscripcion->modulo->titulo_completo}}">
-                                                {{ $servicio->categoria->nombre}}
-                                            </div>
-                                        </td>
-                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
-                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
-                                        <td class="table-tail-td">
-                                            <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
-                                        </td>
-                                    </tr>
+                                    @if ($pago->estado != 0)
+                                        <tr>
+                                            <td class="table-tail-td w-32">
+                                                <div class="text-sm text-gray-900">{{ $pago->numeroFactura }}</div>
+                                            </td>
+                                            <td class="w-24">
+                                                <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
+                                            </td>
+                                            <td class="table-tail-td">
+                                                <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
+                                            </td>
+                                            <td class="w-40">
+                                                <div class="text-sm text-gray-900" data-toggle="tooltip" data-placement="top" title="{{$inscripcion->modulo->titulo_completo}}">
+                                                    {{ $servicio->categoria->nombre}}
+                                                </div>
+                                            </td>
+                                            <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
+                                            <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
+                                            <td class="table-tail-td">
+                                                <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             @endforeach
                         </tbody>
@@ -124,27 +128,29 @@
                         <tbody class="bg-white divide-y divide-gray-200 relative">
                             @foreach ($talleres as $taller)
                                 @foreach ($taller->pagosInscripcionTaller as $index => $pago)
-                                    <tr>
-                                        <td class="table-tail-td w-32">
-                                            <div class="text-sm text-gray-900">{{ $pago->numeroFactura }}</div>
-                                        </td>
-                                        <td class="w-24">
-                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
-                                        </td>
-                                        <td class="table-tail-td">
-                                            <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
-                                        </td>
-                                        <td class="w-40">
-                                            <div class="text-sm text-gray-900" data-toggle="tooltip" data-placement="top" title="{{$inscripcion->modulo->titulo_completo}}">
-                                                {{ $taller->planificacionTaller->taller->nombre}}
-                                            </div>
-                                        </td>
-                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
-                                        <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
-                                        <td class="table-tail-td">
-                                            <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
-                                        </td>
-                                    </tr>
+                                    @if ($pago->estado != 0)
+                                        <tr>
+                                            <td class="table-tail-td w-32">
+                                                <div class="text-sm text-gray-900">{{ $pago->numeroFactura }}</div>
+                                            </td>
+                                            <td class="w-24">
+                                                <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDePago->nombre)}}</div>
+                                            </td>
+                                            <td class="table-tail-td">
+                                                <div class="text-sm text-gray-900">{{ Str::title($pago->tipoDeRazon->nombre)}}</div>
+                                            </td>
+                                            <td class="w-40">
+                                                <div class="text-sm text-gray-900" data-toggle="tooltip" data-placement="top" title="{{$taller->planificacionTaller->taller->nombre}}">
+                                                    {{ $taller->planificacionTaller->taller->nombre}}
+                                                </div>
+                                            </td>
+                                            <td class="table-tail-td"><div class="text-sm text-gray-900">{{ Str::ucfirst($pago->concepto)}}</div></td>
+                                            <td class="table-tail-td"><div class="text-sm text-gray-900">{{$pago->monto}}</div></td>
+                                            <td class="table-tail-td">
+                                                <div class="text-sm text-gray-900">{{$pago->fecha_pago->format('d-m-Y')}}</div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             @endforeach
                         </tbody>

@@ -38,7 +38,8 @@
                                 title: '¿Estas seguro de deshabilitar este registro? Porque ya tiene planificaciones realizadas',
                                 type: 'warning',
                                 showCancelButton: true,
-                                showConfirmButton: false,
+                                showConfirmButton: true,
+                                confirmButtonText: 'Si',
                                 cancelButtonColor: '#d33',
                                 cancelButtonText: 'No'
                             }).then((result) => {

@@ -30,9 +30,12 @@
                             <p class="text-sm text-gray-900 mt-2">Categoria: {{$carrera->categoria->nombre}}</p>
                             <p class="text-sm text-gray-900">Cuenta con {{$carrera->cargaHoraria}} horas académicas</p>
                         </div>
-                        <a href="{{ route('detalleCurso', $carrera->id) }}" class="btn mt-2 flex justify-center w-full bg-red-500 focus:border-red-600 hover:bg-red-600 hover:underline">
-                            Ver Curso
-                        </a>
+                        <div class="flex items-center justify-between px-4 pb-4">
+                            @livewire('like-button-component', ['carrera' => $carrera])
+                            <a href="{{route('detalleCurso',$carrera)}}" class="btn mt-2 flex justify-center bg-red-500 focus:border-red-600 hover:bg-red-600 hover:underline">
+                                Ver Curso
+                            </a>
+                        </div>
                     </div>
                 </div>
             @endforeach

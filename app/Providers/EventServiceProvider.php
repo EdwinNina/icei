@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Models\Certificado;
 use App\Models\Inscripcion;
+use App\Models\Nota;
 use App\Models\PlanificacionCarrera;
 use App\Models\RegistroEconomico;
 use App\Observers\CertificadoModularObserver;
 use App\Observers\InscripcionObserver;
+use App\Observers\NotaObserver;
 use App\Observers\PlanificacionCarreraObserver;
 use App\Observers\RegistroEconomicoObserver;
 use Illuminate\Auth\Events\Registered;

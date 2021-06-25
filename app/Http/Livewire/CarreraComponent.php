@@ -17,6 +17,7 @@ class CarreraComponent extends Component
     public $estadoRegistro = 0, $mensaje, $titulo;
     public $tituloCarrera, $descripcion, $requisitos, $cargaHoraria, $portada, $carreraId;
     public $categoria;
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();
@@ -64,7 +65,8 @@ class CarreraComponent extends Component
         }
     }
 
-    public function openModalShow(Carrera $carrera){
+    public function openModalShow($id){
+        $carrera = Carrera::where('id', $id)->first();
         $this->tituloCarrera = $carrera->titulo;
         $this->descripcion = $carrera->descripcion;
         $this->requisitos = $carrera->requisitos;

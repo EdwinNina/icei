@@ -24,6 +24,7 @@ class DocenteComponent extends Component
     public $userEmail, $userPassword, $userName;
     public $password = true;
     public $docenteCarreras;
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();

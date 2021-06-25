@@ -49,10 +49,11 @@
                     window.livewire.on('exist', value => {
                         if(value == 1){
                             Swal.fire({
-                                title: '¿Estas seguro de deshabilitar este registro? Porque ya tiene planificaciones realizadas',
+                                title: '¿Estas seguro de deshabilitar este registro? Porque ya se le asigno planificaciones',
                                 type: 'warning',
                                 showCancelButton: true,
-                                showConfirmButton: false,
+                                showConfirmButton: true,
+                                confirmButtonText: 'Si',
                                 cancelButtonColor: '#d33',
                                 cancelButtonText: 'No'
                             }).then((result) => {

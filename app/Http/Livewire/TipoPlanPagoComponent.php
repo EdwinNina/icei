@@ -15,6 +15,7 @@ class TipoPlanPagoComponent extends Component
     public $search;
     public $estadoRegistro = 0, $titulo, $mensaje;
     public $nombre, $descripcion, $tipoPagoId;
+    protected $paginationTheme = 'bootstrap';
 
     public function mount() {
         $this->resetPage();

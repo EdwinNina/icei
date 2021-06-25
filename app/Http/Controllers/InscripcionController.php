@@ -34,48 +34,61 @@ class InscripcionController extends Controller
         return view('admin.inscripciones.create', compact('actividades','tipoPagos','tipoPlanPagos'));
     }
 
-    public function store(Request $request){
-        try {
-            DB::beginTransaction();
-            $inscripcion = Inscripcion::create([
-                'estudiante_id' => $request->estudiante_id,
-                'modulo_id' => $request->modulo_id,
-                'planificacion_carrera_id' => $request->planificacion_id,
-                'tipo_plan_pago_id' => $request->tipo_plan_pago_id,
-                'actividad' => $request->actividad,
-                'total_modulo' => $request->total_modulo,
-                'total_pagado' => $request->total_pagado,
-                'saldo' => $request->saldo,
-            ]);
+    public function store(Request $request)
+    {
+        $verificacion = Inscripcion::where([
+            ['estudiante_id','=',$request->estudiante_id],
+            ['modulo_id','=',$request->modulo_id],
+            ['planificacion_carrera_id','=',$request->planificacion_id]
+        ])->first();
 
-            foreach ($request->pagos as $pago) {
-                $pagos = new RegistroEconomico([
-                    'monto' => $pago['monto'],
-                    'concepto' => $pago['concepto'],
-                    'fecha_pago' => $pago['fecha_pago'],
-                    'numero_recibo' => $pago['numero_recibo'],
-                    'tipo_pago_id' => $pago['tipo_pago_id'],
-                    'tipo_razon_id' => $pago['tipo_razon_id'],
-                    'estado' => $request->saldo > 0 ? 2 : 1,
+        if (!$verificacion) {
+            try {
+                DB::beginTransaction();
+                $inscripcion = Inscripcion::create([
+                    'estudiante_id' => $request->estudiante_id,
+                    'modulo_id' => $request->modulo_id,
+                    'planificacion_carrera_id' => $request->planificacion_id,
+                    'tipo_plan_pago_id' => $request->tipo_plan_pago_id,
+                    'actividad' => $request->actividad,
+                    'total_modulo' => $request->total_modulo,
+                    'total_pagado' => $request->total_pagado,
+                    'saldo' => $request->total_pagado == 0 ? $request->total_modulo : $request->saldo,
                 ]);
-                $inscripcion->pagosInscripcion()->save($pagos);
+                foreach ($request->pagos as $pago) {
+                    $pagos = new RegistroEconomico([
+                        'monto' => $pago['monto'],
+                        'concepto' => $pago['concepto'],
+                        'fecha_pago' => $pago['fecha_pago'],
+                        'numero_recibo' => $pago['numero_recibo'],
+                        'tipo_pago_id' => $pago['tipo_pago_id'],
+                        'tipo_razon_id' => $pago['tipo_razon_id'],
+                        'estado' => $request->total_pagado == $request->total_modulo ? 1 : 2
+                    ]);
+                    $inscripcion->pagosInscripcion()->save($pagos);
+                }
+                DB::commit();
+                return redirect()->route('admin.inscripciones.edit', $inscripcion->id)->with('message','good');
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return redirect()->route('admin.inscripciones.index')->with('message','bad');
             }
-            DB::commit();
-            return redirect()->route('admin.inscripciones.edit', $inscripcion->id)->with('message','good');
-        } catch (\Throwable $th) {
-            DB::rollback();
-            return redirect()->route('admin.inscripciones.index')->with('message','bad');
+        } else{
+            return redirect()->route('admin.inscripciones.index')->with('error','Error! No puedes inscribir al estudiante porque ya está inscrito en este módulo');
         }
     }
 
-    public function edit(Inscripcion $inscripcion){
+
+    public function edit(Inscripcion $inscripcion)
+    {
         $estudiante = Estudiante::where('id', $inscripcion->estudiante_id)->first();
         $configuracion = Configuracion::select('nota_minima_aprobacion')->first();
         $nota_minima_aprobacion = $configuracion->nota_minima_aprobacion;
         return view('admin.inscripciones.edit', compact('inscripcion', 'estudiante', 'nota_minima_aprobacion'));
     }
 
-    public function update(Request $request, Inscripcion $inscripcion){
+    public function update(Request $request, Inscripcion $inscripcion)
+    {
         try {
             DB::beginTransaction();
             if($request->opcion === 'inscripcion'){
@@ -133,7 +146,8 @@ class InscripcionController extends Controller
         }
     }
 
-    public function cambiarCarrera(Request $request, Inscripcion $inscripcion){
+    public function cambiarCarrera(Request $request, Inscripcion $inscripcion)
+    {
         $inscripcion->planificacion_carrera_id = $request->planificacion_id;
         $inscripcion->modulo_id = $request->modulo_id;
         $inscripcion->save();
@@ -141,7 +155,8 @@ class InscripcionController extends Controller
     }
 
 
-    public function habilitar2t(Request $request){
+    public function habilitar2t(Request $request)
+    {
         $estado = Inscripcion::where('id', $request->id)->update([
             'habilitado_2t' => true,
             'total_monto_2t' => $request->monto,
@@ -154,7 +169,8 @@ class InscripcionController extends Controller
         }
     }
 
-    public function deshabilitar2t(Request $request){
+    public function deshabilitar2t(Request $request)
+    {
         $estado = Inscripcion::where('id', $request->id)->update([
             'habilitado_2t' => false,
             'total_monto_2t' => null,
@@ -167,7 +183,8 @@ class InscripcionController extends Controller
         }
     }
 
-    public function habilitarCertificado(Request $request){
+    public function habilitarCertificado(Request $request)
+    {
         try {
             DB::beginTransaction();
             Inscripcion::where('id', $request->id)->update([
@@ -197,13 +214,15 @@ class InscripcionController extends Controller
         }
     }
 
-    public function deshabilitarCertificado(Request $request){
+    public function deshabilitarCertificado(Request $request)
+    {
         $estado = Inscripcion::where('id', $request->id)->update([
             'habilitado_certificado' => false,
             'total_monto_certificado' => null,
             'fecha_habilitado_certificado' => null,
             'saldo_certificado' => null
         ]);
+        Certificado::where('inscripcion_id', $request->id)->delete();
         if($estado){
             return response()->json('good');
         }else{
@@ -211,7 +230,8 @@ class InscripcionController extends Controller
         }
     }
 
-    public function anularInscripcion(Request $request){
+    public function anularInscripcion(Request $request)
+    {
         $estado = Inscripcion::where('id', $request->id)->update(['estado' => 0]);
         if($estado){
             return response()->json('good');
@@ -236,9 +256,9 @@ class InscripcionController extends Controller
         $fpdf->Cell(20,5,'Y CAPACITACION EN ELECTRONICA E INFORMATICA',0,0);
         $fpdf->SetFont('Arial','',8);
         $fpdf->Ln(2);
-        $fpdf->Cell(0,12,'Calle Cochabamba Nro 100 Edificio Jose Santos-Piso 3',0,0,'C');
+        $fpdf->Cell(0,12,'Calle Cochabamba Nro 100 Edificio Jose Santos-Piso 1',0,0,'C');
         $fpdf->Ln(2);
-        $fpdf->Cell(0,13,'Telefono 2117862 - Celular 72021277',0,0,'C');
+        $fpdf->Cell(0,13,'Telefono 2313313 - Celular 60101710',0,0,'C');
         $fpdf->SetLineWidth(0.5);
         $fpdf->Line(10,30,200,30);
         $fpdf->Ln(15);

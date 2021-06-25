@@ -17,6 +17,8 @@ class CategoriaComponent extends Component
     public $search, $estado;
     public $estadoRegistro = 0, $titulo, $mensaje;
     public $nombre, $slug, $categoriaId;
+    protected $paginationTheme = 'bootstrap';
+
 
     public function mount() {
         $this->resetPage();

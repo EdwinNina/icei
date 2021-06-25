@@ -21,7 +21,7 @@
         <div class="w-full">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-2 px-4">
                 <h1 class="text-gray-500 uppercase text-2xl mt-5 text-center">Registrar Carrera</h1>
-                <form action="{{ route('admin.carreras.update', $carrera) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('admin.carreras.update', $carrera->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="mt-4">

@@ -11,13 +11,12 @@
 
         <link rel="stylesheet" href="{{ mix('css/app.css') }}" />
         @livewireStyles
-
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="bg-gray-100">
         <header class="body-font bg-white shadow-md">
             <div class="container mx-auto flex flex-wrap py-3 px-6 flex-col md:flex-row items-center">
-                <img src="{{asset('images/logo.png')}}" alt="ICEI TECH" class="max-h-14 w-auto">
+                <img src="{{asset('images/logo.svg')}}" alt="ICEI TECH" class="max-h-16 w-auto">
                 <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
                     <a class="mr-5 text-gray-600 hover:text-gray-900 hover:underline {{request()->routeIs('inicio') ? 'border-b-2 border-yellow-500 text-yellow-500' : ''}}"
                         href="{{ route('inicio') }}">Inicio</a>

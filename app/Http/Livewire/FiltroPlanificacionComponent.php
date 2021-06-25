@@ -34,7 +34,8 @@ class FiltroPlanificacionComponent extends Component
         $this->planificaciones = PlanificacionCarrera::where([
             ['carrera_id', '=', $this->carrera_id],
             ['horario_id', '=', $this->horario_id],
-            ['modalidad_id', '=', $this->modalidad_id]
+            ['modalidad_id', '=', $this->modalidad_id],
+            ['estado',1]
         ])->get();
     }
 
@@ -44,17 +45,20 @@ class FiltroPlanificacionComponent extends Component
     }
 
     public function updatedplanificacionId($planificacion_id){
-        $this->modulos = PlanificacionModulo::where('planificacion_carrera_id', $planificacion_id)
-                        ->where('fecha_inicio','>=', Carbon::now()->format('Y-m-d'))->get();
+        $this->modulos = PlanificacionModulo::where('planificacion_carrera_id', $planificacion_id)->get();
         $planificacion = PlanificacionCarrera::where('id', $planificacion_id)->first();
         $this->emit('costoModulo', $planificacion->costo_modulo);
     }
 
     public function updatedModuloId($id){
-        $modulo = Modulo::where('id', $id)->first();
-        $this->nombreModulo = $modulo->titulo_completo;
-        if($this->nombreModulo != null){
-            $this->emit('mostrarCarrito');
+        if ($id != null || $id != '') {
+            $modulo = Modulo::where('id', $id)->first();
+            $this->nombreModulo = $modulo->titulo_completo;
+            if($this->nombreModulo != null){
+                $this->emitTo('carrito-pagos-component','mostrarCarrito');
+            }
+        }else{
+            $this->emitTo('carrito-pagos-component','errorMostrarCarrito');
         }
     }
 }

@@ -1,6 +1,6 @@
 <x-jet-dialog-modal wire:model="modalFormVisible">
     <x-slot name="title">
-        <h2 class="text-center uppercase text-gray-600 text-lg ">Formulario de Cancelación de congelamiento</h2>
+        <h2 class="text-center uppercase text-gray-600 text-lg ">Formulario de Congelamiento de Inscripción</h2>
     </x-slot>
     <x-slot name="content">
         <h2 class="text-sm uppercase text-blue-500 border-b-2 mb-3 border-gray-200">Módulo inscrito actualmente</h2>

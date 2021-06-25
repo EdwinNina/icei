@@ -119,7 +119,7 @@
                     @else
                         <div x-data="{mostrarCarritoCertificado: false}" class="w-full block mt-3">
                             <div class="flex justify-end" >
-                                @if ($inscripcion->saldo_certificado != 0 || $inscripcion->habilitado_certificado)
+                                @if ($inscripcion->saldo_certificado != 0 && $inscripcion->habilitado_certificado)
                                     <button type="button" id="btnAgregarPagoCertificado"
                                     class="btn bg-green-600 focus:border-green-800 hover:bg-green-700 hover:text-white"
                                     @click="mostrarCarritoCertificado = !mostrarCarritoCertificado"

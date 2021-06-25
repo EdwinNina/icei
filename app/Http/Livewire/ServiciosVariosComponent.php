@@ -13,6 +13,7 @@ class ServiciosVariosComponent extends Component
     public $showModalDelete = false;
     public $estadoRegistro = 0, $titulo, $mensaje;
     public $servicio_id;
+    protected $paginationTheme = 'bootstrap';
 
     public function render()
     {

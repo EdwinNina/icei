@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Carrera extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['titulo','descripcion','requisitos','cargaHoraria','portada','categoria_id'];
+    protected $fillable = ['titulo','slug','descripcion','requisitos','cargaHoraria','portada','categoria_id'];
 
     protected $table = 'carreras';
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function categoria()
     {
@@ -31,5 +37,9 @@ class Carrera extends Model
     public function planificacionCarrera()
     {
         return $this->hasMany(PlanificacionCarrera::class);
+    }
+
+    public function likes(){
+        return $this->belongsToMany(UsuarioGeneral::class, 'likes_usuarios');
     }
 }

@@ -1,10 +1,10 @@
 <div>
     <div class="flex justify-between items-center my-4">
         <h2 class="text-sm uppercase text-blue-500 border-b-2 border-gray-200">Datos Económicos</h2>
-        <div>
+{{--         <div>
             <button type="button" class="btn bg-green-600 focus:border-green-800 hover:bg-green-700 hover:text-white"
             wire:click.prevent="agregarPago">Agregar nueva Fila<button>
-        </div>
+        </div> --}}
     </div>
     <div class="table-responsive mt-6">
         <table class="table-tail" id="tabla-pago">
